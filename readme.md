@@ -23,9 +23,15 @@ Forum Thread:
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
+Limitations:
+
+* Only operates with one item at the same time ( ex: you can't deleted multiple selected files at the same time )
+* There is no confirmation ( yes/no ) dialog.
+
 Installation:
 
 * Open file "Sublime Text 2/Packages/Default/Side Bar.sublime-menu" and comment everything with /* here file contents */
 * Download this repository to folder "Sublime Text 2/Packages/Side Bar/"
 * Test 
 * Consider make a donation
+
