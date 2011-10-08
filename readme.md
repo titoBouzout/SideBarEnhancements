@@ -31,7 +31,7 @@ Limitations:
 Installation:
 
 * Open file "Sublime Text 2/Packages/Default/Side Bar.sublime-menu" and comment everything with /* here file contents */
-* Download this repository to folder "Sublime Text 2/Packages/Side Bar/"
+* Download this repository to folder "Sublime Text 2/Packages/sublime-text-side-bar/"
 * Test 
 * Consider make a donation
 
