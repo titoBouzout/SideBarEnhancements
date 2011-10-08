@@ -27,12 +27,12 @@ class SideBarFilesNewFolderCommand(sublime_plugin.WindowCommand):
 				try:
 					os.makedirs(os.path.join(path, name))
 				except:
-					sublime.status_message("Unable to create directory '"+os.path.join(path, name)+'"')
+					sublime.error_message("Unable to create directory '"+os.path.join(path, name)+'"')
 			else:
 				try:
 					os.makedirs(os.path.join(os.path.dirname(path), name))
 				except:
-					sublime.status_message("Unable to create directory '"+os.path.join(os.path.dirname(path), name)+'"')
+					sublime.error_message("Unable to create directory '"+os.path.join(os.path.dirname(path), name)+'"')
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
@@ -103,7 +103,7 @@ class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 			branch, leaf = os.path.split(path)
 			new = os.path.join(dst, leaf)
 			if os.path.isdir(new) or os.path.isfile(new):
-				sublime.status_message("Unable to cut and paste, destination exists.")
+				sublime.error_message("Unable to cut and paste, destination exists.")
 			else:
 				try:
 					try:
@@ -112,24 +112,24 @@ class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 					except:
 						os.rename(path, new)
 				except:
-					sublime.status_message("Unable to move '"+path+"' to '"+new+"'")
+					sublime.error_message("Unable to move '"+path+"' to '"+new+"'")
 
 		for path in copy:
 			branch, leaf = os.path.split(path)
 			new = os.path.join(dst, leaf)
 			if os.path.isdir(new) or os.path.isfile(new):
-				sublime.status_message("Unable to copy and paste, destination exists.")
+				sublime.error_message("Unable to copy and paste, destination exists.")
 			else:
 				if os.path.isdir(path):
 					try:
 						shutil.copytree(path, new);
 					except:
-						sublime.status_message("Unable to copy '"+path+"' to '"+new+"'")
+						sublime.error_message("Unable to copy '"+path+"' to '"+new+"'")
 				else:
 					try:
 						shutil.copy(path, new);
 					except:
-						sublime.status_message("Unable to copy '"+path+"' to '"+new+"'")
+						sublime.error_message("Unable to copy '"+path+"' to '"+new+"'")
 
 		cut = s.set('cut', [])
 
@@ -155,18 +155,18 @@ class SideBarFilesDuplicateCommand(sublime_plugin.WindowCommand):
 
 	def on_done(self, src, dst):
 		if os.path.isdir(dst) or os.path.isfile(dst):
-			sublime.status_message("Unable to duplicate, destination exists.")
+			sublime.error_message("Unable to duplicate, destination exists.")
 		else :
 			if os.path.isdir(src):
 				try:
 					shutil.copytree(src, dst);
 				except:
-					sublime.status_message("Unable to duplicate directory '"+src+"' to '"+dst+"'")
+					sublime.error_message("Unable to duplicate directory '"+src+"' to '"+dst+"'")
 			else:
 				try:
 					shutil.copy(src, dst);
 				except:
-					sublime.status_message("Unable to duplicate file '"+src+"' to '"+dst+"'")
+					sublime.error_message("Unable to duplicate file '"+src+"' to '"+dst+"'")
 
 	def is_enabled(self, paths):
 		return len(paths) == 1
@@ -181,11 +181,11 @@ class SideBarFilesRenameCommand(sublime_plugin.WindowCommand):
 		new = os.path.join(branch, leaf)
 		try:
 			if os.path.isdir(new) or os.path.isfile(new):
-				sublime.status_message("Unable to rename, destination exists.")
+				sublime.error_message("Unable to rename, destination exists.")
 			else:
 				os.rename(old, new)
 		except:
-			sublime.status_message("Unable to rename '"+old+"' to '"+new+"'")
+			sublime.error_message("Unable to rename '"+old+"' to '"+new+"'")
 
 	def is_enabled(self, paths):
 		return len(paths) == 1
@@ -197,7 +197,7 @@ class SideBarFilesMoveCommand(sublime_plugin.WindowCommand):
 
 	def on_done(self, old, new):
 		if os.path.isdir(new) or os.path.isfile(new):
-			sublime.status_message("Unable to move, destination exists.")
+			sublime.error_message("Unable to move, destination exists.")
 		else:
 			try:
 				try:
@@ -206,7 +206,7 @@ class SideBarFilesMoveCommand(sublime_plugin.WindowCommand):
 				except:
 					os.rename(old, new)
 			except:
-				sublime.status_message("Unable to move '"+old+"' to '"+new+"'")
+				sublime.error_message("Unable to move '"+old+"' to '"+new+"'")
 
 	def is_enabled(self, paths):
 		return len(paths) == 1
@@ -236,14 +236,14 @@ class SideBarFilesDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				os.remove(path)
 			except:
-				sublime.status_message("Unable to remove file '"+path+'"')
+				sublime.error_message("Unable to remove file '"+path+'"')
 
 	def remove_safe_dir(self, path):
 		if path != '' and path != '/' and path != '//' and path != '\\' and path != '\\\\':
 			try:
 				os.rmdir(path)
 			except:
-				sublime.status_message("Unable to remove directory '"+path+'"')
+				sublime.error_message("Unable to remove directory '"+path+'"')
 
 	def is_enabled(self, paths):
 		return len(paths) == 1
