@@ -1,0 +1,30 @@
+[
+	{ "caption": "New File…", "command": "side_bar_files_new_file", "args": {"paths": []} },
+	{ "caption": "New Folder…", "command": "side_bar_files_new_folder", "args": {"paths": []} },
+	{ "caption": "-" },
+
+	{ "caption": "Find in selected…", "command": "side_bar_files_find_in_selected", "args": {"paths": []} },
+	{ "caption": "Find in parent…", "command": "side_bar_files_find_in_parent", "args": {"paths": []} },
+	{ "caption": "Find in project…", "command": "side_bar_files_find_in_project"},
+	{ "caption": "-" },
+
+	{ "caption": "Cut", "command": "side_bar_files_cut", "args": {"paths": []} },
+	{ "caption": "Copy", "command": "side_bar_files_copy", "args": {"paths": []} },
+	{ "caption": "Copy Path(s)", "command": "side_bar_files_paths_copy", "args": {"paths": []} },
+	{ "caption": "Paste", "command": "side_bar_files_paste", "args":{"paths": []}},
+	{ "caption": "-" },
+	{ "caption": "Duplicate", "command": "side_bar_files_duplicate", "args": {"paths": []} },
+	{ "caption": "-" },
+
+	{ "caption": "Rename…", "command": "side_bar_files_rename", "args": {"paths": []} },
+	{ "caption": "Move…", "command": "side_bar_files_move", "args": {"paths": []} },
+	{ "caption": "-" },
+
+	{ "caption": "Delete", "command": "side_bar_files_delete", "args": {"paths": []} },
+	{ "caption": "-" },
+
+  { "caption": "Refresh", "command": "refresh_folder_list" },
+	{ "caption": "-" },
+
+	{ "caption": "Reveal", "command": "side_bar_files_reveal", "args": {"paths": []} }
+]
