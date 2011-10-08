@@ -1,6 +1,6 @@
 A Sublime Text 2 Plugin. See: http://www.sublimetext.com/
 
-Provides enhancements to operations on Side Bar of Files and Folders.
+Provides enhancements to the operations on Side Bar of Files and Folders.
 
 <img src="http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png" border="0"/>
 
