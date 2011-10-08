@@ -10,7 +10,8 @@
 
 	{ "caption": "Cut", "command": "side_bar_files_cut", "args": {"paths": []} },
 	{ "caption": "Copy", "command": "side_bar_files_copy", "args": {"paths": []} },
-	{ "caption": "Copy Path(s)", "command": "side_bar_files_paths_copy", "args": {"paths": []} },
+	{ "caption": "Copy Path", "command": "side_bar_files_copy_path", "args": {"paths": []} },
+	{ "caption": "Copy Name", "command": "side_bar_files_copy_name", "args": {"paths": []} },
 	{ "caption": "Paste", "command": "side_bar_files_paste", "args":{"paths": []}},
 	{ "caption": "-" },
 	{ "caption": "Duplicate", "command": "side_bar_files_duplicate", "args": {"paths": []} },

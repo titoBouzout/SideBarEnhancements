@@ -137,13 +137,25 @@ class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 		s = sublime.load_settings("SideBar Files.sublime-settings")
 		return (len(s.get('cut', [])) + len(s.get('copy', []))) > 0
 
-class SideBarFilesPathsCopyCommand(sublime_plugin.WindowCommand):
+class SideBarFilesCopyPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		sublime.set_clipboard("\n".join(paths));
 		if len(paths) > 1 :
 			sublime.status_message("Copied paths")
 		else :
 			sublime.status_message("Copied path")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyNameCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		branch, leaf = os.path.split(paths[0])
+		sublime.set_clipboard(leaf);
+		if len(paths) > 1 :
+			sublime.status_message("Copied names")
+		else :
+			sublime.status_message("Copied name")
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
