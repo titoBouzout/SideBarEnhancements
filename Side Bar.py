@@ -2,6 +2,7 @@ import sublime, sublime_plugin
 import os
 import functools
 import shutil
+import subprocess
 
 class SideBarFilesNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
@@ -37,6 +38,31 @@ class SideBarFilesNewFolderCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths):
 		return len(paths) > 0
 
+class SideBarFilesEditCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		for path in paths:
+			self.window.open_file(path)
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesOpenCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		for path in paths:
+			subprocess.Popen(r''+path, shell=True)
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		for path in paths:
+			subprocess.Popen(r''+path, shell=True)
+
+	def is_enabled(self, paths):
+		return False
+
+
 class SideBarFilesFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		self.window.run_command('hide_panel');
@@ -60,7 +86,6 @@ class SideBarFilesFindInProjectCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		self.window.run_command('hide_panel');
 		self.window.run_command('show_panel', {"panel": "find_in_files", "location": "<open folders>" });
-
 
 class SideBarFilesCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
@@ -177,6 +202,7 @@ class SideBarFilesDuplicateCommand(sublime_plugin.WindowCommand):
 			else:
 				try:
 					shutil.copy(src, dst);
+					self.window.open_file(dst);
 				except:
 					sublime.error_message("Unable to duplicate file:\n\n"+src+"\n\nto\n\n"+dst)
 

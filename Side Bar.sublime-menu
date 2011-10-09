@@ -1,31 +1,36 @@
 [
-	{ "caption": "New File…", "command": "side_bar_files_new_file", "args": {"paths": []} },
-	{ "caption": "New Folder…", "command": "side_bar_files_new_folder", "args": {"paths": []} },
-	{ "caption": "-" },
+	{ "caption": "New File…", 	      "id": "side-bar-files-new-file",         "command": "side_bar_files_new_file",         "args": {"paths": []} },
+	{ "caption": "New Folder…",       "id": "side-bar-files-new-folder",       "command": "side_bar_files_new_folder",       "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-files-new-separator"},
 
-	{ "caption": "Find in selected…", "command": "side_bar_files_find_in_selected", "args": {"paths": []} },
-	{ "caption": "Find in parent…", "command": "side_bar_files_find_in_parent", "args": {"paths": []} },
-	{ "caption": "Find in project…", "command": "side_bar_files_find_in_project"},
-	{ "caption": "-" },
+	{ "caption": "Edit",              "id": "side-bar-files-edit",             "command": "side_bar_files_edit",             "args": {"paths": []} },
+	{ "caption": "Open",              "id": "side-bar-files-open",             "command": "side_bar_files_open",             "args": {"paths": []} },
+	{ "caption": "Open with…",        "id": "side-bar-files-open-with",        "command": "side_bar_files_open_with",        "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-files-edit-open-separator" },
+	
+	{ "caption": "Find in selected…", "id": "side-bar-files-find-selected",    "command": "side_bar_files_find_in_selected", "args": {"paths": []} },
+	{ "caption": "Find in parent…",   "id": "side-bar-files-find-parent",      "command": "side_bar_files_find_in_parent",   "args": {"paths": []} },
+	{ "caption": "Find in project…",  "id": "side-bar-files-find-project",     "command": "side_bar_files_find_in_project"},
+	{ "caption": "-", 								"id": "side-bar-files-find-separator"},
 
-	{ "caption": "Cut", "command": "side_bar_files_cut", "args": {"paths": []} },
-	{ "caption": "Copy", "command": "side_bar_files_copy", "args": {"paths": []} },
-	{ "caption": "Copy Path", "command": "side_bar_files_copy_path", "args": {"paths": []} },
-	{ "caption": "Copy Name", "command": "side_bar_files_copy_name", "args": {"paths": []} },
-	{ "caption": "Paste", "command": "side_bar_files_paste", "args":{"paths": []}},
-	{ "caption": "-" },
-	{ "caption": "Duplicate", "command": "side_bar_files_duplicate", "args": {"paths": []} },
-	{ "caption": "-" },
+	{ "caption": "Cut",               "id": "side-bar-files-clip-cut",         "command": "side_bar_files_cut",              "args": {"paths": []} },
+	{ "caption": "Copy",              "id": "side-bar-files-clip-copy",        "command": "side_bar_files_copy",             "args": {"paths": []} },
+	{ "caption": "Copy Path",         "id": "side-bar-files-clip-copy-path",   "command": "side_bar_files_copy_path",        "args": {"paths": []} },
+	{ "caption": "Copy Name",         "id": "side-bar-files-clip-copy-name",   "command": "side_bar_files_copy_name",        "args": {"paths": []} },
+	{ "caption": "Paste",             "id": "side-bar-files-clip-paste",       "command": "side_bar_files_paste",            "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-files-clip-separator" },
+	{ "caption": "Duplicate",         "id": "side-bar-files-duplicate",        "command": "side_bar_files_duplicate",        "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-files-duplicate-separator" },
 
-	{ "caption": "Rename…", "command": "side_bar_files_rename", "args": {"paths": []} },
-	{ "caption": "Move…", "command": "side_bar_files_move", "args": {"paths": []} },
-	{ "caption": "-" },
+	{ "caption": "Rename…",           "id": "side-bar-files-rename",           "command": "side_bar_files_rename",           "args": {"paths": []} },
+	{ "caption": "Move…",             "id": "side-bar-files-move",             "command": "side_bar_files_move",             "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-files-rename-move-separator" },
 
-	{ "caption": "Delete", "command": "side_bar_files_delete", "args": {"paths": []} },
-	{ "caption": "-" },
+	{ "caption": "Delete",            "id": "side-bar-files-delete",           "command": "side_bar_files_delete",           "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-files-delete-separator" },
 
-  { "caption": "Refresh", "command": "refresh_folder_list" },
-	{ "caption": "-" },
+  { "caption": "Refresh",           "id": "side-bar-files-refresh",          "command": "refresh_folder_list" },
+	{ "caption": "-",                 "id": "side-bar-files-refresh-separator" },
 
-	{ "caption": "Reveal", "command": "side_bar_files_reveal", "args": {"paths": []} }
+	{ "caption": "Reveal",            "id": "side-bar-files-reveal",           "command": "side_bar_files_reveal",           "args": {"paths": []} }
 ]
