@@ -17,7 +17,7 @@ https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=extensiondevelopme
 
 Source-code:
 
-https://github.com/titoBouzout/sublime-text-side-bar
+https://github.com/titoBouzout/SideBarEnhancements
 
 Forum Thread:
 
@@ -31,7 +31,7 @@ Limitations:
 Installation:
 
 * Open file "Sublime Text 2/Packages/Default/Side Bar.sublime-menu" and comment everything with /* here file contents */
-* Download this repository to folder "Sublime Text 2/Packages/sublime-text-side-bar/"
+* Download this repository to folder "Sublime Text 2/Packages/SideBarEnhancements/"
 * Test 
 * Consider make a donation
 
