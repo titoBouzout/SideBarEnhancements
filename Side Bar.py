@@ -168,7 +168,7 @@ class SideBarFilesCopyNameCommand(sublime_plugin.WindowCommand):
 			branch, leaf = os.path.split(path)
 			to_copy.append(leaf)
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -183,7 +183,7 @@ class SideBarFilesCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 			branch, leaf = os.path.split(path)
 			to_copy.append(urllib.quote(leaf.encode('utf-8')))
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -197,7 +197,7 @@ class SideBarFilesCopyPathCommand(sublime_plugin.WindowCommand):
 		for path in paths:
 			to_copy.append(path)
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -211,7 +211,7 @@ class SideBarFilesCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 		for path in paths:
 			to_copy.append('file:'+urllib.pathname2url(path.encode('utf-8')))
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -227,7 +227,7 @@ class SideBarFilesCopyPathRelativeCommand(sublime_plugin.WindowCommand):
 				path = re.sub('^'+re.escape(folder), '', path)
 			to_copy.append(re.sub('^/', '', path.replace('\\', '/')))
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -244,7 +244,7 @@ class SideBarFilesCopyPathRelativeEncodedCommand(sublime_plugin.WindowCommand):
 			to_copy.append(re.sub('^/', '', urllib.quote(path.replace('\\', '/').encode('utf-8'))))
 
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -260,7 +260,7 @@ class SideBarFilesCopyPathAbsoluteCommand(sublime_plugin.WindowCommand):
 				path = re.sub('^'+re.escape(folder), '', path)
 			to_copy.append(path.replace('\\', '/'))
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -277,7 +277,7 @@ class SideBarFilesCopyPathAbsoluteEncodedCommand(sublime_plugin.WindowCommand):
 			to_copy.append(urllib.quote(path.replace('\\', '/').encode('utf-8')))
 
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -295,7 +295,7 @@ class SideBarFilesCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 			to_copy.append('<a href="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'">'+leaf+'</a>')
 
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -312,7 +312,7 @@ class SideBarFilesCopyTagImgCommand(sublime_plugin.WindowCommand):
 			to_copy.append('<img src="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'"/>')
 
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -329,7 +329,7 @@ class SideBarFilesCopyTagStyleCommand(sublime_plugin.WindowCommand):
 			to_copy.append('<link rel="stylesheet" type="text/css" href="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'"/>')
 
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -346,13 +346,28 @@ class SideBarFilesCopyTagScriptCommand(sublime_plugin.WindowCommand):
 			to_copy.append('<script type="text/javascript" src="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'"></script>')
 
 		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
+		if len(to_copy) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
+
+class SideBarFilesCopyProjectFoldersCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for folder in sublime.active_window().folders():
+			to_copy.append(folder)
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(to_copy) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return True
 
 class SideBarFilesCopyContentCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
