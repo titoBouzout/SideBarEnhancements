@@ -369,7 +369,7 @@ class SideBarFilesCopyProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths):
 		return True
 
-class SideBarFilesCopyContentCommand(sublime_plugin.WindowCommand):
+class SideBarFilesCopyContentUtf8Command(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		to_copy = []
 		for path in paths:
@@ -380,6 +380,25 @@ class SideBarFilesCopyContentCommand(sublime_plugin.WindowCommand):
 				to_copy.append(unicode(data, "utf-8"))
 			except:
 				to_copy.append(data)
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items content copied")
+		else :
+			sublime.status_message("Item content copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyContentBase64Command(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		import mimetypes
+		for path in paths:
+			if(os.path.isdir(path)):
+				continue
+			mime = mimetypes.guess_type(path)[0] or 'text/plain'
+			to_copy.append('data:'+mime+';base64,'+(file(path, "rb").read().encode("base64").replace('\n', '')))
 
 		sublime.set_clipboard("\n".join(to_copy));
 		if len(paths) > 1 :
