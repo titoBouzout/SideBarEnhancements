@@ -3,6 +3,8 @@ import os
 import functools
 import shutil
 import subprocess
+import urllib
+import re
 
 class SideBarFilesNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
@@ -62,12 +64,10 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths):
 		return False
 
-
 class SideBarFilesFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		self.window.run_command('hide_panel');
-		self.window.run_command("show_panel", {"panel": "find_in_files",
-				"location": ",".join(paths)})
+		self.window.run_command("show_panel", {"panel": "find_in_files", "location": ",".join(paths)})
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
@@ -76,8 +76,7 @@ class SideBarFilesFindInParentCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		paths[0] = os.path.dirname(paths[0])
 		self.window.run_command('hide_panel');
-		self.window.run_command("show_panel", {"panel": "find_in_files",
-				"location": ",".join(paths)})
+		self.window.run_command("show_panel", {"panel": "find_in_files", "location": ",".join(paths)})
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
@@ -85,7 +84,7 @@ class SideBarFilesFindInParentCommand(sublime_plugin.WindowCommand):
 class SideBarFilesFindInProjectCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		self.window.run_command('hide_panel');
-		self.window.run_command('show_panel', {"panel": "find_in_files", "location": "<open folders>" });
+		self.window.run_command('show_panel', {"panel": "find_in_files", "location": "<open folders>"});
 
 class SideBarFilesCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
@@ -93,9 +92,9 @@ class SideBarFilesCutCommand(sublime_plugin.WindowCommand):
 		s.set('cut', paths)
 		s.set('copy', [])
 		if len(paths) > 1 :
-			sublime.status_message("Cutted paths")
+			sublime.status_message("Items cut")
 		else :
-			sublime.status_message("Cutted path")
+			sublime.status_message("Item cut")
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
@@ -106,9 +105,9 @@ class SideBarFilesCopyCommand(sublime_plugin.WindowCommand):
 		s.set('cut', [])
 		s.set('copy', paths)
 		if len(paths) > 1 :
-			sublime.status_message("Copied paths")
+			sublime.status_message("Items copied")
 		else :
-			sublime.status_message("Copied path")
+			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
@@ -162,25 +161,216 @@ class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 		s = sublime.load_settings("SideBar Files.sublime-settings")
 		return (len(s.get('cut', [])) + len(s.get('copy', []))) > 0
 
-class SideBarFilesCopyPathCommand(sublime_plugin.WindowCommand):
+class SideBarFilesCopyNameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
-		sublime.set_clipboard("\n".join(paths));
+		to_copy = []
+		for path in paths:
+			branch, leaf = os.path.split(path)
+			to_copy.append(leaf)
+		sublime.set_clipboard("\n".join(to_copy));
 		if len(paths) > 1 :
-			sublime.status_message("Copied paths")
+			sublime.status_message("Items copied")
 		else :
-			sublime.status_message("Copied path")
+			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
 
-class SideBarFilesCopyNameCommand(sublime_plugin.WindowCommand):
+class SideBarFilesCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
-		branch, leaf = os.path.split(paths[0])
-		sublime.set_clipboard(leaf);
+		to_copy = []
+		for path in paths:
+			branch, leaf = os.path.split(path)
+			to_copy.append(urllib.quote(leaf.encode('utf-8')))
+		sublime.set_clipboard("\n".join(to_copy));
 		if len(paths) > 1 :
-			sublime.status_message("Copied names")
+			sublime.status_message("Items copied")
 		else :
-			sublime.status_message("Copied name")
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyPathCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			to_copy.append(path)
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyPathEncodedCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			to_copy.append('file:'+urllib.pathname2url(path.encode('utf-8')))
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyPathRelativeCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append(re.sub('^/', '', path.replace('\\', '/')))
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyPathRelativeEncodedCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append(re.sub('^/', '', urllib.quote(path.replace('\\', '/').encode('utf-8'))))
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyPathAbsoluteCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append(path.replace('\\', '/'))
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyPathAbsoluteEncodedCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append(urllib.quote(path.replace('\\', '/').encode('utf-8')))
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyTagAhrefCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			branch, leaf = os.path.split(path)
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append('<a href="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'">'+leaf+'</a>')
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyTagImgCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append('<img src="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'"/>')
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyTagStyleCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append('<link rel="stylesheet" type="text/css" href="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'"/>')
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyTagScriptCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			for folder in sublime.active_window().folders():
+				path = re.sub('^'+re.escape(folder), '', path)
+			to_copy.append('<script type="text/javascript" src="'+urllib.quote(path.replace('\\', '/').encode('utf-8'))+'"></script>')
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items copied")
+		else :
+			sublime.status_message("Item copied")
+
+	def is_enabled(self, paths):
+		return len(paths) > 0
+
+class SideBarFilesCopyContentCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		to_copy = []
+		for path in paths:
+			if(os.path.isdir(path)):
+				continue
+			data = file(path, "r").read();
+			try:
+				to_copy.append(unicode(data, "utf-8"))
+			except:
+				to_copy.append(data)
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items content copied")
+		else :
+			sublime.status_message("Item content copied")
 
 	def is_enabled(self, paths):
 		return len(paths) > 0
@@ -274,14 +464,14 @@ class SideBarFilesDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				os.remove(path)
 			except:
-				sublime.error_message("Unable to remove file:\n\n"+path)
+				print ("Unable to remove file:\n\n"+path)
 
 	def remove_safe_dir(self, path):
 		if path != '' and path != '/' and path != '//' and path != '\\' and path != '\\\\':
 			try:
 				os.rmdir(path)
 			except:
-				sublime.error_message("Unable to remove directory:\n\n"+path)
+				print ("Unable to remove directory:\n\n"+path)
 
 	def is_enabled(self, paths):
 		return len(paths) == 1

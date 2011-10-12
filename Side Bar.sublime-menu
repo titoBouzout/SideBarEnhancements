@@ -15,8 +15,32 @@
 
 	{ "caption": "Cut",               "id": "side-bar-files-clip-cut",         "command": "side_bar_files_cut",              "args": {"paths": []} },
 	{ "caption": "Copy",              "id": "side-bar-files-clip-copy",        "command": "side_bar_files_copy",             "args": {"paths": []} },
-	{ "caption": "Copy Path",         "id": "side-bar-files-clip-copy-path",   "command": "side_bar_files_copy_path",        "args": {"paths": []} },
-	{ "caption": "Copy Name",         "id": "side-bar-files-clip-copy-name",   "command": "side_bar_files_copy_name",        "args": {"paths": []} },
+	{ "caption": "Copy as Text",
+		"children":
+		[
+			{ "caption": "Name",                          "id": "side-bar-files-clip-copy-name",                     "command": "side_bar_files_copy_name",                         "args": {"paths": []} },
+			{ "caption": "Name Encoded",                  "id": "side-bar-files-clip-copy-name-encoded",             "command": "side_bar_files_copy_name_encoded",                 "args": {"paths": []} },
+			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-name-separator"},
+			{ "caption": "Path",                          "id": "side-bar-files-clip-copy-path",                     "command": "side_bar_files_copy_path",                         "args": {"paths": []} },
+			{ "caption": "Path Encoded",                  "id": "side-bar-files-clip-copy-path-encoded",             "command": "side_bar_files_copy_path_encoded",                 "args": {"paths": []} },
+			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-path-separator"},
+			
+			{ "caption": "Relative Path",                 "id": "side-bar-files-clip-copy-path-relative",            "command": "side_bar_files_copy_path_relative",                "args": {"paths": []} },
+			{ "caption": "Relative Path Encoded",         "id": "side-bar-files-clip-copy-path-relative-encoded",    "command": "side_bar_files_copy_path_relative_encoded",        "args": {"paths": []} },
+			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-path-relative-separator"},
+			
+			{ "caption": "Absolute Path",                 "id": "side-bar-files-clip-copy-path-absolute",            "command": "side_bar_files_copy_path_absolute",                "args": {"paths": []} },
+			{ "caption": "Absolute Path Encoded",         "id": "side-bar-files-clip-copy-path-absolute-encoded",    "command": "side_bar_files_copy_path_absolute_encoded",        "args": {"paths": []} },
+			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-path-separator"},
+			{ "caption": "Tag a",              		        "id": "side-bar-files-clip-copy-tag-a",                 "command": "side_bar_files_copy_tag_ahref",                  "args": {"paths": []} },
+			{ "caption": "Tag img",                       "id": "side-bar-files-clip-copy-tag-img",               "command": "side_bar_files_copy_tag_img",                    "args": {"paths": []} },
+			{ "caption": "Tag script",                    "id": "side-bar-files-clip-copy-tag-script",            "command": "side_bar_files_copy_tag_script",                 "args": {"paths": []} },
+			{ "caption": "Tag style",                     "id": "side-bar-files-clip-copy-tag-style",             "command": "side_bar_files_copy_tag_style",                  "args": {"paths": []} },
+			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-tag-separator"},
+			{ "caption": "Content",           				    "id": "side-bar-files-clip-copy-content",             		 "command": "side_bar_files_copy_content",                  		 "args": {"paths": []} }
+		]
+	},
+
 	{ "caption": "Paste",             "id": "side-bar-files-clip-paste",       "command": "side_bar_files_paste",            "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-files-clip-separator" },
 	{ "caption": "Duplicate",         "id": "side-bar-files-duplicate",        "command": "side_bar_files_duplicate",        "args": {"paths": []} },
