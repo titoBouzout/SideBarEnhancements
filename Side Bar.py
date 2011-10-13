@@ -1,10 +1,10 @@
 import sublime, sublime_plugin
 import os
 import functools
-import shutil
-import subprocess
-import urllib
 import re
+#import subprocess : imported when used
+#import urllib : imported when used
+#import shutil : imported when used
 
 class SideBarFilesNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
@@ -50,6 +50,7 @@ class SideBarFilesEditCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesOpenCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import subprocess
 		for path in paths:
 			subprocess.Popen(r''+path, shell=True)
 
@@ -58,6 +59,7 @@ class SideBarFilesOpenCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import subprocess
 		for path in paths:
 			subprocess.Popen(r''+path, shell=True)
 
@@ -114,6 +116,7 @@ class SideBarFilesCopyCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import shutil
 		s = sublime.load_settings("SideBar Files.sublime-settings")
 		
 		cut = s.get('cut', [])
@@ -132,9 +135,9 @@ class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 				try:
 					try:
 						os.makedirs(os.path.dirname(new))
-						os.rename(path, new)
-					except:
-						os.rename(path, new)
+					except OSError:
+						pass
+					os.rename(path, new)
 				except:
 					sublime.error_message("Unable to move:\n\n"+path+"\n\nto\n\n"+new)
 
@@ -178,6 +181,7 @@ class SideBarFilesCopyNameCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			branch, leaf = os.path.split(path)
@@ -207,6 +211,7 @@ class SideBarFilesCopyPathCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			to_copy.append('file:'+urllib.pathname2url(path.encode('utf-8')))
@@ -237,6 +242,7 @@ class SideBarFilesCopyPathRelativeCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyPathRelativeEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			for folder in sublime.active_window().folders():
@@ -270,6 +276,7 @@ class SideBarFilesCopyPathAbsoluteCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyPathAbsoluteEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			for folder in sublime.active_window().folders():
@@ -287,6 +294,7 @@ class SideBarFilesCopyPathAbsoluteEncodedCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			branch, leaf = os.path.split(path)
@@ -305,6 +313,7 @@ class SideBarFilesCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyTagImgCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			for folder in sublime.active_window().folders():
@@ -322,6 +331,7 @@ class SideBarFilesCopyTagImgCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyTagStyleCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			for folder in sublime.active_window().folders():
@@ -339,6 +349,7 @@ class SideBarFilesCopyTagStyleCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyTagScriptCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
+		import urllib
 		to_copy = []
 		for path in paths:
 			for folder in sublime.active_window().folders():
@@ -397,7 +408,7 @@ class SideBarFilesCopyContentBase64Command(sublime_plugin.WindowCommand):
 		for path in paths:
 			if(os.path.isdir(path)):
 				continue
-			mime = mimetypes.guess_type(path)[0] or 'text/plain'
+			mime = mimetypes.guess_type(path)[0] or 'application/octet-stream'
 			to_copy.append('data:'+mime+';base64,'+(file(path, "rb").read().encode("base64").replace('\n', '')))
 
 		sublime.set_clipboard("\n".join(to_copy));
@@ -415,9 +426,14 @@ class SideBarFilesDuplicateCommand(sublime_plugin.WindowCommand):
 		self.window.show_input_panel("Duplicate As:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, src, dst):
+		import shutil
 		if os.path.isdir(dst) or os.path.isfile(dst):
 			sublime.error_message("Unable to duplicate, destination exists.")
 		else :
+			try:
+				os.makedirs(os.path.dirname(dst))
+			except OSError:
+				pass
 			if os.path.isdir(src):
 				try:
 					shutil.copytree(src, dst);
@@ -445,6 +461,10 @@ class SideBarFilesRenameCommand(sublime_plugin.WindowCommand):
 			if os.path.isdir(new) or os.path.isfile(new):
 				sublime.error_message("Unable to rename, destination exists.")
 			else:
+				try:
+					os.makedirs(os.path.dirname(new))
+				except OSError:
+					pass
 				os.rename(old, new)
 		except:
 			sublime.error_message("Unable to rename:\n\n"+old+"\n\nto\n\n"+new)
@@ -464,9 +484,9 @@ class SideBarFilesMoveCommand(sublime_plugin.WindowCommand):
 			try:
 				try:
 					os.makedirs(os.path.dirname(new))
-					os.rename(old, new)
-				except:
-					os.rename(old, new)
+				except OSError:
+					pass
+				os.rename(old, new)
 			except:
 				sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
 
