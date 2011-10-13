@@ -404,8 +404,9 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 	def run(self, paths, application, extensions):
 
 		application_dir, application_name = os.path.split(application)
-		application_dir =  application_dir.encode(sys.getfilesystemencoding())
+		application_dir  = application_dir.encode(sys.getfilesystemencoding())
 		application_name = application_name.encode(sys.getfilesystemencoding())
+		application	 		 = application.encode(sys.getfilesystemencoding())
 
 		if extensions == '*':
 			extensions = '.*'
@@ -417,7 +418,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		import subprocess 
 		for item in items:
 			if sys.platform == 'darwin':
-				subprocess.Popen(['open', '-a', application_name, item.pathSystem()], shell=True)
+				subprocess.Popen(['open', '-a', application, item.pathSystem()], shell=True)
 			elif sys.platform == 'win32':
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
