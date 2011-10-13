@@ -133,7 +133,7 @@ class SideBarItem:
 
 	def pathWithoutProject(self):
 		path = self.path()
-		for directory in sublime.active_window().folders():
+		for directory in SideBarProject().getDirectories():
 			path = re.sub('^'+re.escape(directory), '', path)
 		return path.replace('\\', '/')
 				
@@ -256,6 +256,15 @@ class SideBarItem:
 			else:
 				shutil.copy(self.path(), location.path())
 			return True
+
+
+class SideBarProject:
+
+	def getDirectories(self):
+		return sublime.active_window().folders()
+	
+	#def getProjectFile():
+		
 
 class SideBarFilesNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths, name = ""):
@@ -433,7 +442,7 @@ class SideBarFilesFindInProjectCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
-		s = sublime.load_settings("SideBar Files.sublime-settings")
+		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		s.set('cut', paths)
 		s.set('copy', [])
 		if len(paths) > 1 :
@@ -446,7 +455,7 @@ class SideBarFilesCutCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
-		s = sublime.load_settings("SideBar Files.sublime-settings")
+		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		s.set('cut', [])
 		s.set('copy', paths)
 		if len(paths) > 1 :
@@ -460,7 +469,7 @@ class SideBarFilesCopyCommand(sublime_plugin.WindowCommand):
 class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		import shutil
-		s = sublime.load_settings("SideBar Files.sublime-settings")
+		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		
 		cut = s.get('cut', [])
 		copy = s.get('copy', [])
@@ -497,7 +506,7 @@ class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 		self.window.run_command('refresh_folder_list');
 
 	def is_enabled(self, paths):
-		s = sublime.load_settings("SideBar Files.sublime-settings")
+		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		return (len(s.get('cut', [])) + len(s.get('copy', []))) > 0
 
 class SideBarFilesCopyNameCommand(sublime_plugin.WindowCommand):
@@ -752,7 +761,7 @@ class SideBarFilesCopyTagScriptCommand(sublime_plugin.WindowCommand):
 class SideBarFilesCopyProjectDirectoriesCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
 		to_copy = []
-		for directory in sublime.active_window().folders():
+		for directory in SideBarProject().getDirectories():
 			to_copy.append(directory)
 
 		sublime.set_clipboard("\n".join(to_copy));
@@ -855,8 +864,13 @@ class SideBarFilesMoveCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
-		self.window.run_command('hide_panel');
-		self.window.show_input_panel("Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+		try:
+			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
+			import send2trash
+			send2trash.send2trash(paths[0])
+		except:
+			self.window.run_command('hide_panel');
+			self.window.show_input_panel("Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, old, new):
 		self.remove(new)
@@ -891,6 +905,48 @@ class SideBarFilesDeleteCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths):
 		return len(paths) == 1
 
+#todo:
+class SideBarFilesHideCommand(sublime_plugin.WindowCommand):
+	def run(self, paths):
+		project = self.project()
+		if project != '':
+			self.hide(paths, project)
+		else:
+			self.window.run_command('hide_panel');
+			self.window.show_input_panel("Location of .sublime-project file?:", '', functools.partial(self.on_done, paths), None, None)
+
+	def on_done(self, paths, project):
+		if project != '':
+			self.hide(paths, project)
+		else:
+			self.run(paths)
+
+	def hide(self, paths, project):
+		s = sublime.load_settings(project)
+		print s.get('')
+		if len(paths) > 1 :
+			sublime.status_message("Items cut")
+		else :
+			sublime.status_message("Item cut")
+
+		self.window.run_command('refresh_folder_list');
+	
+	def project(self, file = ''):
+		import hashlib
+		hash = ''
+		for directory in sublime.active_window().folders():
+			hash += directory
+		hash = hashlib.md5(hash).hexdigest()
+
+		s = sublime.load_settings("SideBarEnhancements/Projects.sublime-settings")
+		project = s.get(hash, '')
+		if project != '':
+			return project
+		else:
+			return ''
+
+	def is_enabled(self, paths):
+		return True
 
 class SideBarFilesRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
