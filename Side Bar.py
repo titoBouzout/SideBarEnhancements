@@ -186,8 +186,18 @@ class SideBarItem:
 		return self.name().replace(self.extension(), '').replace('-', ' ').replace('_', ' ');
 
 	def open(self):
-		import subprocess 
-		subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
+		if sys.platform == 'darwin':
+			import subprocess 
+			subprocess.Popen(['open', '-a', self.path()], shell=True)
+		elif sys.platform == 'win32':
+			import subprocess 
+			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
+		else:
+			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
+			import desktop
+			desktop.open(self.path())
+
+		
 	
 	def edit(self):
 		sublime.active_window().open_file(self.path())
@@ -406,7 +416,12 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 
 		import subprocess 
 		for item in items:
-			subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
+			if sys.platform == 'darwin':
+				subprocess.Popen(['open', '-a', application_name, item.pathSystem()], shell=True)
+			elif sys.platform == 'win32':
+				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
+			else:
+				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			
 	def is_enabled(self, paths, application, extensions):
 		if extensions == '*':
@@ -468,7 +483,6 @@ class SideBarFilesCopyCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesPasteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths):
-		import shutil
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		
 		cut = s.get('cut', [])
