@@ -1,11 +1,23 @@
 [
 	{ "caption": "New File…", 	      "id": "side-bar-files-new-file",         "command": "side_bar_files_new_file",         "args": {"paths": []} },
-	{ "caption": "New Folder…",       "id": "side-bar-files-new-folder",       "command": "side_bar_files_new_folder",       "args": {"paths": []} },
+	{ "caption": "New Folder…",       "id": "side-bar-files-new-directory",       "command": "side_bar_files_new_directory",       "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-files-new-separator"},
 
 	{ "caption": "Edit",              "id": "side-bar-files-edit",             "command": "side_bar_files_edit",             "args": {"paths": []} },
-	{ "caption": "Open",              "id": "side-bar-files-open",             "command": "side_bar_files_open",             "args": {"paths": []} },
-	{ "caption": "Open with…",        "id": "side-bar-files-open-with",        "command": "side_bar_files_open_with",        "args": {"paths": []} },
+	{ "caption": "Open / Run",              "id": "side-bar-files-open",             "command": "side_bar_files_open",             "args": {"paths": []} },
+	{ "caption": "Open with…",        "id": "side-bar-files-open-with",
+	
+		"children":
+		[
+			
+			{ "caption": "-", 							   "id": "side-bar-files-open-with-edit-application-separator"},
+			{ "caption": "Edit Applications…", "id": "side-bar-files-open-with-edit-applications", "command":"side_bar_files_open_with_edit_applications","args": {"paths": []} },
+			{ "caption": "-", 							   "id": "side-bar-files-open-with-edit-applications-separator"}
+		
+		]
+	},
+	{ "caption": "Reveal",            "id": "side-bar-files-reveal",           "command": "side_bar_files_reveal",           "args": {"paths": []} },
+
 	{ "caption": "-",                 "id": "side-bar-files-edit-open-separator" },
 	
 	{ "caption": "Find in selected…", "id": "side-bar-files-find-selected",    "command": "side_bar_files_find_in_selected", "args": {"paths": []} },
@@ -15,7 +27,7 @@
 
 	{ "caption": "Cut",               "id": "side-bar-files-clip-cut",         "command": "side_bar_files_cut",              "args": {"paths": []} },
 	{ "caption": "Copy",              "id": "side-bar-files-clip-copy",        "command": "side_bar_files_copy",             "args": {"paths": []} },
-	{ "caption": "Copy as Text",
+	{ "caption": "Copy as Text",      "id": "side-bar-files-clip-copy-as", 
 		"children":
 		[
 			{ "caption": "Name",                          "id": "side-bar-files-clip-copy-name",                     "command": "side_bar_files_copy_name",                         "args": {"paths": []} },
@@ -37,8 +49,8 @@
 			{ "caption": "Tag script",                    "id": "side-bar-files-clip-copy-tag-script",            	 "command": "side_bar_files_copy_tag_script",                 "args": {"paths": []} },
 			{ "caption": "Tag style",                     "id": "side-bar-files-clip-copy-tag-style",             	 "command": "side_bar_files_copy_tag_style",                  "args": {"paths": []} },
 			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-tag-separator"},
-			{ "caption": "Project Folders",           		"id": "side-bar-files-clip-copy-project-folders",          "command": "side_bar_files_copy_project_folders",            "args": {"paths": []} },
-			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-project-folders-separator"},
+			{ "caption": "Project Folders",           "id": "side-bar-files-clip-copy-project-directories",          "command": "side_bar_files_copy_project_directories",            "args": {"paths": []} },
+			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-project-directories-separator"},
 			{ "caption": "Content as UTF-8",           		"id": "side-bar-files-clip-copy-content-utf8",             "command": "side_bar_files_copy_content_utf8",               "args": {"paths": []} },
 			{ "caption": "Content as Data URI",           "id": "side-bar-files-clip-copy-content-base-64",          "command": "side_bar_files_copy_content_base64",             "args": {"paths": []} }
 		]
@@ -56,8 +68,5 @@
 	{ "caption": "Delete",            "id": "side-bar-files-delete",           "command": "side_bar_files_delete",           "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-files-delete-separator" },
 
-  { "caption": "Refresh",           "id": "side-bar-files-refresh",          "command": "refresh_folder_list" },
-	{ "caption": "-",                 "id": "side-bar-files-refresh-separator" },
-
-	{ "caption": "Reveal",            "id": "side-bar-files-reveal",           "command": "side_bar_files_reveal",           "args": {"paths": []} }
+  { "caption": "Refresh",           "id": "side-bar-files-refresh",          "command": "refresh_folder_list" }
 ]
