@@ -71,5 +71,6 @@
 	{ "caption": "Hide",            	"id": "side-bar-files-hide",           "command": "side_bar_files_hide",           "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-files-hide-separator" },
 	*/
-  { "caption": "Refresh",           "id": "side-bar-files-refresh",          "command": "refresh_folder_list" }
+  { "caption": "Refresh",           "id": "side-bar-files-refresh",          "command": "refresh_folder_list" },
+  { "caption": "-",                 "id": "side-bar-files-refresh-separator" }
 ]

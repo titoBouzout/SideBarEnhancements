@@ -195,9 +195,7 @@ class SideBarItem:
 		else:
 			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
 			import desktop
-			desktop.open(self.path())
-
-		
+			desktop.open(self.path())		
 	
 	def edit(self):
 		sublime.active_window().open_file(self.path())
@@ -209,11 +207,8 @@ class SideBarItem:
 		return self.isDirectory() == False
 
 	def contentUTF8(self):
-		data = file(self.path(), "r").read();
-		try:
-			return unicode(data, "utf-8")
-		except:
-			return data
+		import codecs
+		return codecs.open(self.path(), 'r', 'utf-8').read()
 
 	def contentBinary(self):
 		return file(self.path(), "rb").read()
@@ -264,7 +259,7 @@ class SideBarItem:
 			if self.isDirectory():
 				shutil.copytree(self.path(), location.path())
 			else:
-				shutil.copy(self.path(), location.path())
+				shutil.copy2(self.path(), location.path())
 			return True
 
 
