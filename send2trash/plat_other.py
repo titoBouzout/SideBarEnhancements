@@ -19,7 +19,7 @@ import os
 import os.path as op
 from datetime import datetime
 import stat
-from urllib.parse import quote
+from urllib import quote
 
 FILES_DIR = 'files'
 INFO_DIR = 'info'
@@ -126,14 +126,14 @@ def get_dev(path):
     return os.lstat(path).st_dev
 
 def send2trash(path):
-    if not isinstance(path, str):
-        path = str(path, sys.getfilesystemencoding())
-    if not op.exists(path):
-        raise OSError("File not found: %s" % path)
+    #if not isinstance(path, str):
+    #    path = str(path, sys.getfilesystemencoding())
+    #if not op.exists(path):
+    #    raise OSError("File not found: %s" % path)
     # ...should check whether the user has the necessary permissions to delete
     # it, before starting the trashing operation itself. [2]
-    if not os.access(path, os.W_OK):
-        raise OSError("Permission denied: %s" % path)
+    #if not os.access(path, os.W_OK):
+    #    raise OSError("Permission denied: %s" % path)
     # if the file to be trashed is on the same device as HOMETRASH we
     # want to move it there.
     path_dev = get_dev(path)

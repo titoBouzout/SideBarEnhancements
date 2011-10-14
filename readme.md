@@ -18,7 +18,10 @@ Todo
  * Use a real clipboard integrated with the OS
  * Move should ask for the folder with a real OS prompt
  * Allow to quickly "hide" folders and files using built-in settings for projects.
-
+ * Lock and Unlock files.
+ * Ability to copy a path relative to the current view
+ * Compress items
+ 
 Bugs
 ------------------
  * "Open with.." may not work on Linux

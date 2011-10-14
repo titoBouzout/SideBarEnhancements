@@ -27,10 +27,10 @@
 
 	{ "caption": "Cut",               "id": "side-bar-files-clip-cut",         "command": "side_bar_files_cut",              "args": {"paths": []} },
 	{ "caption": "Copy",              "id": "side-bar-files-clip-copy",        "command": "side_bar_files_copy",             "args": {"paths": []} },
+	{ "caption": "Copy Name",                          "id": "side-bar-files-clip-copy-name",                     "command": "side_bar_files_copy_name",                         "args": {"paths": []} },
 	{ "caption": "Copy as Text",      "id": "side-bar-files-clip-copy-as", 
 		"children":
 		[
-			{ "caption": "Name",                          "id": "side-bar-files-clip-copy-name",                     "command": "side_bar_files_copy_name",                         "args": {"paths": []} },
 			{ "caption": "Name Encoded",                  "id": "side-bar-files-clip-copy-name-encoded",             "command": "side_bar_files_copy_name_encoded",                 "args": {"paths": []} },
 			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-name-separator"},
 			{ "caption": "Path",                          "id": "side-bar-files-clip-copy-path",                     "command": "side_bar_files_copy_path",                         "args": {"paths": []} },
@@ -49,7 +49,7 @@
 			{ "caption": "Tag script",                    "id": "side-bar-files-clip-copy-tag-script",            	 "command": "side_bar_files_copy_tag_script",                 "args": {"paths": []} },
 			{ "caption": "Tag style",                     "id": "side-bar-files-clip-copy-tag-style",             	 "command": "side_bar_files_copy_tag_style",                  "args": {"paths": []} },
 			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-tag-separator"},
-			{ "caption": "Project Folders",           "id": "side-bar-files-clip-copy-project-directories",          "command": "side_bar_files_copy_project_directories",            "args": {"paths": []} },
+			{ "caption": "Project Folders",           		"id": "side-bar-files-clip-copy-project-directories",          "command": "side_bar_files_copy_project_directories",            "args": {"paths": []} },
 			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-project-directories-separator"},
 			{ "caption": "Content as UTF-8",           		"id": "side-bar-files-clip-copy-content-utf8",             "command": "side_bar_files_copy_content_utf8",               "args": {"paths": []} },
 			{ "caption": "Content as Data URI",           "id": "side-bar-files-clip-copy-content-base-64",          "command": "side_bar_files_copy_content_base64",             "args": {"paths": []} }
