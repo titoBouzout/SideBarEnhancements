@@ -880,7 +880,7 @@ class SideBarFilesDeleteCommand(sublime_plugin.WindowCommand):
 			send2trash.send2trash(paths[0])
 		except:
 			self.window.run_command('hide_panel');
-			self.window.show_input_panel("Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+			self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, old, new):
 		self.remove(new)
