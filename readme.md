@@ -8,7 +8,11 @@ Description
 
 Provides enhancements to the operations on Side Bar of Files and Folders.
 
-Currently provides: new file/folder, edit, open/run, open with.., reveal, find in selected/parent/project, cut, copy, paste, duplicate, rename, move, delete, refresh.... and many copy as text, binary and tags formats. All commands available for files and folders~.
+Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh.... 
+
+The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate, open with...
+
+All commands available for files and folders(when applicable) .
 
 <img src="http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png" border="0"/>
 
@@ -17,19 +21,15 @@ Todo
  
  * Use a real clipboard integrated with the OS
  * Move should ask for the folder with a real OS prompt
- * Allow to quickly "hide" folders and files using built-in settings for projects.
+ * Allow to quickly "hide from sidebar" folders and files using built-in settings for projects.
  * Lock and Unlock files.
- * Ability to copy a path relative to the current view
  * Compress items
  
 Bugs
 ------------------
- * "Open with.." may not work on Linux
 
-Limitations
-------------------
-
- * Only operates with one item at the same time ( ex: you can't deleted multiple selected files at the same time )
+ * "Open with.." may not work on Mac
+ * On Windows and Linux ST2 has a bug with: Only operates with one item at the same time ( ex: you can't deleted multiple selected files at the same time )
 
 Installation
 ------------------
@@ -41,6 +41,7 @@ Installation
 
 Using the External Libraries
 ------------------
+
  * "getImageInfo" to get width and height for images from "bfg-pages". See: http://code.google.com/p/bfg-pages/
  * "desktop" to be able to open files with system handlers. See: http://pypi.python.org/pypi/desktop
  * "send2trash" to be able to send to the trash instead of deleting for ever!. See: http://pypi.python.org/pypi/Send2Trash
@@ -55,12 +56,21 @@ Forum Thread
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
+Update v0.5:
+------------------
+
+* Change: Removed "files" prefix from commands.
+* New: Ability to copy a path relative to the current view
+* New: Ability to "paste in parent"
+* New: Ctrl+T will ask for a new file on same folder as current view
+* Improved: Context menu open faster
+
 Update v0.4:
 ------------------
 
-* Fix: "Open / Run" fixed on Linux thanks to project [desktop](http://pypi.python.org/pypi/desktop)
+* Fix: "Open / Run" fixed on Linux thanks to project [desktop](http://pypi.python.org/pypi/desktop )
 * Improved: "Paste" command copy permission bits, last access time, last modification time, and flags
-* Improved: "Delete" command send files to trash thanks to [Send2Trash](http://pypi.python.org/pypi/Send2Trash) . NOTE: If "Delete" fails to send to trash it will ask for "Permanently Delete" On confirmation it delete the item forever.
+* Improved: "Delete" command send files to trash thanks to [Send2Trash](http://pypi.python.org/pypi/Send2Trash ) . NOTE: If "Delete" fails to send to trash it will ask for "Permanently Delete" On confirmation it delete the item forever.
 
 Update v0.3:
 ------------------
@@ -68,7 +78,7 @@ Update v0.3:
 * Fixed: Open should run correctly with some strange characters on paths
 * New: "Open with.." is enabled and allows to set custom applications for different file extensions.
 * New:  "Copy content as Data URI" ( handy for embedding images on CSS files )
-* Improved: Copy img tags now add attributes width and height thanks to project [bfg-pages](url=http://code.google.com/p/bfg-pages/) and suggestion from nobleach.
+* Improved: Copy img tags now add attributes width and height thanks to project [bfg-pages](url=http://code.google.com/p/bfg-pages/ ) and suggestion from nobleach.
 
 Update v0.2:
 ------------------
@@ -89,4 +99,4 @@ Update v0.1:
 Contribute
 ------------------
 
-[Consider make a contribution](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=extensiondevelopment%40gmail%2ecom&lc=UY&item_name=Tito&item_number=sublime%2dtext%2dside%2dbar%2dplugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+[Consider make a contribution](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=extensiondevelopment%40gmail%2ecom&lc=UY&item_name=Tito&item_number=sublime%2dtext%2dside%2dbar%2dplugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted )

@@ -1,0 +1,3 @@
+[
+	{ "keys": ["ctrl+t"], "command": "side_bar_new_file" }
+]

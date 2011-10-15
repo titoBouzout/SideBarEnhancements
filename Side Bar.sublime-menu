@@ -1,10 +1,10 @@
 [
-	{ "caption": "New File…", 	      "id": "side-bar-files-new-file",         "command": "side_bar_files_new_file",         "args": {"paths": []} },
-	{ "caption": "New Folder…",       "id": "side-bar-files-new-directory",       "command": "side_bar_files_new_directory",       "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-files-new-separator"},
+	{ "caption": "New File…", 	      "id": "side-bar-new-file",         "command": "side_bar_new_file",         "args": {"paths": []} },
+	{ "caption": "New Folder…",       "id": "side-bar-new-directory",       "command": "side_bar_new_directory",       "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-new-separator"},
 
-	{ "caption": "Edit",              "id": "side-bar-files-edit",             "command": "side_bar_files_edit",             "args": {"paths": []} },
-	{ "caption": "Open / Run",              "id": "side-bar-files-open",             "command": "side_bar_files_open",             "args": {"paths": []} },
+	{ "caption": "Edit",              "id": "side-bar-edit",             "command": "side_bar_edit",             "args": {"paths": []} },
+	{ "caption": "Open / Run",              "id": "side-bar-open",             "command": "side_bar_open",             "args": {"paths": []} },
 	{ "caption": "Open with…",        "id": "side-bar-files-open-with",
 	
 		"children":
@@ -16,61 +16,68 @@
 		
 		]
 	},
-	{ "caption": "Reveal",            "id": "side-bar-files-reveal",           "command": "side_bar_files_reveal",           "args": {"paths": []} },
+	{ "caption": "Reveal",            "id": "side-bar-reveal",           "command": "side_bar_reveal",           "args": {"paths": []} },
 
-	{ "caption": "-",                 "id": "side-bar-files-edit-open-separator" },
+	{ "caption": "-",                 "id": "side-bar-edit-open-separator" },
 	
-	{ "caption": "Find in selected…", "id": "side-bar-files-find-selected",    "command": "side_bar_files_find_in_selected", "args": {"paths": []} },
-	{ "caption": "Find in parent…",   "id": "side-bar-files-find-parent",      "command": "side_bar_files_find_in_parent",   "args": {"paths": []} },
-	{ "caption": "Find in project…",  "id": "side-bar-files-find-project",     "command": "side_bar_files_find_in_project"},
-	{ "caption": "-", 								"id": "side-bar-files-find-separator"},
+	{ "caption": "Find in selected…", "id": "side-bar-find-selected",    "command": "side_bar_find_in_selected", "args": {"paths": []} },
+	{ "caption": "Find in parent…",   "id": "side-bar-find-parent",      "command": "side_bar_find_in_parent",   "args": {"paths": []} },
+	{ "caption": "Find in project…",  "id": "side-bar-find-project",     "command": "side_bar_find_in_project"},
+	{ "caption": "-", 								"id": "side-bar-find-separator"},
 
-	{ "caption": "Cut",               "id": "side-bar-files-clip-cut",         "command": "side_bar_files_cut",              "args": {"paths": []} },
-	{ "caption": "Copy",              "id": "side-bar-files-clip-copy",        "command": "side_bar_files_copy",             "args": {"paths": []} },
-	{ "caption": "Copy Name",                          "id": "side-bar-files-clip-copy-name",                     "command": "side_bar_files_copy_name",                         "args": {"paths": []} },
-	{ "caption": "Copy as Text",      "id": "side-bar-files-clip-copy-as", 
+	{ "caption": "Cut",               "id": "side-bar-clip-cut",         "command": "side_bar_cut",              "args": {"paths": []} },
+	{ "caption": "Copy",              "id": "side-bar-clip-copy",        "command": "side_bar_copy",             "args": {"paths": []} },
+	{ "caption": "Copy Name",         "id": "side-bar-clip-copy-name",                     "command": "side_bar_copy_name",                         "args": {"paths": []} },
+	{ "caption": "Copy as Text",      "id": "side-bar-clip-copy-as", 
 		"children":
 		[
-			{ "caption": "Name Encoded",                  "id": "side-bar-files-clip-copy-name-encoded",             "command": "side_bar_files_copy_name_encoded",                 "args": {"paths": []} },
-			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-name-separator"},
-			{ "caption": "Path",                          "id": "side-bar-files-clip-copy-path",                     "command": "side_bar_files_copy_path",                         "args": {"paths": []} },
-			{ "caption": "Path Encoded",                  "id": "side-bar-files-clip-copy-path-encoded",             "command": "side_bar_files_copy_path_encoded",                 "args": {"paths": []} },
-			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-path-separator"},
+			{ "caption": "Relative Path From View Encoded",         "id": "side-bar-clip-copy-path-relative-from-view-encoded",    "command": "side_bar_copy_path_relative_from_view_encoded",        "args": {"paths": []} },
+			{ "caption": "Relative Path From View",                 "id": "side-bar-clip-copy-path-relative-from-view",            "command": "side_bar_copy_path_relative_from_view",                "args": {"paths": []} },
+			{ "caption": "-", 								            				  "id": "side-bar-clip-copy-path-relative-from-view-separator"},
 			
-			{ "caption": "Relative Path",                 "id": "side-bar-files-clip-copy-path-relative",            "command": "side_bar_files_copy_path_relative",                "args": {"paths": []} },
-			{ "caption": "Relative Path Encoded",         "id": "side-bar-files-clip-copy-path-relative-encoded",    "command": "side_bar_files_copy_path_relative_encoded",        "args": {"paths": []} },
-			{ "caption": "-", 								            "id": "side-bar-files-clip-copy-path-relative-separator"},
+			{ "caption": "Relative Path From Project Encoded",         "id": "side-bar-clip-copy-path-relative-from-project-encoded",    "command": "side_bar_copy_path_relative_from_project_encoded",        "args": {"paths": []} },
+			{ "caption": "Relative Path From Project",                 "id": "side-bar-clip-copy-path-relative-from-project",            "command": "side_bar_copy_path_relative_from_project",                "args": {"paths": []} },
+			{ "caption": "-", 								            						 "id": "side-bar-clip-copy-path-relative-from-project-separator"},
+						
+			{ "caption": "Absolute Path From Project Encoded",         "id": "side-bar-clip-copy-path-absolute-from-project-encoded",    "command": "side_bar_copy_path_absolute_from_project_encoded",        "args": {"paths": []} },
+			{ "caption": "Absolute Path From Project",                 "id": "side-bar-clip-copy-path-absolute-from-project",            "command": "side_bar_copy_path_absolute_from_project",                "args": {"paths": []} },
+			{ "caption": "-", 								            						 "id": "side-bar-clip-copy-path-absolute-from-project-separator"},
+
+			{ "caption": "Path as URI",                  "id": "side-bar-clip-copy-path-encoded",             "command": "side_bar_copy_path_encoded",                 "args": {"paths": []} },
+			{ "caption": "Path",                          "id": "side-bar-clip-copy-path",                     "command": "side_bar_copy_path",                         "args": {"paths": []} },
+			{ "caption": "-", 							              "id": "side-bar-clip-copy-path-separator"},
 			
-			{ "caption": "Absolute Path",                 "id": "side-bar-files-clip-copy-path-absolute",            "command": "side_bar_files_copy_path_absolute",                "args": {"paths": []} },
-			{ "caption": "Absolute Path Encoded",         "id": "side-bar-files-clip-copy-path-absolute-encoded",    "command": "side_bar_files_copy_path_absolute_encoded",        "args": {"paths": []} },
-			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-path-separator"},
-			{ "caption": "Tag a",              		        "id": "side-bar-files-clip-copy-tag-a",                 	 "command": "side_bar_files_copy_tag_ahref",                  "args": {"paths": []} },
-			{ "caption": "Tag img",                       "id": "side-bar-files-clip-copy-tag-img",               	 "command": "side_bar_files_copy_tag_img",                    "args": {"paths": []} },
-			{ "caption": "Tag script",                    "id": "side-bar-files-clip-copy-tag-script",            	 "command": "side_bar_files_copy_tag_script",                 "args": {"paths": []} },
-			{ "caption": "Tag style",                     "id": "side-bar-files-clip-copy-tag-style",             	 "command": "side_bar_files_copy_tag_style",                  "args": {"paths": []} },
-			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-tag-separator"},
-			{ "caption": "Project Folders",           		"id": "side-bar-files-clip-copy-project-directories",          "command": "side_bar_files_copy_project_directories",            "args": {"paths": []} },
-			{ "caption": "-", 							              "id": "side-bar-files-clip-copy-project-directories-separator"},
-			{ "caption": "Content as UTF-8",           		"id": "side-bar-files-clip-copy-content-utf8",             "command": "side_bar_files_copy_content_utf8",               "args": {"paths": []} },
-			{ "caption": "Content as Data URI",           "id": "side-bar-files-clip-copy-content-base-64",          "command": "side_bar_files_copy_content_base64",             "args": {"paths": []} }
+			{ "caption": "Name Encoded",                  "id": "side-bar-clip-copy-name-encoded",             "command": "side_bar_copy_name_encoded",                 "args": {"paths": []} },
+			{ "caption": "-", 								            "id": "side-bar-clip-copy-name-encoded-separator"},
+
+			{ "caption": "Tag a",              		        "id": "side-bar-clip-copy-tag-a",                 	 "command": "side_bar_copy_tag_ahref",                  "args": {"paths": []} },
+			{ "caption": "Tag img",                       "id": "side-bar-clip-copy-tag-img",               	 "command": "side_bar_copy_tag_img",                    "args": {"paths": []} },
+			{ "caption": "Tag script",                    "id": "side-bar-clip-copy-tag-script",            	 "command": "side_bar_copy_tag_script",                 "args": {"paths": []} },
+			{ "caption": "Tag style",                     "id": "side-bar-clip-copy-tag-style",             	 "command": "side_bar_copy_tag_style",                  "args": {"paths": []} },
+			{ "caption": "-", 							              "id": "side-bar-clip-copy-tag-separator"},
+			{ "caption": "Project Folders",           		"id": "side-bar-clip-copy-project-directories",          "command": "side_bar_copy_project_directories",            "args": {"paths": []} },
+			{ "caption": "-", 							              "id": "side-bar-clip-copy-project-directories-separator"},
+			{ "caption": "Content as UTF-8",           		"id": "side-bar-clip-copy-content-utf8",             "command": "side_bar_copy_content_utf8",               "args": {"paths": []} },
+			{ "caption": "Content as Data URI",           "id": "side-bar-clip-copy-content-base-64",          "command": "side_bar_copy_content_base64",             "args": {"paths": []} }
 		]
 	},
 
-	{ "caption": "Paste",             "id": "side-bar-files-clip-paste",       "command": "side_bar_files_paste",            "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-files-clip-separator" },
-	{ "caption": "Duplicate",         "id": "side-bar-files-duplicate",        "command": "side_bar_files_duplicate",        "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-files-duplicate-separator" },
+	{ "caption": "Paste",             "id": "side-bar-clip-paste",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"False"} },
+	{ "caption": "Paste in parent",   "id": "side-bar-clip-paste-in-parent",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"True"} },
+	{ "caption": "-",                 "id": "side-bar-clip-separator" },
+	{ "caption": "Duplicate",         "id": "side-bar-duplicate",        "command": "side_bar_duplicate",        "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-duplicate-separator" },
 
-	{ "caption": "Rename…",           "id": "side-bar-files-rename",           "command": "side_bar_files_rename",           "args": {"paths": []} },
-	{ "caption": "Move…",             "id": "side-bar-files-move",             "command": "side_bar_files_move",             "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-files-rename-move-separator" },
+	{ "caption": "Rename…",           "id": "side-bar-rename",           "command": "side_bar_rename",           "args": {"paths": []} },
+	{ "caption": "Move…",             "id": "side-bar-move",             "command": "side_bar_move",             "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-rename-move-separator" },
 
-	{ "caption": "Delete",            "id": "side-bar-files-delete",           "command": "side_bar_files_delete",           "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-files-delete-separator" },
+	{ "caption": "Delete",            "id": "side-bar-delete",           "command": "side_bar_delete",           "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-delete-separator" },
 	/*
-	{ "caption": "Hide",            	"id": "side-bar-files-hide",           "command": "side_bar_files_hide",           "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-files-hide-separator" },
+	{ "caption": "Hide",            	"id": "side-bar-hide",           "command": "side_bar_hide",           "args": {"paths": []} },
+	{ "caption": "-",                 "id": "side-bar-hide-separator" },
 	*/
-  { "caption": "Refresh",           "id": "side-bar-files-refresh",          "command": "refresh_folder_list" },
+  { "caption": "Refresh",           "id": "side-bar-refresh",          "command": "refresh_folder_list" },
   { "caption": "-",                 "id": "side-bar-end-separator" }
 ]
