@@ -1,12 +1,7 @@
-Sublime Text
-------------------
-
-This repository holds a Sublime Text 2 Plugin. See: http://www.sublimetext.com/
-
 Description
 ------------------
 
-Provides enhancements to the operations on Side Bar of Files and Folders.
+Provides enhancements to the operations on Side Bar of Files and Folders for Sublime Text 2. See: http://www.sublimetext.com/
 
 Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh.... 
 
@@ -14,6 +9,7 @@ The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri
 
 All commands available for files and folders(when applicable) .
 
+[img]http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png[/img]
 <img src="http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png" border="0"/>
 
 Todo
@@ -37,7 +33,7 @@ Installation
  * Sublime already provides some file operations. This plugin provides enhanced versions of the same operations. Then, there is at least two "New File.." menus. In order to remove the built-in menus: Open the file "Sublime Text 2/Packages/Default/Side Bar.sublime-menu" and comment everything using a comment block like this: /* here file contents */
  * Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
  * Test !
- * Consider make a donation <3
+ * Consider make a contribution <3
 
 Using the External Libraries
 ------------------
@@ -78,7 +74,7 @@ Update v0.3:
 * Fixed: Open should run correctly with some strange characters on paths
 * New: "Open with.." is enabled and allows to set custom applications for different file extensions.
 * New:  "Copy content as Data URI" ( handy for embedding images on CSS files )
-* Improved: Copy img tags now add attributes width and height thanks to project [bfg-pages](url=http://code.google.com/p/bfg-pages/ ) and suggestion from nobleach.
+* Improved: Copy img tags now add attributes width and height thanks to project [bfg-pages](http://code.google.com/p/bfg-pages/ ) and suggestion from nobleach.
 
 Update v0.2:
 ------------------
