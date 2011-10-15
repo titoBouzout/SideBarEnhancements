@@ -10,6 +10,7 @@ The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri
 All commands available for files and folders(when applicable) .
 
 [img]http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png[/img]
+
 <img src="http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png" border="0"/>
 
 Todo
