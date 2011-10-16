@@ -505,13 +505,13 @@ class SideBarCopyCommand(sublime_plugin.WindowCommand):
 		return len(paths) > 0
 
 class SideBarPasteCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = [], in_parent = False):
+	def run(self, paths = [], in_parent = 'False'):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		
 		cut = s.get('cut', '')
 		copy = s.get('copy', '')
 		if SideBarSelection(paths).len() > 0:
-			if not in_parent:
+			if in_parent == 'False':
 				location = SideBarSelection(paths).getSelectedItems()[0].path()
 			else:
 				location = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()[0].dirname()
