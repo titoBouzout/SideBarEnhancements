@@ -136,8 +136,13 @@ class SideBarItem:
 		self._path = path
 		self._is_directory = is_directory
 
-	def path(self):
-		return self._path
+	def path(self, path = ''):
+		if path == '':
+			return self._path
+		else:
+			self._path = path
+			self._is_directory = os.path.isdir(path)
+			return path
 
 	def pathSystem(self):
 		import sys
@@ -180,6 +185,40 @@ class SideBarItem:
 	def dirname(self):
 		branch, leaf = os.path.split(self.path())
 		return branch;
+
+	def forCwdSystemPath(self):
+		if self.isDirectory():
+			return self.pathSystem()
+		else:
+			return self.dirnameSystem()
+
+	def forCwdSystemName(self):
+		if self.isDirectory():
+			return './'
+		else:
+			path = self.pathSystem()
+			branch = self.dirnameSystem()
+			leaf = path.replace(branch, '').replace('\\', '').replace('/', '')
+			return leaf
+	
+	def forCwdSystemPathRelativeFrom(self, relativeFrom):
+		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
+		path = self.pathSystem().replace(relative.pathSystem(), '').replace('\\', '/')
+		if path == '':
+			return './'
+		else:
+			return './'+re.sub('^/+', '', path)
+	
+	def forCwdSystemPathRelativeFromRecursive(self, relativeFrom):
+		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
+		path = self.pathSystem().replace(relative.pathSystem(), '').replace('\\', '/')
+		if path == '':
+			return './*'
+		else:
+			if self.isDirectory():
+				return './'+re.sub('^/+', '', path)+'/*'
+			else:
+				return './'+re.sub('^/+', '', path)
 
 	def dirnameSystem(self):
 		import sys
