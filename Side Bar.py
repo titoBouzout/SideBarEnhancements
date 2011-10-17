@@ -213,10 +213,10 @@ class SideBarItem:
 		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
 		path = self.pathSystem().replace(relative.pathSystem(), '').replace('\\', '/')
 		if path == '':
-			return './*'
+			return './'
 		else:
 			if self.isDirectory():
-				return './'+re.sub('^/+', '', path)+'/*'
+				return './'+re.sub('^/+', '', path)+'/'
 			else:
 				return './'+re.sub('^/+', '', path)
 
@@ -481,12 +481,6 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
 				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
-				#print 'CWD'
-				#print item.pathSystem()
-				#print 'application'
-				#print application
-				#print 'filename'
-				#print item.nameSystem()
 			
 	def is_enabled(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
