@@ -476,11 +476,17 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		import subprocess 
 		for item in items:
 			if sys.platform == 'darwin':
-				subprocess.Popen(['open', '-a', application, item.pathSystem()], shell=True)
+				subprocess.Popen(['open', '-a', application, item.pathSystem()])
 			elif sys.platform == 'win32':
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
-				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
+				subprocess.Popen([application, item.nameSystem()], cwd=item.pathSystem())
+				print 'CWD'
+				print item.pathSystem()
+				print 'application'
+				print application
+				print 'filename'
+				print item.nameSystem()
 			
 	def is_enabled(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
