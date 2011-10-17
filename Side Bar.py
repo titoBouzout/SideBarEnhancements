@@ -480,13 +480,13 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			elif sys.platform == 'win32':
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
-				subprocess.Popen([application, item.nameSystem()], cwd=item.pathSystem())
-				print 'CWD'
-				print item.pathSystem()
-				print 'application'
-				print application
-				print 'filename'
-				print item.nameSystem()
+				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
+				#print 'CWD'
+				#print item.pathSystem()
+				#print 'application'
+				#print application
+				#print 'filename'
+				#print item.nameSystem()
 			
 	def is_enabled(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
