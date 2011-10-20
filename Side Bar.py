@@ -255,7 +255,7 @@ class SideBarItem:
 		import sys
 		if sys.platform == 'darwin':
 			import subprocess 
-			subprocess.Popen(['open', '-a', self.path()], shell=True)
+			subprocess.Popen(['open', self.path()])
 		elif sys.platform == 'win32':
 			import subprocess 
 			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
@@ -482,7 +482,11 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		import subprocess 
 		for item in items:
 			if sys.platform == 'darwin':
+				print 'DARWIN'
 				subprocess.Popen(['open', '-a', application, item.pathSystem()])
+				#subprocess.Popen(['open', '-a', application, item.nameSystem()], cwd=item.dirnameSystem())
+				#subprocess.Popen(['open', '-a', application_name, item.pathSystem()])
+				#subprocess.Popen(['open', '-a', application_name, item.nameSystem()], cwd=item.dirnameSystem())	
 			elif sys.platform == 'win32':
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
