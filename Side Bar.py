@@ -482,11 +482,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		import subprocess 
 		for item in items:
 			if sys.platform == 'darwin':
-				print 'DARWIN'
 				subprocess.Popen(['open', '-a', application, item.pathSystem()])
-				#subprocess.Popen(['open', '-a', application, item.nameSystem()], cwd=item.dirnameSystem())
-				#subprocess.Popen(['open', '-a', application_name, item.pathSystem()])
-				#subprocess.Popen(['open', '-a', application_name, item.nameSystem()], cwd=item.dirnameSystem())	
 			elif sys.platform == 'win32':
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
@@ -998,14 +994,19 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import sys
-		try:
+		if sys.platform == 'darwin':
 			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
 			import send2trash
 			send2trash.send2trash(paths[0])
-		except:
-			import functools
-			self.window.run_command('hide_panel');
-			self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+		else:
+			try:
+				sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
+				import send2trash
+				send2trash.send2trash(paths[0])
+			except:
+				import functools
+				self.window.run_command('hide_panel');
+				self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, old, new):
 		self.remove(new)
