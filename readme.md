@@ -5,7 +5,7 @@ Provides enhancements to the operations on Side Bar of Files and Folders for Sub
 
 Notably provides delete as "move to trash", open with and clipboard.
 
-Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh.... 
+Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh....
 
 The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate, open with...
 
@@ -17,13 +17,13 @@ All commands available for files and folders(when applicable) .
 
 Todo
 ------------------
- 
+
  * Use a real clipboard integrated with the OS
  * Move should ask for the folder with a real OS prompt
  * Allow to quickly "hide from sidebar" folders and files using built-in settings for projects.
  * Lock and Unlock files.
  * Compress items
- 
+
 Bugs
 ------------------
 
@@ -54,6 +54,14 @@ Forum Thread
 ------------------
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
+
+Update v0.6:
+------------------
+
+* Fix: Paste was pasting on parent folder (Misinterpretation of boolean)
+* Fix: "Open with" works on Linux
+* Improved: Allow case change on Windows when renaming a file or folder
+* Improved: Update to "find commands" for version 2134
 
 Update v0.5:
 ------------------

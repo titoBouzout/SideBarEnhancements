@@ -514,31 +514,6 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return len(paths) > 0
 
-class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = []):
-		items = []
-		for item in SideBarSelection(paths).getSelectedItems():
-			items.append('*'+item.extension())
-		self.window.run_command('hide_panel');
-		if sublime.version() >= 2134:
-			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
-		else:
-			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
-
-	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
-
-	def description(self, paths = []):
-		items = []
-		for item in SideBarSelection(paths).getSelectedFiles():
-			items.append('*'+item.extension())
-		if len(items) > 1:
-			return 'With extensions '+(",".join(items))+u'…'
-		elif len(items) > 0:
-			return 'With extension '+(",".join(items))+u'…'
-		else:
-			return u'With extension…'
-
 class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
@@ -560,6 +535,87 @@ class SideBarFindInProjectCommand(sublime_plugin.WindowCommand):
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":""})
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":"<open folders>"})
+
+class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		items = []
+		for item in SideBarSelection(paths).getSelectedItems():
+			items.append('*'+item.extension())
+		self.window.run_command('hide_panel');
+		if sublime.version() >= 2134:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
+		else:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).hasFiles()
+
+	def description(self, paths = []):
+		items = []
+		for item in SideBarSelection(paths).getSelectedFiles():
+			items.append('*'+item.extension())
+		if len(items) > 1:
+			return 'In files with extensions '+(",".join(items))+u'…'
+		elif len(items) > 0:
+			return 'In files with extension '+(",".join(items))+u'…'
+		else:
+			return u'In files with extension…'
+
+class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		import functools
+		self.window.run_command('hide_panel');
+		self.window.show_input_panel("File Path Containing:", '', functools.partial(self.on_done, paths), None, None)
+
+	def on_done(self, paths, searchTerm):
+		self.searchTerm = searchTerm.strip()
+		self.total = 0
+		content = u''
+		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+			self.files = []
+			self.num_files = 0
+			self.find(item.path())
+			content += '\nSearching '+str(self.num_files)+' files for "'+self.searchTerm+'" in \n"'+item.path()+'"\n\n'
+			content += (':\n'.join(self.files))+':\n\n'
+			lenght = len(self.files)
+			if lenght > 1:
+				content += str(lenght)+' matches\n'
+			elif lenght > 0:
+				content += '1 match\n'
+			else:
+				content += 'No match\n'
+			self.total = self.total + lenght
+		if self.total > 0:
+			view = sublime.active_window().new_file()
+			view.settings().set('word_wrap', False)
+			view.set_name('Find Results')
+			view.set_syntax_file('Packages/Default/Find Results.hidden-tmLanguage')
+			view.set_scratch(True)
+			edit = view.begin_edit()
+			view.replace(edit, sublime.Region(0, view.size()), content.lstrip());
+			view.sel().clear()
+			view.sel().add(sublime.Region(0))
+			view.end_edit(edit)
+		else:
+			sublime.status_message('No files containing "'+self.searchTerm+'"')
+
+	def find(self, path):
+		if os.path.isfile(path) or os.path.islink(path):
+			self.num_files = self.num_files+1
+			if self.match(path):
+				self.files.append(path)
+		else:
+			for content in os.listdir(path):
+				file = os.path.join(path, content)
+				if os.path.isfile(file) or os.path.islink(file):
+					self.num_files = self.num_files+1
+					if self.match(file):
+						self.files.append(file)
+				else:
+					self.find(file)
+
+	def match(self, path):
+		return False if path.lower().find(self.searchTerm.lower())== -1 else True
 
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
