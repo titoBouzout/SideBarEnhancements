@@ -309,7 +309,11 @@ class SideBarItem:
 
 	def move(self, location):
 		location = SideBarItem(location, os.path.isdir(location));
-		if location.exists():
+		if self.path().lower() == location.path().lower():
+			os.rename(self.path(), location.path()+'.sublime-temp')
+			os.rename(location.path()+'.sublime-temp', location.path())
+			return True
+		elif location.exists():
 			return False
 		else:
 			location.dirnameCreate();
