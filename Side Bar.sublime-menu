@@ -21,7 +21,7 @@
 	{ "caption": "-",                 "id": "side-bar-edit-open-separator" },
 
 	{ "caption": "Find in selected…", "id": "side-bar-find-selected",    "command": "side_bar_find_in_selected", "args": {"paths": []} },
-	{ "caption": "Find advanced…", "id": "side-bar-find-advanced",
+	{ "caption": "Find advanced", "id": "side-bar-find-advanced",
 		"children":
 		[
 			{ "caption": "In parent folder…",   "id": "side-bar-find-parent",      "command": "side_bar_find_in_parent",   "args": {"paths": []} },
