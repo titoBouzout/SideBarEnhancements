@@ -7,6 +7,16 @@ import re
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
+class Object():
+	pass
+
+class SideBarProject:
+
+	def getDirectories(self):
+		return sublime.active_window().folders()
+
+	#def getProjectFile():
+
 class SideBarSelection:
 
 	def __init__(self, paths = []):
@@ -313,20 +323,19 @@ class SideBarItem:
 			location.dirnameCreate();
 			os.rename(self.path(), location.path()+'.sublime-temp')
 			os.rename(location.path()+'.sublime-temp', location.path())
-			self._moveViews(self.path(), location.path())
+			self._move_moveViews(self.path(), location.path())
 			return True
 		elif location.exists():
 			return False
 		else:
 			location.dirnameCreate();
 			os.rename(self.path(), location.path())
-			self._moveViews(self.path(), location.path())
+			self._move_moveViews(self.path(), location.path())
 			return True
 
-	def _moveViews(self, old, location):
-
+	def _move_moveViews(self, old, location):
 		for window in sublime.windows():
-			activeView = window.active_view()
+			active_view = window.active_view()
 			views = []
 			for view in window.views():
 				if view.file_name():
@@ -334,68 +343,62 @@ class SideBarItem:
 			views.reverse();
 			for view in views:
 				if old == view.file_name():
-					self._moveView(window, view, location, activeView)
+					active_view = self._move_moveView(window, view, location, active_view)
 				elif view.file_name().find(old+'\\') == 0:
-					self._moveView(window, view, view.file_name().replace(old+'\\', location+'\\', 1), activeView)
+					active_view = self._move_moveView(window, view, view.file_name().replace(old+'\\', location+'\\', 1), active_view)
 				elif view.file_name().find(old+'/') == 0:
-					self._moveView(window, view, view.file_name().replace(old+'/', location+'/', 1), activeView)
+					active_view = self._move_moveView(window, view, view.file_name().replace(old+'/', location+'/', 1), active_view)
 
-	def _moveView(self, window, view, location, activeView):
-		if view.is_dirty():
-			dirty = True
+	def _move_moveView(self, window, view, location, active_view):
+		if active_view == view:
+			is_active_view = True
 		else:
-			dirty = False
-		if activeView == view:
-			isCurrent = True
-		else:
-			isCurrent = False
+			is_active_view = False
 
-		#save scroll
-		scroll = [view.rowcol(view.visible_region().begin()), view.rowcol(view.visible_region().end())]
+		options = Object()
 
-		#save selection
-		selections = []
+		options.scroll = [view.rowcol(view.visible_region().begin()), view.rowcol(view.visible_region().end())]
+
+		options.selections = []
 		for sel in view.sel():
-			lineS, colS = view.rowcol(sel.begin())
-			lineE, colE = view.rowcol(sel.end())
-			selections.append([view.text_point(lineS, colS), view.text_point(lineE, colE)])
+			line_s, col_s = view.rowcol(sel.a)
+			line_e, col_e = view.rowcol(sel.b)
+			options.selections.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
 
 		window.focus_view(view)
-		#save content if dirty
-		if dirty:
-			content = view.substr(sublime.Region(0, view.size()))
+		if view.is_dirty():
+			options.content = view.substr(sublime.Region(0, view.size()))
 			view.window().run_command('revert')
 		else:
-			content = False
-		#close
+			options.content = False
 		window.run_command('close')
-		#open
-		view = window.open_file(location)
-		if isCurrent:
-			window.focus_view(view)
-		else:
-			window.focus_view(activeView)
-		sublime.set_timeout(lambda: self._moveViewRestore(view, scroll, selections, content), 200)
 
-	def _moveViewRestore(self, view, scroll, selections, content = False):
-		if view.is_loading():
-			sublime.set_timeout(lambda: self._moveViewRestore(view, scroll, selections, content), 100)
+		view = window.open_file(location)
+		sublime.set_timeout(lambda: self._move_restoreView(view, options), 200)
+
+		if is_active_view:
+			window.focus_view(view)
+			return view
 		else:
-			#restore content
-			if content != False:
+			window.focus_view(active_view)
+			return active_view
+
+	def _move_restoreView(self, view, options):
+		if view.is_loading():
+			sublime.set_timeout(lambda: self._moveViewRestore(view, options), 100)
+		else:
+			if options.content != False:
 				edit = view.begin_edit()
-				view.replace(edit, sublime.Region(0, view.size()), content);
+				view.replace(edit, sublime.Region(0, view.size()), options.content);
 				view.end_edit(edit)
 
-			#restore selection
 			edit = view.begin_edit()
 			view.sel().clear()
-			for region in selections:
+			for region in options.selections:
 				view.sel().add(sublime.Region(region[0], region[1]))
 			view.end_edit(edit)
 
-			# restore scroll, bug: reference is the bottom line
-			view.show(view.text_point(scroll[1][0], scroll[1][1]), False)
+			view.show(view.text_point(options.scroll[1][0], options.scroll[1][1]), False)
 
 	def copy(self, location):
 		location = SideBarItem(location, os.path.isdir(location));
@@ -409,13 +412,6 @@ class SideBarItem:
 			else:
 				shutil.copy2(self.path(), location.path())
 			return True
-
-class SideBarProject:
-
-	def getDirectories(self):
-		return sublime.active_window().folders()
-
-	#def getProjectFile():
 
 
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
