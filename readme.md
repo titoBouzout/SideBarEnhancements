@@ -55,6 +55,12 @@ Forum Thread
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
+Update v0.7:
+------------------
+
+* New: After a rename of a file or folder, the affected views will update(reload) to reflect the new location keeping intact content, selections, folded regions and scroll position.
+* New: File path search
+
 Update v0.6:
 ------------------
 

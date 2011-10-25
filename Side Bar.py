@@ -365,6 +365,12 @@ class SideBarItem:
 			line_e, col_e = view.rowcol(sel.b)
 			options.selections.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
 
+		options.folds = []
+		for sel in view.unfold(sublime.Region(0, view.size())):
+			line_s, col_s = view.rowcol(sel.a)
+			line_e, col_e = view.rowcol(sel.b)
+			options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+
 		window.focus_view(view)
 		if view.is_dirty():
 			options.content = view.substr(sublime.Region(0, view.size()))
@@ -390,13 +396,16 @@ class SideBarItem:
 			if options.content != False:
 				edit = view.begin_edit()
 				view.replace(edit, sublime.Region(0, view.size()), options.content);
+				view.sel().clear()
+				view.sel().add(sublime.Region(0))
 				view.end_edit(edit)
 
-			edit = view.begin_edit()
+			for region in options.folds:
+				view.fold(sublime.Region(region[0], region[1]))
+
 			view.sel().clear()
 			for region in options.selections:
 				view.sel().add(sublime.Region(region[0], region[1]))
-			view.end_edit(edit)
 
 			view.show(view.text_point(options.scroll[1][0], options.scroll[1][1]), False)
 
