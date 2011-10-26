@@ -68,6 +68,13 @@ class SideBarSelection:
 		self._obtainSelectionInformationExtended()
 		return self._files + self._directories;
 
+	def getSelectedItemsWithoutChildItems(self):
+		self._obtainSelectionInformationExtended()
+		items = []
+		for item in self._items_without_containing_child_items:
+			items.append(SideBarItem(item, os.path.isdir(item)))
+		return items
+
 	def getSelectedDirectories(self):
 		self._obtainSelectionInformationExtended()
 		return self._directories;
@@ -123,10 +130,12 @@ class SideBarSelection:
 			self._directories = []
 			self._files = []
 			self._directories_or_dirnames = []
+			self._items_without_containing_child_items = []
 
 			_directories = []
 			_files = []
 			_directories_or_dirnames = []
+			_items_without_containing_child_items = []
 
 			for path in self._paths:
 				if os.path.isdir(path):
@@ -137,15 +146,33 @@ class SideBarSelection:
 					if item.path() not in _directories_or_dirnames:
 						_directories_or_dirnames.append(item.path())
 						self._directories_or_dirnames.append(item)
+					_items_without_containing_child_items = self._itemsWithoutContainingChildItems(_items_without_containing_child_items, item.path())
 				else:
 					item = SideBarItem(path, False)
 					if item.path() not in _files:
 						_files.append(item.path())
 						self._files.append(item)
+					_items_without_containing_child_items = self._itemsWithoutContainingChildItems(_items_without_containing_child_items, item.path())
 					item = SideBarItem(os.path.dirname(path), True)
 					if item.path() not in _directories_or_dirnames:
 						_directories_or_dirnames.append(item.path())
 						self._directories_or_dirnames.append(item)
+
+			self._items_without_containing_child_items = _items_without_containing_child_items
+
+	def _itemsWithoutContainingChildItems(self, items, item):
+		new_list = []
+		add = True
+		for i in items:
+			if i.find(item+'\\') == 0 or i.find(item+'/') == 0:
+				continue
+			else:
+				new_list.append(i)
+			if item.find(i) == 0:
+				add = False
+		if add:
+			new_list.append(item)
+		return new_list
 
 	def refreshSidebar(self):
 		try:
@@ -449,6 +476,8 @@ class SideBarItem:
 				shutil.copy2(self.path(), location.path())
 			return True
 
+def uniqueList(_list):
+	return list(set(_list))
 
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
@@ -605,13 +634,13 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			extensions = '.*'
 		if extensions == '':
 			return len(paths) > 0
-		else :
+		else:
 			return SideBarSelection(paths).hasFilesWithExtension(extensions)
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
-		for item in SideBarSelection(paths).getSelectedItems():
+		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
 		self.window.run_command('hide_panel');
 		if sublime.version() >= 2134:
@@ -627,6 +656,7 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
 			items.append(item.dirname())
+		items = uniqueList(items)
 		self.window.run_command('hide_panel');
 		if sublime.version() >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
@@ -649,6 +679,7 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
 			items.append('*'+item.extension())
+		items = uniqueList(items)
 		self.window.run_command('hide_panel');
 		if sublime.version() >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
@@ -662,6 +693,7 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedFiles():
 			items.append('*'+item.extension())
+		items = uniqueList(items)
 		if len(items) > 1:
 			return 'In files with extensions '+(",".join(items))+u'…'
 		elif len(items) > 0:
@@ -728,9 +760,12 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
-		s.set('cut', "\n".join(paths))
+		items = []
+		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+			items.append(item.path())
+		s.set('cut', "\n".join(items))
 		s.set('copy', '')
-		if len(paths) > 1 :
+		if len(items) > 1 :
 			sublime.status_message("Items cut")
 		else :
 			sublime.status_message("Item cut")
@@ -741,9 +776,12 @@ class SideBarCutCommand(sublime_plugin.WindowCommand):
 class SideBarCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
+		items = []
+		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+			items.append(item.path())
 		s.set('cut', '')
-		s.set('copy', "\n".join(paths))
-		if len(paths) > 1 :
+		s.set('copy', "\n".join(items))
+		if len(items) > 1 :
 			sublime.status_message("Items copied")
 		else :
 			sublime.status_message("Item copied")
@@ -799,7 +837,7 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = [], in_parent = False):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
-		return s.get('cut', '') + s.get('copy', '') != ''
+		return s.get('cut', '') + s.get('copy', '') != '' and len(SideBarSelection(paths).getSelectedDirectoriesOrDirnames()) == 1
 
 class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1202,12 +1240,14 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		if sys.platform == 'darwin':
 			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
 			import send2trash
-			send2trash.send2trash(paths[0])
+			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+				send2trash.send2trash(item.path())
 		else:
 			try:
 				sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
 				import send2trash
-				send2trash.send2trash(paths[0])
+				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+					send2trash.send2trash(item.path())
 			except:
 				import functools
 				self.window.run_command('hide_panel');
@@ -1244,7 +1284,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				print "Unable to remove folder:\n\n"+path
 
 	def is_enabled(self, paths = []):
-		return len(paths) == 1
+		return len(paths) > 0
 
 #todo:
 class SideBarHideCommand(sublime_plugin.WindowCommand):

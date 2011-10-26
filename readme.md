@@ -28,7 +28,6 @@ Bugs
 ------------------
 
  * "Open with.." may not work on Mac
- * On Windows and Linux ST2 has a bug with: Only operates with one item at the same time ( ex: you can't deleted multiple selected files at the same time )
 
 Installation
 ------------------
@@ -54,6 +53,12 @@ Forum Thread
 ------------------
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
+
+Update v0.8:
+------------------
+
+* Full review for when the user has selection of multiples items.
+* New: Added support for bookmarks and marks for when a view is moved.
 
 Update v0.7:
 ------------------
