@@ -361,14 +361,22 @@ class SideBarItem:
 
 		options.selections = []
 		for sel in view.sel():
-			line_s, col_s = view.rowcol(sel.a)
-			line_e, col_e = view.rowcol(sel.b)
+			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
 			options.selections.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+
+		options.marks = []
+		for sel in view.get_regions("mark"):
+			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
+			options.marks.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+
+		options.bookmarks = []
+		for sel in view.get_regions("bookmarks"):
+			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
+			options.bookmarks.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
 
 		options.folds = []
 		for sel in view.unfold(sublime.Region(0, view.size())):
-			line_s, col_s = view.rowcol(sel.a)
-			line_e, col_e = view.rowcol(sel.b)
+			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
 			options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
 
 		window.focus_view(view)
@@ -400,12 +408,24 @@ class SideBarItem:
 				view.sel().add(sublime.Region(0))
 				view.end_edit(edit)
 
-			for region in options.folds:
-				view.fold(sublime.Region(region[0], region[1]))
+			for r in options.folds:
+				view.fold(sublime.Region(r[0], r[1]))
 
 			view.sel().clear()
-			for region in options.selections:
-				view.sel().add(sublime.Region(region[0], region[1]))
+			for r in options.selections:
+				view.sel().add(sublime.Region(r[0], r[1]))
+
+			rs = []
+			for r in options.marks:
+				rs.append(sublime.Region(r[0], r[1]))
+			if len(rs):
+				view.add_regions("mark", rs, "mark", "dot", sublime.HIDDEN | sublime.PERSISTENT)
+
+			rs = []
+			for r in options.bookmarks:
+				rs.append(sublime.Region(r[0], r[1]))
+			if len(rs):
+				view.add_regions("bookmarks", rs, "bookmarks", "bookmark", sublime.HIDDEN | sublime.PERSISTENT)
 
 			view.show(view.text_point(options.scroll[1][0], options.scroll[1][1]), False)
 
