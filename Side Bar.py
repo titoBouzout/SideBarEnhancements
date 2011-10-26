@@ -122,22 +122,29 @@ class SideBarSelection:
 
 			self._directories = []
 			self._files = []
-			#selected directories and/or the dirname of selected files if any
 			self._directories_or_dirnames = []
+
+			_directories = []
+			_files = []
+			_directories_or_dirnames = []
 
 			for path in self._paths:
 				if os.path.isdir(path):
 					item = SideBarItem(path, True)
-					if item not in self._directories:
+					if item.path() not in _directories:
+						_directories.append(item.path())
 						self._directories.append(item)
-					if item not in self._directories_or_dirnames:
+					if item.path() not in _directories_or_dirnames:
+						_directories_or_dirnames.append(item.path())
 						self._directories_or_dirnames.append(item)
 				else:
 					item = SideBarItem(path, False)
-					if item not in self._files:
+					if item.path() not in _files:
+						_files.append(item.path())
 						self._files.append(item)
 					item = SideBarItem(os.path.dirname(path), True)
-					if item not in self._directories_or_dirnames:
+					if item.path() not in _directories_or_dirnames:
+						_directories_or_dirnames.append(item.path())
 						self._directories_or_dirnames.append(item)
 
 	def refreshSidebar(self):
