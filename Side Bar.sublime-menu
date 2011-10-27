@@ -5,7 +5,7 @@
 
 	{ "caption": "Edit",              "id": "side-bar-edit",             "command": "side_bar_edit",             "args": {"paths": []} },
 	{ "caption": "Open / Run",              "id": "side-bar-open",             "command": "side_bar_open",             "args": {"paths": []} },
-	{ "caption": "Open with…",        "id": "side-bar-files-open-with",
+	{ "caption": "Open With",        "id": "side-bar-files-open-with",
 
 		"children":
 		[
@@ -20,17 +20,16 @@
 
 	{ "caption": "-",                 "id": "side-bar-edit-open-separator" },
 
-	{ "caption": "Find in selected…", "id": "side-bar-find-selected",    "command": "side_bar_find_in_selected", "args": {"paths": []} },
-	{ "caption": "Find advanced", "id": "side-bar-find-advanced",
+	{ "caption": "Find & Replace…", "id": "side-bar-find-selected",    "command": "side_bar_find_in_selected", "args": {"paths": []} },
+	{ "caption": "Find Advanced", "id": "side-bar-find-advanced",
 		"children":
 		[
-			{ "caption": "In parent folder…",   "id": "side-bar-find-parent",      "command": "side_bar_find_in_parent",   "args": {"paths": []} },
+			{ "caption": "In Parent Folder…",   "id": "side-bar-find-parent",      "command": "side_bar_find_in_parent",   "args": {"paths": []} },
 			{ "caption": "-", 				"id": "side-bar-find-parent-separator"},
-			{ "caption": "In project folder…",  "id": "side-bar-find-project",     "command": "side_bar_find_in_project"},
+			{ "caption": "In Project Folder…",  "id": "side-bar-find-project",     "command": "side_bar_find_in_project"},
 			{ "caption": "-", 				"id": "side-bar-find-project-separator"},
 			{ "id": "side-bar-find-in-files-with-extension",     "command": "side_bar_find_in_files_with_extension",   "args": {"paths": []}},
-			{ "caption": "-", 				"id": "side-bar-find-in-files-with-extension-separator"},
-			{ "caption": "In file path containing…",   "id": "side-bar-find-files-path-containing",      "command": "side_bar_find_files_path_containing",   "args": {"paths": []} }
+			{ "caption": "In File Path Containing…",   "id": "side-bar-find-files-path-containing",      "command": "side_bar_find_files_path_containing",   "args": {"paths": []} }
 
 		]
 	},
@@ -73,7 +72,7 @@
 	},
 
 	{ "caption": "Paste",             "id": "side-bar-clip-paste",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"False"} },
-	{ "caption": "Paste in parent",   "id": "side-bar-clip-paste-in-parent",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"True"} },
+	{ "caption": "Paste in Parent",   "id": "side-bar-clip-paste-in-parent",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"True"} },
 	{ "caption": "-",                 "id": "side-bar-clip-separator" },
 	{ "caption": "Duplicate",         "id": "side-bar-duplicate",        "command": "side_bar_duplicate",        "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-duplicate-separator" },

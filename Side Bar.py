@@ -227,11 +227,11 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 			items.append('*'+item.extension())
 		items = uniqueList(items)
 		if len(items) > 1:
-			return 'In files with extensions '+(",".join(items))+u'…'
+			return 'In Files With Extensions '+(",".join(items))+u'…'
 		elif len(items) > 0:
-			return 'In files with extension '+(",".join(items))+u'…'
+			return 'In Files With Extension '+(",".join(items))+u'…'
 		else:
-			return u'In files with extension…'
+			return u'In Files With Extension…'
 
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
