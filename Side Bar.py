@@ -769,21 +769,15 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import sys
-		if sys.platform == 'darwin':
+		try:
 			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
 			import send2trash
 			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 				send2trash.send2trash(item.path())
-		else:
-			try:
-				sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
-				import send2trash
-				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-					send2trash.send2trash(item.path())
-			except:
-				import functools
-				self.window.run_command('hide_panel');
-				self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+		except:
+			import functools
+			self.window.run_command('hide_panel');
+			self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, old, new):
 		self.remove(new)
