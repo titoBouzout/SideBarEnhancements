@@ -135,7 +135,7 @@ class SideBarItem:
 			desktop.open(self.path())
 
 	def edit(self):
-		sublime.active_window().open_file(self.path())
+		return sublime.active_window().open_file(self.path())
 
 	def isDirectory(self):
 		return self._is_directory
