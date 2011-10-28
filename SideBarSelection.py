@@ -3,6 +3,7 @@ import sublime
 import os
 import re
 
+from SideBarProject import SideBarProject
 from SideBarItem import SideBarItem
 
 class SideBarSelection:
@@ -41,6 +42,16 @@ class SideBarSelection:
 	def hasOnlyFiles(self):
 		self._obtainSelectionInformationBasic()
 		return self._only_files
+
+	def hasProjectDirectories(self):
+		if self.hasDirectories():
+			project_directories = SideBarProject().getDirectories()
+			for item in self.getSelectedDirectories():
+				if item.path() in project_directories:
+					return True
+			return False
+		else:
+			return False
 
 	def hasImages(self):
 		return self.hasFilesWithExtension('gif|jpg|jpeg|png')

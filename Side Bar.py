@@ -303,7 +303,7 @@ class SideBarCutCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item cut")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return len(paths) > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -715,7 +715,7 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
 
 	def is_enabled(self, paths = []):
-		return len(paths) == 1
+		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], newLeaf = False):
@@ -742,7 +742,7 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
 
 	def is_enabled(self, paths = []):
-		return len(paths) == 1
+		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarMoveCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
@@ -764,7 +764,7 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
 
 	def is_enabled(self, paths = []):
-		return len(paths) == 1
+		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -810,7 +810,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				print "Unable to remove folder:\n\n"+path
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return len(paths) > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
