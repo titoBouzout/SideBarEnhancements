@@ -83,10 +83,20 @@
 
 	{ "caption": "Delete",            "id": "side-bar-delete",           "command": "side_bar_delete",           "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-delete-separator" },
-	/*
-	{ "caption": "Hide",            	"id": "side-bar-hide",           "command": "side_bar_hide",           "args": {"paths": []} },
-	{ "caption": "-",                 "id": "side-bar-hide-separator" },
-	*/
-  { "caption": "Refresh",           "id": "side-bar-refresh",          "command": "refresh_folder_list" },
+
+	{ "caption": "Project",      			"id": "side-bar-project",
+		"children":
+		[
+  		{ "caption": "Refresh",           "id": "side-bar-refresh",          "command": "refresh_folder_list" },
+			{ "caption": "-",                 "id": "side-bar-refresh-separator" },
+			{ "caption": "Open Project File", "id": "side-bar-project-open-file",      "command": "side_bar_project_open_file",           "args": {"paths": []} },
+			/*
+				I successfully added the following functions but I'm unable to reload the project file
+			*/
+			{ "caption": "-",                					"id": "side-bar-project-open-file-separator" },
+			{ "caption": "Promote To Project Folder", "id": "side-bar-project-item-add",     "command": "side_bar_project_item_add",        "args": {"paths": []} },
+			{ "caption": "Exclude From Project",			"id": "side-bar-project-item-exclude",   "command": "side_bar_project_item_exclude",        "args": {"paths": []} }
+		]
+	},
   { "caption": "-",                 "id": "side-bar-end-separator" }
 ]

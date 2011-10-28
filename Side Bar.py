@@ -820,46 +820,40 @@ class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return len(paths) > 0
 
-#todo:
-class SideBarHideCommand(sublime_plugin.WindowCommand):
+class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		project = self.project()
-		if project != '':
-			self.hide(paths, project)
-		else:
-			import functools
-			self.window.run_command('hide_panel');
-			self.window.show_input_panel("Location of .sublime-project file?:", '', functools.partial(self.on_done, paths), None, None)
+		project = SideBarProject()
+		if project.hasOpenedProject():
+			SideBarItem(project.getProjectFile(), False).edit();
 
-	def on_done(self, paths, project):
-		if project != '':
-			self.hide(paths, project)
-		else:
-			self.run(paths)
-
-	def hide(self, paths, project):
-		s = sublime.load_settings(project)
-		print s.get('')
-		if len(paths) > 1 :
-			sublime.status_message("Items cut")
-		else :
-			sublime.status_message("Item cut")
-
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
-
-	def project(self, file = ''):
-		import hashlib
-		hash = ''
-		for directory in sublime.active_window().folders():
-			hash += directory
-		hash = hashlib.md5(hash).hexdigest()
-
-		s = sublime.load_settings("SideBarEnhancements/Projects.sublime-settings")
-		project = s.get(hash, '')
-		if project != '':
-			return project
-		else:
-			return ''
+class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		project = SideBarProject()
+		if project.hasOpenedProject():
+			for item in SideBarSelection(paths).getSelectedDirectories():
+				project.rootAdd(item.path())
+			view = SideBarItem(project.getProjectFile(), False).edit();
+			sublime.active_window().focus_view(view)
+			sublime.set_timeout(lambda: sublime.active_window().run_command('save'), 250)
+			sublime.set_timeout(lambda: sublime.active_window().run_command('close'), 400)
 
 	def is_enabled(self, paths = []):
-		return True
+		return False #SideBarSelection(paths).hasDirectories()
+
+class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		project = SideBarProject()
+		if project.hasOpenedProject():
+			file = project.getProjectFile()
+			for item in SideBarSelection(paths).getSelectedItems():
+				if item.isDirectory():
+					project.excludeDirectory(item.path())
+				else:
+					project.excludeFile(item.path())
+			view = SideBarItem(file, False).edit();
+			sublime.active_window().focus_view(view)
+			sublime.set_timeout(lambda: sublime.active_window().run_command('save'), 250)
+			sublime.set_timeout(lambda: sublime.active_window().run_command('close'), 400)
+
+	def is_enabled(self, paths = []):
+		return False #len(paths) > 0
