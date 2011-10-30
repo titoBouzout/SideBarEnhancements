@@ -198,13 +198,25 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return len(paths) > 0
 
-class SideBarFindInProjectCommand(sublime_plugin.WindowCommand):
+class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		self.window.run_command('hide_panel');
-		if sublime.version() >= 2134:
+		if sublime.version() >= 2136:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":"<open folders>"})
+		elif sublime.version() >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":""})
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":"<open folders>"})
+
+class SideBarFindInProjectFolderCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		items = []
+		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+			items.append(SideBarProject().getDirectoryFromPath(item.path()))
+		items = uniqueList(items)
+		if items:
+			self.window.run_command('hide_panel');
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items)})
 
 class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -801,14 +813,14 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			self.remove_safe_dir(path)
 
 	def remove_safe_file(self, path):
-		if path != '' and path != '.' and path != '..' and path != './' and path != '/' and path != '//' and path != '\\' and path != '\\\\':
+		if not SideBarSelection().isNone(path):
 			try:
 				os.remove(path)
 			except:
 				print "Unable to remove file:\n\n"+path
 
 	def remove_safe_dir(self, path):
-		if path != '' and path != '.' and path != '..' and path != './' and path != '/' and path != '//' and path != '\\' and path != '\\\\':
+		if not SideBarSelection().isNone(path):
 			try:
 				os.rmdir(path)
 			except:

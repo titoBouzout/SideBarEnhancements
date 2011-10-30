@@ -10,6 +10,12 @@ class SideBarProject:
 	def hasOpenedProject(self):
 		return self.getProjectFile() != None
 
+	def getDirectoryFromPath(self, path):
+		for directory in self.getDirectories():
+			maybe_path = path.replace(directory, '', 1)
+			if maybe_path != path:
+				return directory
+
 	def getProjectFile(self):
 		import json
 		data = json.loads(file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'rb').read())
