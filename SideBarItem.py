@@ -27,7 +27,7 @@ class SideBarItem:
 	def pathWithoutProject(self):
 		path = self.path()
 		for directory in SideBarProject().getDirectories():
-			path = re.sub('^'+re.escape(directory), '', path)
+			path = path.replace(directory, '', 1)
 		return path.replace('\\', '/')
 
 	def pathRelativeFromProject(self):
@@ -74,12 +74,12 @@ class SideBarItem:
 		else:
 			path = self.pathSystem()
 			branch = self.dirnameSystem()
-			leaf = path.replace(branch, '').replace('\\', '').replace('/', '')
+			leaf = path.replace(branch, '', 1).replace('\\', '').replace('/', '')
 			return leaf
 
 	def forCwdSystemPathRelativeFrom(self, relativeFrom):
 		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
-		path = self.pathSystem().replace(relative.pathSystem(), '').replace('\\', '/')
+		path = self.pathSystem().replace(relative.pathSystem(), '', 1).replace('\\', '/')
 		if path == '':
 			return './'
 		else:
@@ -87,7 +87,7 @@ class SideBarItem:
 
 	def forCwdSystemPathRelativeFromRecursive(self, relativeFrom):
 		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
-		path = self.pathSystem().replace(relative.pathSystem(), '').replace('\\', '/')
+		path = self.pathSystem().replace(relative.pathSystem(), '', 1).replace('\\', '/')
 		if path == '':
 			return './'
 		else:
