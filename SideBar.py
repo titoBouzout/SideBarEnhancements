@@ -32,7 +32,7 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 					sublime.error_message("Unable to create file:\n\n"+item.path())
 					self.run(paths, name)
 					return
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+		SideBarProject.refresh();
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
@@ -56,7 +56,7 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 					sublime.error_message("Unable to create folder:\n\n"+item.path())
 					self.run(paths, name)
 					return
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+		SideBarProject.refresh();
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
@@ -377,7 +377,7 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 						return
 
 			cut = s.set('cut', '')
-			sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+			SideBarProject.refresh();
 
 	def is_enabled(self, paths = [], in_parent = False):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
@@ -724,7 +724,7 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
 			self.run([old], new)
 			return
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+		SideBarProject.refresh();
 
 	def is_enabled(self, paths = []):
 		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
@@ -751,7 +751,7 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 			self.run([old], leaf)
 			raise
 			return
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+		SideBarProject.refresh();
 
 	def is_enabled(self, paths = []):
 		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
@@ -773,7 +773,7 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
 			self.run([old], new)
 			return
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+		SideBarProject.refresh();
 
 	def is_enabled(self, paths = []):
 		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
@@ -798,7 +798,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 
 	def on_done(self, old, new):
 		self.remove(new)
-		sublime.set_timeout(SideBarSelection().refreshSidebar, 1000)
+		SideBarProject.refresh();
 
 	def remove(self, path):
 		if os.path.isfile(path) or os.path.islink(path):
