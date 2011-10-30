@@ -29,7 +29,7 @@
 			{ "caption": "In Project Folder…",  "id": "side-bar-find-project",     "command": "side_bar_find_in_project"},
 			{ "caption": "-", 				"id": "side-bar-find-project-separator"},
 			{ "id": "side-bar-find-in-files-with-extension",     "command": "side_bar_find_in_files_with_extension",   "args": {"paths": []}},
-			{ "caption": "In File Path Containing…",   "id": "side-bar-find-files-path-containing",      "command": "side_bar_find_files_path_containing",   "args": {"paths": []} }
+			{ "caption": "In Paths Containing…",   "id": "side-bar-find-files-path-containing",      "command": "side_bar_find_files_path_containing",   "args": {"paths": []} }
 
 		]
 	},
@@ -74,7 +74,7 @@
 	{ "caption": "Paste",             "id": "side-bar-clip-paste",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"False"} },
 	{ "caption": "Paste in Parent",   "id": "side-bar-clip-paste-in-parent",       "command": "side_bar_paste",            "args": {"paths": [], "in_parent":"True"} },
 	{ "caption": "-",                 "id": "side-bar-clip-separator" },
-	{ "caption": "Duplicate",         "id": "side-bar-duplicate",        "command": "side_bar_duplicate",        "args": {"paths": []} },
+	{ "caption": "Duplicate…",         "id": "side-bar-duplicate",        "command": "side_bar_duplicate",        "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-duplicate-separator" },
 
 	{ "caption": "Rename…",           "id": "side-bar-rename",           "command": "side_bar_rename",           "args": {"paths": []} },
@@ -94,7 +94,7 @@
 				I successfully added the following functions but I'm unable to reload the project file
 			*/
 			{ "caption": "-",                					"id": "side-bar-project-open-file-separator" },
-			{ "caption": "Promote To Project Folder", "id": "side-bar-project-item-add",     "command": "side_bar_project_item_add",        "args": {"paths": []} },
+			{ "caption": "Promote as Project Folder", "id": "side-bar-project-item-add",     "command": "side_bar_project_item_add",        "args": {"paths": []} },
 			{ "caption": "Exclude From Project",			"id": "side-bar-project-item-exclude",   "command": "side_bar_project_item_exclude",        "args": {"paths": []} }
 		]
 	},
