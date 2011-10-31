@@ -125,7 +125,7 @@ class SideBarItem:
 		import sys
 		if sys.platform == 'darwin':
 			import subprocess
-			subprocess.Popen(['open', self.path()])
+			subprocess.Popen(['open', '-a', self.nameSystem()], cwd=self.dirnameSystem())
 		elif sys.platform == 'win32':
 			import subprocess
 			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)

@@ -89,7 +89,7 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 
 			//application 1
 			{
-				"caption": "Photoshop CS4",
+				"caption": "Photoshop",
 				"id": "side-bar-files-open-with-photoshop",
 
 				"command": "side_bar_files_open_with",
@@ -155,7 +155,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		import subprocess
 		for item in items:
 			if sys.platform == 'darwin':
-				subprocess.Popen(['open', '-a', application, item.pathSystem()])
+				subprocess.Popen(['open', '-a', application, item.nameSystem()], cwd=item.dirnameSystem())
 			elif sys.platform == 'win32':
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
