@@ -711,7 +711,7 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
 		import functools
 		self.window.run_command('hide_panel');
-		self.window.show_input_panel("Duplicate As:", new or paths[0], functools.partial(self.on_done, paths[0]), None, None)
+		self.window.show_input_panel("Duplicate As:", new or SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 
 	def on_done(self, old, new):
 		item = SideBarItem(old, os.path.isdir(old))
@@ -727,7 +727,7 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		SideBarProject.refresh();
 
 	def is_enabled(self, paths = []):
-		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], newLeaf = False):
