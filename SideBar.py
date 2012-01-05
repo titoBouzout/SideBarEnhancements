@@ -7,6 +7,22 @@ from SideBarSelection import SideBarSelection
 from SideBarProject import SideBarProject
 from Utils import uniqueList
 
+def disable_default():
+	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
+	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar.sublime-menu.txt'
+	if file(default, 'r').read() ==  file(desired, 'r').read():
+		file(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
+
+	default = sublime.packages_path()+'/Default/Side Bar Mount Point.sublime-menu'
+	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar Mount Point.sublime-menu.txt'
+	if file(default, 'r').read() ==  file(desired, 'r').read():
+		file(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
+
+try:
+	disable_default();
+except:
+	pass
+
 #NOTES
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
@@ -95,7 +111,7 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 				"command": "side_bar_files_open_with",
 				"args": {
 									"paths": [],
-									"application": "C:\\\\Archivos de programa\\\\Adobe\\\\Adobe Photoshop CS4\\\\Photoshop.exe",
+									"application": "Adobe Photoshop CS5.app", // OSX
 									"extensions":"psd|png|jpg|jpeg"  //any file with these extensions
 								}
 			},
@@ -111,7 +127,7 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 				"command": "side_bar_files_open_with",
 				"args": {
 									"paths": [],
-									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe",
+									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
 									"extensions":"" //open all even folders
 								}
 			},
@@ -781,21 +797,18 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import sys
-		if sys.platform == 'darwin':
+		try:
+			path = os.path.join(sublime.packages_path(), 'SideBarEnhancements')
+			if path not in sys.path:
+				sys.path.append(path)
+			import send2trash
+			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+				send2trash.send2trash(item.path())
+			SideBarProject().refresh();
+		except:
 			import functools
 			self.window.run_command('hide_panel');
 			self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
-		else:
-			try:
-				sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
-				import send2trash
-				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-					send2trash.send2trash(item.path())
-				SideBarProject().refresh();
-			except:
-				import functools
-				self.window.run_command('hide_panel');
-				self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, old, new):
 		self.remove(new)
@@ -850,28 +863,19 @@ class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 		if project.hasOpenedProject():
 			for item in SideBarSelection(paths).getSelectedDirectories():
 				project.rootAdd(item.path())
-			view = SideBarItem(project.getProjectFile(), False).edit();
-			sublime.active_window().focus_view(view)
-			sublime.set_timeout(lambda: sublime.active_window().run_command('save'), 250)
-			sublime.set_timeout(lambda: sublime.active_window().run_command('close'), 400)
 
 	def is_enabled(self, paths = []):
-		return False #SideBarSelection(paths).hasDirectories()
+		return SideBarSelection(paths).hasDirectories()
 
 class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		project = SideBarProject()
 		if project.hasOpenedProject():
-			file = project.getProjectFile()
 			for item in SideBarSelection(paths).getSelectedItems():
 				if item.isDirectory():
 					project.excludeDirectory(item.path())
 				else:
 					project.excludeFile(item.path())
-			view = SideBarItem(file, False).edit();
-			sublime.active_window().focus_view(view)
-			sublime.set_timeout(lambda: sublime.active_window().run_command('save'), 250)
-			sublime.set_timeout(lambda: sublime.active_window().run_command('close'), 400)
 
 	def is_enabled(self, paths = []):
-		return False #len(paths) > 0
+		return len(paths) > 0

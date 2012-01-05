@@ -3,11 +3,13 @@ Description
 
 Provides enhancements to the operations on Side Bar of Files and Folders for Sublime Text 2. See: http://www.sublimetext.com/
 
-Notably provides delete as "move to trash", open with and clipboard.
+Notably provides delete as "move to trash", open with.. and clipboard.
 
 Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh....
 
 The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate, open with...
+
+Allows to display "file modified date" and "file size" on statusbar.
 
 All commands available for files and folders(when applicable) .
 
@@ -19,23 +21,13 @@ Todo
 ------------------
 
  * Use a real clipboard integrated with the OS
- * Move should ask for the folder with a real OS prompt
- * Allow to quickly "hide from sidebar" folders and files using built-in settings for projects.
- * Lock and Unlock files.
- * Compress items
-
-Bugs
-------------------
-
- * "Open with.." may not work on Mac
+ * Paste/Rename/Move should prompt for replace ( if any of the target items exists)
+ * A way to copy a filename with URL format. such: http://domain.tld/path/to/file.ext
 
 Installation
 ------------------
 
- * Sublime already provides some file operations. This plugin provides enhanced versions of the same operations. Then, there is at least two "New File.." menus. In order to remove the built-in menus: Open the file "Sublime Text 2/Packages/Default/Side Bar.sublime-menu" and comment everything using a comment block like this: /* here file contents */
- * Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
- * Test !
- * Consider make a contribution <3
+Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
 
 Using the External Libraries
 ------------------
@@ -43,6 +35,7 @@ Using the External Libraries
  * "getImageInfo" to get width and height for images from "bfg-pages". See: http://code.google.com/p/bfg-pages/
  * "desktop" to be able to open files with system handlers. See: http://pypi.python.org/pypi/desktop
  * "send2trash" to be able to send to the trash instead of deleting for ever!. See: http://pypi.python.org/pypi/Send2Trash
+ * "hurry.filesize" to be able to format file sizes. See: http://pypi.python.org/pypi/hurry.filesize/
 
 Source-code
 ------------------
@@ -53,6 +46,16 @@ Forum Thread
 ------------------
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
+
+Update v0.9:
+------------------
+
+* Minor tweaks and fixes.
+* Fix: Re-enable move to trash for OSX
+* New: Allow to display "file modified time" and "file size" on statusbar via preferences.
+* Fix: Disable of built-in function is now automatic.
+* On the way: exclude from project, promote as project folder. ( requires restart to apply changes, looks like there is no way to reload project files.)
+* Fix: Many appends of same directory to "sys.path"
 
 Update v0.8:
 ------------------
@@ -113,8 +116,3 @@ Update v0.1:
  * New: "open" will call to the command line with the file path
  * New: a disabled "open with" for future use
  * Tweaks: ids to all context elements
-
-Contribute
-------------------
-
-[Consider make a contribution](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=extensiondevelopment%40gmail%2ecom&lc=UY&item_name=Tito&item_number=sublime%2dtext%2dside%2dbar%2dplugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted )

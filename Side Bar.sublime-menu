@@ -90,13 +90,11 @@
 		"children":
 		[
 			{ "caption": "Edit Project", "id": "side-bar-project-open-file",      "command": "side_bar_project_open_file",           "args": {"paths": []} },
-			/*
-				I successfully added the following functions but I'm unable to reload the project file
-			*/
 			{ "caption": "-",                					"id": "side-bar-project-open-file-separator" },
 			{ "caption": "Promote as Project Folder", "id": "side-bar-project-item-add",     "command": "side_bar_project_item_add",        "args": {"paths": []} },
 			{ "caption": "Exclude From Project",			"id": "side-bar-project-item-exclude",   "command": "side_bar_project_item_exclude",        "args": {"paths": []} },
 			{ "caption": "-",                					"id": "side-bar-project-item-separator" },
+			{ "caption": "Remove Folder from Project", "command": "remove_folder", "args": { "dirs": []} },
       { "command": "prompt_add_folder", "caption": "Add Folder to Project…", "mnemonic": "d" }
 
 		]

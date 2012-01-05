@@ -130,7 +130,9 @@ class SideBarItem:
 			import subprocess
 			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
 		else:
-			sys.path.append(os.path.join(sublime.packages_path(), 'SideBarEnhancements'))
+			path = os.path.join(sublime.packages_path(), 'SideBarEnhancements')
+			if path not in sys.path:
+				sys.path.append(path)
 			import desktop
 			desktop.open(self.path())
 
