@@ -791,6 +791,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				import send2trash
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					send2trash.send2trash(item.path())
+				SideBarProject().refresh();
 			except:
 				import functools
 				self.window.run_command('hide_panel');
