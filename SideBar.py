@@ -27,6 +27,8 @@ except:
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
+s = sublime.load_settings('Side Bar.sublime-settings')
+
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
@@ -803,6 +805,8 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				sys.path.append(path)
 			import send2trash
 			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+				if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+					self.close_affected_buffers(item.path())
 				send2trash.send2trash(item.path())
 			SideBarProject().refresh();
 		except:
@@ -811,6 +815,8 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
 
 	def on_done(self, old, new):
+		if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+			self.close_affected_buffers(new)
 		self.remove(new)
 		SideBarProject().refresh();
 
@@ -839,6 +845,38 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				os.rmdir(path)
 			except:
 				print "Unable to remove folder:\n\n"+path
+	
+	def close_affected_buffers(self, path):
+		for window in sublime.windows():
+			active_view = window.active_view()
+			views = []
+			for view in window.views():
+				if view.file_name():
+					views.append(view)
+			views.reverse();
+			for view in views:
+				if path == view.file_name():
+					window.focus_view(view)
+					window.run_command('revert')
+					window.run_command('close')
+				elif view.file_name().find(path+'\\') == 0:
+					window.focus_view(view)
+					window.run_command('revert')
+					window.run_command('close')
+				elif view.file_name().find(path+'/') == 0:
+					window.focus_view(view)
+					window.run_command('revert')
+					window.run_command('close')
+			
+			# try to repaint
+			try:
+				window.focus_view(active_view)
+				window.focus_view(window.active_view())
+			except:
+				try:
+					window.focus_view(window.active_view())
+				except:
+					pass
 
 	def is_enabled(self, paths = []):
 		return len(paths) > 0 and SideBarSelection(paths).hasProjectDirectories() == False

@@ -7,7 +7,11 @@ Notably provides delete as "move to trash", open with.. and clipboard.
 
 Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh....
 
-The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate, open with...
+The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate
+
+Close, move, open and restore buffers affected by a rename/move command.
+
+Preference to control if a buffer should be closed when affected by a deletion operation.
 
 Allows to display "file modified date" and "file size" on statusbar.
 
@@ -46,6 +50,10 @@ Forum Thread
 ------------------
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
+
+Update v1.0:
+------------------
+* New: Add boolean preference "close_affected_buffers_when_deleting_even_if_dirty" which controls if a buffer should be closed when affected by a deletion operation-
 
 Update v0.9:
 ------------------

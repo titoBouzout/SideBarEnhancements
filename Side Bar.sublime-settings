@@ -2,5 +2,7 @@
 	"statusbar_modified_time" : false,
 	"statusbar_modified_time_format" : "%A %b %d %H:%M:%S %Y",
 	
-	"statusbar_file_size" : false
+	"statusbar_file_size" : false,
+
+	"close_affected_buffers_when_deleting_even_if_dirty" : false
 }
