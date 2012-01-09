@@ -179,7 +179,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			else:
 				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
 
-	def is_enabled(self, paths = [], application = "", extensions = ""):
+	def is_visible(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
