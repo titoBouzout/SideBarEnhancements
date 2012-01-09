@@ -179,13 +179,22 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			else:
 				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
 
-	def is_visible(self, paths = [], application = "", extensions = ""):
+	def is_enabled(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
 			return len(paths) > 0
 		else:
 			return SideBarSelection(paths).hasFilesWithExtension(extensions)
+
+	def is_visible(self, paths = [], application = "", extensions = ""):
+		if extensions == '*':
+			extensions = '.*'
+		if extensions == '':
+			return len(paths) > 0
+		else:
+			has = SideBarSelection(paths).hasFilesWithExtension(extensions)
+			return has or (not has and not s.get("hide_open_with_entries_when_there_are_no_applicable"))
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):

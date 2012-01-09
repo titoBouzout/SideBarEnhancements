@@ -4,5 +4,7 @@
 	
 	"statusbar_file_size" : false,
 
-	"close_affected_buffers_when_deleting_even_if_dirty" : false
+	"close_affected_buffers_when_deleting_even_if_dirty" : false,
+
+	"hide_open_with_entries_when_there_are_no_applicable" : false
 }
