@@ -237,9 +237,14 @@ class SideBarItem:
 			options.bookmarks.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
 
 		options.folds = []
-		for sel in view.unfold(sublime.Region(0, view.size())):
-			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
-			options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+		if sublime.version() >= 2167:
+			for sel in view.folded_regions():
+				line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
+				options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+		else:
+			for sel in view.unfold(sublime.Region(0, view.size())):
+				line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
+				options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
 
 		window.focus_view(view)
 		if view.is_dirty():

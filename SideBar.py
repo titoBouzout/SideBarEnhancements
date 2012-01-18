@@ -288,14 +288,14 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 			self.find(item.path())
 			content += '\nSearching '+str(self.num_files)+' files for "'+self.searchTerm+'" in \n"'+item.path()+'"\n\n'
 			content += (':\n'.join(self.files))+':\n\n'
-			lenght = len(self.files)
-			if lenght > 1:
-				content += str(lenght)+' matches\n'
-			elif lenght > 0:
+			length = len(self.files)
+			if length > 1:
+				content += str(length)+' matches\n'
+			elif length > 0:
 				content += '1 match\n'
 			else:
 				content += 'No match\n'
-			self.total = self.total + lenght
+			self.total = self.total + length
 		if self.total > 0:
 			view = sublime.active_window().new_file()
 			view.settings().set('word_wrap', False)
