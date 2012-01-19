@@ -266,7 +266,7 @@ class SideBarItem:
 
 	def _move_restoreView(self, view, options):
 		if view.is_loading():
-			sublime.set_timeout(lambda: self._moveViewRestore(view, options), 100)
+			sublime.set_timeout(lambda: self._move_restoreView(view, options), 100)
 		else:
 			if options.content != False:
 				edit = view.begin_edit()
