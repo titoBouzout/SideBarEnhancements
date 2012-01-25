@@ -202,7 +202,7 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
 		self.window.run_command('hide_panel');
-		if sublime.version() >= 2134:
+		if int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
@@ -217,7 +217,7 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 			items.append(item.dirname())
 		items = uniqueList(items)
 		self.window.run_command('hide_panel');
-		if sublime.version() >= 2134:
+		if int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
@@ -228,9 +228,9 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		self.window.run_command('hide_panel');
-		if sublime.version() >= 2136:
+		if int(sublime.version()) >= 2136:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":"<open folders>"})
-		elif sublime.version() >= 2134:
+		elif int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":""})
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":"<open folders>"})
@@ -252,7 +252,7 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 			items.append('*'+item.extension())
 		items = uniqueList(items)
 		self.window.run_command('hide_panel');
-		if sublime.version() >= 2134:
+		if int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
