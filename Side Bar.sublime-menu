@@ -87,6 +87,7 @@
 	{ "caption": "-",                 "id": "side-bar-delete-separator" },
 
   { "caption": "Refresh",           "id": "side-bar-refresh",          "command": "refresh_folder_list" },
+	{ "caption": "-",                 "id": "side-bar-refresh-separator" },
 	{ "caption": "Project",      			"id": "side-bar-project",
 		"children":
 		[
