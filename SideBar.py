@@ -393,13 +393,13 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 						if os.path.exists(new) and replace == 'False':
 							pass
 						else:
-							#try:
+							try:
 								if not path.move(new, replace == 'True'):
 									sublime.error_message("Unable to cut and paste, destination exists.")
 									return
-							#except:
-							#	sublime.error_message("Unable to move:\n\n"+path.path()+"\n\nto\n\n"+new)
-							#	return
+							except:
+								sublime.error_message("Unable to move:\n\n"+path.path()+"\n\nto\n\n"+new)
+								return
 
 			if copy != '':
 				copy = copy.split("\n")
@@ -412,13 +412,13 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 						if os.path.exists(new) and replace == 'False':
 							pass
 						else:
-							#try:
+							try:
 								if not path.copy(new, replace == 'True'):
 									sublime.error_message("Unable to copy and paste, destination exists.")
 									return
-							#except:
-							#	sublime.error_message("Unable to copy:\n\n"+path.path()+"\n\nto\n\n"+new)
-							#	return
+							except:
+								sublime.error_message("Unable to copy:\n\n"+path.path()+"\n\nto\n\n"+new)
+								return
 
 			if test == 'True' and len(already_exists_paths):
 				self.confirm(paths, in_parent, already_exists_paths)
@@ -853,22 +853,46 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = []):
-		import sys
-		try:
-			path = os.path.join(sublime.packages_path(), 'SideBarEnhancements')
-			if path not in sys.path:
-				sys.path.append(path)
-			import send2trash
-			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-				if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
-					self.close_affected_buffers(item.path())
-				send2trash.send2trash(item.path())
-			SideBarProject().refresh();
-		except:
-			import functools
-			self.window.run_command('hide_panel');
-			self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+	def run(self, paths = [], confirmed = 'False'):
+		if confirmed == 'False' and s.get('confirm_before_deleting', True):
+			self.confirm(paths)
+		else:
+			import sys
+			try:
+				path = os.path.join(sublime.packages_path(), 'SideBarEnhancements')
+				if path not in sys.path:
+					sys.path.append(path)
+				import send2trash
+				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+						self.close_affected_buffers(item.path())
+					send2trash.send2trash(item.path())
+				SideBarProject().refresh();
+			except:
+				import functools
+				self.window.run_command('hide_panel');
+				self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+
+	def confirm(self, paths):
+		import functools
+		window = sublime.active_window()
+		window.show_input_panel("BUG!", '', '', None, None)
+		window.run_command('hide_panel');
+
+		yes = []
+		yes.append('Yes');
+		yes.append('Delete the selected items.');
+
+		no = []
+		no.append('No');
+		no.append('Cancel the operation.');
+
+		window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths))
+
+	def on_confirm(self, paths, result):
+		if result != -1:
+			if result == 0:
+				self.run(paths, 'True')
 
 	def on_done(self, old, new):
 		if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):

@@ -6,5 +6,7 @@
 
 	"close_affected_buffers_when_deleting_even_if_dirty" : false,
 
-	"hide_open_with_entries_when_there_are_no_applicable" : false
+	"hide_open_with_entries_when_there_are_no_applicable" : false,
+
+	"confirm_before_deleting" : true
 }
