@@ -2,6 +2,7 @@
 import sublime
 import os
 import re
+import shutil
 
 from SideBarProject import SideBarProject
 from Utils import Object
@@ -179,21 +180,83 @@ class SideBarItem:
 			self.dirnameCreate()
 			self.write('')
 
-	def move(self, location):
+	def copy(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
+		if location.exists() and replace == False:
+			return False
+		elif location.exists() and location.isFile():
+			os.remove(location.path())
+
+		location.dirnameCreate();
+		if self.isDirectory():
+			if location.exists():
+				self.copy_recursive(self.path(), location.path())
+			else:
+				shutil.copytree(self.path(), location.path())
+		else:
+			shutil.copy2(self.path(), location.path())
+		return True
+
+	def copy_recursive(self, _from, _to):
+
+		if os.path.isfile(_from) or os.path.islink(_from):
+			try:
+				os.makedirs(os.path.dirname(_to));
+			except:
+				pass
+			if os.path.exists(_to):
+				os.remove(_to)
+			shutil.copy2(_from, _to)
+		else:
+			try:
+				os.makedirs(_to);
+			except:
+				pass
+			for content in os.listdir(_from):
+				__from = os.path.join(_from, content)
+				__to = os.path.join(_to, content)
+				self.copy_recursive(__from, __to)
+
+	def move(self, location, replace = False):
+		location = SideBarItem(location, os.path.isdir(location));
+		if location.exists() and replace == False:
+			return False
+		elif location.exists() and location.isFile():
+			os.remove(location.path())
+
 		if self.path().lower() == location.path().lower():
 			location.dirnameCreate();
 			os.rename(self.path(), location.path()+'.sublime-temp')
 			os.rename(location.path()+'.sublime-temp', location.path())
 			self._move_moveViews(self.path(), location.path())
-			return True
-		elif location.exists():
-			return False
 		else:
 			location.dirnameCreate();
-			os.rename(self.path(), location.path())
+			if location.exists():
+				self.move_recursive(self.path(), location.path())
+			else:
+				os.rename(self.path(), location.path())
 			self._move_moveViews(self.path(), location.path())
-			return True
+		return True
+
+	def move_recursive(self, _from, _to):
+		if os.path.isfile(_from) or os.path.islink(_from):
+			try:
+				os.makedirs(os.path.dirname(_to));
+			except:
+				pass
+			if os.path.exists(_to):
+				os.remove(_to)
+			os.rename(_from, _to)
+		else:
+			try:
+				os.makedirs(_to);
+			except:
+				pass
+			for content in os.listdir(_from):
+				__from = os.path.join(_from, content)
+				__to = os.path.join(_to, content)
+				self.move_recursive(__from, __to)
+			os.rmdir(_from)
 
 	def _move_moveViews(self, old, location):
 		for window in sublime.windows():
@@ -295,16 +358,3 @@ class SideBarItem:
 				view.add_regions("bookmarks", rs, "bookmarks", "bookmark", sublime.HIDDEN | sublime.PERSISTENT)
 
 			view.set_viewport_position(options.scroll, False)
-
-	def copy(self, location):
-		location = SideBarItem(location, os.path.isdir(location));
-		if location.exists():
-			return False
-		else:
-			location.dirnameCreate();
-			import shutil
-			if self.isDirectory():
-				shutil.copytree(self.path(), location.path())
-			else:
-				shutil.copy2(self.path(), location.path())
-			return True

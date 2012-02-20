@@ -20,7 +20,7 @@ class SideBarSelection:
 			except:
 				paths = []
 		self._paths = paths
-
+		self._paths.sort()
 		self._obtained_selection_information_basic = False
 		self._obtained_selection_information_extended = False
 
@@ -167,7 +167,7 @@ class SideBarSelection:
 				continue
 			else:
 				new_list.append(i)
-			if item.find(i) == 0:
+			if (item+'\\').find(i+'\\') == 0 or (item+'/').find(i+'/') == 0:
 				add = False
 		if add:
 			new_list.append(item)

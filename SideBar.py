@@ -346,10 +346,12 @@ class SideBarCutCommand(sublime_plugin.WindowCommand):
 
 class SideBarCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
+
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		items = []
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
+
 		s.set('cut', '')
 		s.set('copy', "\n".join(items))
 		if len(items) > 1 :
@@ -361,11 +363,14 @@ class SideBarCopyCommand(sublime_plugin.WindowCommand):
 		return len(paths) > 0
 
 class SideBarPasteCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = [], in_parent = 'False'):
+	def run(self, paths = [], in_parent = 'False', test = 'True', replace = 'False'):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 
 		cut = s.get('cut', '')
 		copy = s.get('copy', '')
+
+		already_exists_paths = []
+
 		if SideBarSelection(paths).len() > 0:
 			if in_parent == 'False':
 				location = SideBarSelection(paths).getSelectedItems()[0].path()
@@ -382,33 +387,75 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 				for path in cut:
 					path = SideBarItem(path, os.path.isdir(path))
 					new  = os.path.join(location.path(), path.name())
-					try:
-						if not path.move(new):
-							sublime.error_message("Unable to cut and paste, destination exists.")
-							return
-					except:
-						sublime.error_message("Unable to move:\n\n"+path.path()+"\n\nto\n\n"+new)
-						return
+					if test == 'True' and os.path.exists(new):
+						already_exists_paths.append(new)
+					elif test == 'False':
+						if os.path.exists(new) and replace == 'False':
+							pass
+						else:
+							#try:
+								if not path.move(new, replace == 'True'):
+									sublime.error_message("Unable to cut and paste, destination exists.")
+									return
+							#except:
+							#	sublime.error_message("Unable to move:\n\n"+path.path()+"\n\nto\n\n"+new)
+							#	return
 
 			if copy != '':
 				copy = copy.split("\n")
 				for path in copy:
 					path = SideBarItem(path, os.path.isdir(path))
 					new  = os.path.join(location.path(), path.name())
-					try:
-						if not path.copy(new):
-							sublime.error_message("Unable to copy and paste, destination exists.")
-							return
-					except:
-						sublime.error_message("Unable to copy:\n\n"+path.path()+"\n\nto\n\n"+new)
-						return
+					if test == 'True' and os.path.exists(new):
+						already_exists_paths.append(new)
+					elif test == 'False':
+						if os.path.exists(new) and replace == 'False':
+							pass
+						else:
+							#try:
+								if not path.copy(new, replace == 'True'):
+									sublime.error_message("Unable to copy and paste, destination exists.")
+									return
+							#except:
+							#	sublime.error_message("Unable to copy:\n\n"+path.path()+"\n\nto\n\n"+new)
+							#	return
 
-			cut = s.set('cut', '')
-			SideBarProject().refresh();
+			if test == 'True' and len(already_exists_paths):
+				self.confirm(paths, in_parent, already_exists_paths)
+			elif test == 'True' and not len(already_exists_paths):
+				self.run(paths, in_parent, 'False', 'False')
+			elif test == 'False':
+				cut = s.set('cut', '')
+				SideBarProject().refresh();
+
+	def confirm(self, paths, in_parent, data):
+		import functools
+		window = sublime.active_window()
+		window.show_input_panel("BUG!", '', '', None, None)
+		window.run_command('hide_panel');
+
+		yes = []
+		yes.append('Yes, Replace the following items:');
+		for item in data:
+			yes.append(SideBarItem(item, os.path.isdir(item)).pathWithoutProject())
+
+		no = []
+		no.append('No');
+		no.append('Continue copying without replacing');
+
+		window.show_quick_panel([yes, no], functools.partial(self.on_done, paths, in_parent))
+
+	def on_done(self, paths, in_parent, result):
+		if result != -1:
+			if result == 0:
+				self.run(paths, in_parent, 'False', 'True')
+			else:
+				self.run(paths, in_parent, 'False', 'False')
 
 	def is_enabled(self, paths = [], in_parent = False):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		return s.get('cut', '') + s.get('copy', '') != '' and len(SideBarSelection(paths).getSelectedDirectoriesOrDirnames()) == 1
+
 
 class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
