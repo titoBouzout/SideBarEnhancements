@@ -50,6 +50,11 @@ Forum Thread
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
+Update v1.1:
+------------------
+* New: Add boolean preference "confirm_before_deleting" which controls if a the package should ask the user to delete files and folders
+* New: When using copy, cut or paste the editor will ask for "replace items" when these items exists. Note: When a folder exists the package will merge the two as in the OS.
+
 Update v1.0:
 ------------------
 * New: Add boolean preference "close_affected_buffers_when_deleting_even_if_dirty" which controls if a buffer should be closed when affected by a deletion operation-
