@@ -24,7 +24,6 @@ Todo
 ------------------
 
  * Use a real clipboard integrated with the OS
- * Paste/Rename/Move should prompt for replace ( if any of the target items exists)
  * A way to copy a filename with URL format. such: http://domain.tld/path/to/file.ext
 
 Installation
