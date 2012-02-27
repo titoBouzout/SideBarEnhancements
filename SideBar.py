@@ -441,7 +441,7 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 
 		no = []
 		no.append('No');
-		no.append('Continue copying without replacing');
+		no.append('Continue without replacing');
 
 		window.show_quick_panel([yes, no], functools.partial(self.on_done, paths, in_parent))
 
@@ -925,7 +925,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				os.rmdir(path)
 			except:
 				print "Unable to remove folder:\n\n"+path
-	
+
 	def close_affected_buffers(self, path):
 		for window in sublime.windows():
 			active_view = window.active_view()
@@ -947,7 +947,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 					window.focus_view(view)
 					window.run_command('revert')
 					window.run_command('close')
-			
+
 			# try to repaint
 			try:
 				window.focus_view(active_view)
