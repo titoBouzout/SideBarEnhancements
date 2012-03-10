@@ -1,3 +1,4 @@
 [
-	{ "keys": ["ctrl+t"], "command": "side_bar_new_file" }
+	{ "keys": ["ctrl+t"], "command": "side_bar_new_file" },
+	{ "keys": ["f12"], "command": "side_bar_open_in_browser" }
 ]

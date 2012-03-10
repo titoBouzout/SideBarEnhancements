@@ -6,6 +6,7 @@
 
 	{ "caption": "Edit",              "id": "side-bar-edit",             "command": "side_bar_edit",             "args": {"paths": []} },
 	{ "caption": "Open / Run",              "id": "side-bar-open",             "command": "side_bar_open",             "args": {"paths": []} },
+	{ "caption": "Open In Browser",              "id": "side-bar-open-in-browser",             "command": "side_bar_open_in_browser",             "args": {"paths": []} },
 	{ "caption": "Open With",        "id": "side-bar-files-open-with",
 
 		"children":

@@ -18,7 +18,9 @@ class SideBarProject:
 
 	def getProjectFile(self):
 		import json
-		data = json.loads(file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read())
+		data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read()
+		data = data.replace('\t', ' ')
+		data = json.loads(data)
 		projects = data['workspaces']['recent_workspaces']
 		for project_file in projects:
 			project_file = re.sub(r'^/([^/])/', '\\1:/', project_file);
@@ -38,10 +40,15 @@ class SideBarProject:
 				return project_file
 		return None
 
+	def getProjectJson(self):
+		import json
+		data = file(self.getProjectFile(), 'r').read().replace('\t', ' ')
+		return json.loads(data)
+
 	def excludeDirectory(self, path):
 		import json
 		project_file = self.getProjectFile();
-		project = json.loads(file(project_file, 'r').read())
+		project = self.getProjectJson()
 
 		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
 
@@ -57,7 +64,7 @@ class SideBarProject:
 	def excludeFile(self, path):
 		import json
 		project_file = self.getProjectFile();
-		project = json.loads(file(project_file, 'r').read())
+		project = self.getProjectJson()
 
 		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
 
@@ -73,7 +80,7 @@ class SideBarProject:
 	def rootAdd(self, path):
 		import json
 		project_file = self.getProjectFile();
-		project = json.loads(file(project_file, 'r').read())
+		project = self.getProjectJson()
 
 		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
 		project['folders'].append({'path':path});
@@ -87,3 +94,11 @@ class SideBarProject:
 			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 2300);
 		except:
 			pass
+
+	def getPreference(self, name):
+		project_file = self.getProjectFile();
+		project = self.getProjectJson()
+		try:
+			return project[name]
+		except:
+			return None
