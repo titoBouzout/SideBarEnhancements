@@ -1009,8 +1009,9 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			for item in SideBarSelection(paths).getSelectedItems():
 				webbrowser.open_new_tab(url + item.pathRelativeFromProjectEncoded())
 		else:
-			SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand).run()
-			sublime.error_message('Preference "url" was not found in project file.\n"'+project.getProjectFile()+'"')
+			for item in SideBarSelection(paths).getSelectedItems():
+				webbrowser.open_new_tab(item.uri())
+			sublime.status_message('Preference "url" was not found in project file.\n"'+project.getProjectFile()+'", opening local file')
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFiles()
