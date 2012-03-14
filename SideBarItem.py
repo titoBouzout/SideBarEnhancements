@@ -284,30 +284,24 @@ class SideBarItem:
 
 		options.scroll = view.viewport_position()
 
-		options.selections = []
-		for sel in view.sel():
-			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
-			options.selections.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+		options.selections = [[item.a, item.b] for item in view.sel()]
 
-		options.marks = []
-		for sel in view.get_regions("mark"):
-			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
-			options.marks.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+		options.marks = [[item.a, item.b] for item in view.get_regions("mark")]
 
-		options.bookmarks = []
-		for sel in view.get_regions("bookmarks"):
-			line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
-			options.bookmarks.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+		options.bookmarks = [[item.a, item.b] for item in view.get_regions("bookmarks")]
 
-		options.folds = []
 		if int(sublime.version()) >= 2167:
-			for sel in view.folded_regions():
-				line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
-				options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+			options.folds = [[item.a, item.b] for item in view.folded_regions()]
 		else:
-			for sel in view.unfold(sublime.Region(0, view.size())):
-				line_s, col_s = view.rowcol(sel.a); line_e, col_e = view.rowcol(sel.b)
-				options.folds.append([view.text_point(line_s, col_s), view.text_point(line_e, col_e)])
+			options.folds = [[item.a, item.b] for item in view.unfold(sublime.Region(0, view.size()))]
+
+		options.syntax = view.settings().get('syntax')
+
+		try:
+			_window = window or view.window() or sublime.active_window()
+			options.position = _window.get_view_index(view)
+		except:
+			options.position = False
 
 		window.focus_view(view)
 		if view.is_dirty():
@@ -318,7 +312,7 @@ class SideBarItem:
 		window.run_command('close')
 
 		view = window.open_file(location)
-		sublime.set_timeout(lambda: self._move_restoreView(view, options), 200)
+		sublime.set_timeout(lambda: self._move_restoreView(view, options, window), 200)
 
 		if is_active_view:
 			window.focus_view(view)
@@ -327,9 +321,9 @@ class SideBarItem:
 			window.focus_view(active_view)
 			return active_view
 
-	def _move_restoreView(self, view, options):
+	def _move_restoreView(self, view, options, window):
 		if view.is_loading():
-			sublime.set_timeout(lambda: self._move_restoreView(view, options), 100)
+			sublime.set_timeout(lambda: self._move_restoreView(view, options, window), 100)
 		else:
 			if options.content != False:
 				edit = view.begin_edit()
@@ -337,6 +331,17 @@ class SideBarItem:
 				view.sel().clear()
 				view.sel().add(sublime.Region(0))
 				view.end_edit(edit)
+
+			if options.position != False:
+				try:
+					_window = window or view.window() or sublime.active_window()
+					group, index = options.position
+					_window.set_view_index(view, group, index)
+				except:
+					pass
+
+			if options.syntax:
+				view.settings().set('syntax', options.syntax);
 
 			for r in options.folds:
 				view.fold(sublime.Region(r[0], r[1]))
