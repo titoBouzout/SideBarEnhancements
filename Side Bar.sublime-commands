@@ -2,5 +2,9 @@
   {
     "caption": "Side Bar: New File Relative to View",
     "command": "side_bar_new_file"
+  },
+  {
+    "caption": "Side Bar: Rename Current File",
+    "command": "side_bar_rename"
   }
 ]
