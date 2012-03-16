@@ -5,7 +5,9 @@ import re
 import shutil
 
 from SideBarProject import SideBarProject
-from Utils import Object
+
+class Object():
+	pass
 
 class SideBarItem:
 

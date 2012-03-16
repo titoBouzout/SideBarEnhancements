@@ -96,7 +96,6 @@ class SideBarProject:
 			pass
 
 	def getPreference(self, name):
-		project_file = self.getProjectFile();
 		project = self.getProjectJson()
 		try:
 			return project[name]

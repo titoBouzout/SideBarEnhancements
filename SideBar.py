@@ -2,10 +2,9 @@
 import sublime, sublime_plugin
 import os
 
-from SideBarItem import SideBarItem
-from SideBarSelection import SideBarSelection
-from SideBarProject import SideBarProject
-from Utils import uniqueList
+from sidebar.SideBarItem import SideBarItem
+from sidebar.SideBarSelection import SideBarSelection
+from sidebar.SideBarProject import SideBarProject
 
 def disable_default():
 	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
@@ -215,7 +214,7 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
 			items.append(item.dirname())
-		items = uniqueList(items)
+		items = list(set(items))
 		self.window.run_command('hide_panel');
 		if int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
@@ -240,7 +239,7 @@ class SideBarFindInProjectFolderCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(SideBarProject().getDirectoryFromPath(item.path()))
-		items = uniqueList(items)
+		items = list(set(items))
 		if items:
 			self.window.run_command('hide_panel');
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items)})
@@ -250,7 +249,7 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
 			items.append('*'+item.extension())
-		items = uniqueList(items)
+		items = list(set(items))
 		self.window.run_command('hide_panel');
 		if int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
@@ -264,7 +263,7 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedFiles():
 			items.append('*'+item.extension())
-		items = uniqueList(items)
+		items = list(set(items))
 		if len(items) > 1:
 			return 'In Files With Extensions '+(",".join(items))+u'…'
 		elif len(items) > 0:
