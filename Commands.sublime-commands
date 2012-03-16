@@ -1,0 +1,10 @@
+[
+  {
+    "caption": "File: New File Relative to Current View",
+    "command": "side_bar_new_file"
+  },
+  {
+    "caption": "File: Rename",
+    "command": "side_bar_rename"
+  }
+]
