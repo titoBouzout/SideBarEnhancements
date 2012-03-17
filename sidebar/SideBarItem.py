@@ -311,9 +311,12 @@ class SideBarItem:
 			view.window().run_command('revert')
 		else:
 			options.content = False
+
+		_view = view
+		view = window.open_file(location)
+		window.focus_view(_view)
 		window.run_command('close')
 
-		view = window.open_file(location)
 		sublime.set_timeout(lambda: self._move_restoreView(view, options, window), 200)
 
 		if is_active_view:

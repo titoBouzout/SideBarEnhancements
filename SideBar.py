@@ -936,14 +936,20 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			views.reverse();
 			for view in views:
 				if path == view.file_name():
+					if len(window.views()) == 1:
+						window.new_file()
 					window.focus_view(view)
 					window.run_command('revert')
 					window.run_command('close')
 				elif view.file_name().find(path+'\\') == 0:
+					if len(window.views()) == 1:
+						window.new_file()
 					window.focus_view(view)
 					window.run_command('revert')
 					window.run_command('close')
 				elif view.file_name().find(path+'/') == 0:
+					if len(window.views()) == 1:
+						window.new_file()
 					window.focus_view(view)
 					window.run_command('revert')
 					window.run_command('close')
