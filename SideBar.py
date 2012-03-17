@@ -833,7 +833,7 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
 		import functools
 		self.window.run_command('hide_panel');
-		self.window.show_input_panel("New Location:", new or paths[0], functools.partial(self.on_done, paths[0]), None, None)
+		self.window.show_input_panel("New Location:", new or SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 
 	def on_done(self, old, new):
 		item = SideBarItem(old, os.path.isdir(old))
@@ -849,7 +849,7 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 		SideBarProject().refresh();
 
 	def is_enabled(self, paths = []):
-		return len(paths) == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
@@ -966,7 +966,7 @@ class SideBarRevealCommand(sublime_plugin.WindowCommand):
 			item.reveal()
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):

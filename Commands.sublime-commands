@@ -6,5 +6,29 @@
   {
     "caption": "File: Rename",
     "command": "side_bar_rename"
+  },
+  {
+    "caption": "File: Open In Browser",
+    "command": "side_bar_open_in_browser"
+  }
+  ,
+  {
+    "caption": "File: Duplicate",
+    "command": "side_bar_duplicate"
+  }
+  ,
+  {
+    "caption": "File: Reveal",
+    "command": "side_bar_reveal"
+  }
+  ,
+  {
+    "caption": "File: Move",
+    "command": "side_bar_move"
+  }
+  ,
+  {
+    "caption": "Project: Edit",
+    "command": "side_bar_project_open_file"
   }
 ]
