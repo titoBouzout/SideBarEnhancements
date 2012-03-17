@@ -182,7 +182,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
-			return len(paths) > 0
+			return SideBarSelection(paths).len() > 0
 		else:
 			return SideBarSelection(paths).hasFilesWithExtension(extensions)
 
@@ -190,7 +190,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
-			return len(paths) > 0
+			return SideBarSelection(paths).len() > 0
 		else:
 			has = SideBarSelection(paths).hasFilesWithExtension(extensions)
 			return has or (not has and not s.get("hide_open_with_entries_when_there_are_no_applicable"))
@@ -207,7 +207,7 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -222,7 +222,7 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":",".join(items) })
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def run(self):
@@ -341,7 +341,7 @@ class SideBarCutCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item cut")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -359,7 +359,7 @@ class SideBarCopyCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarPasteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], in_parent = 'False', test = 'True', replace = 'False'):
@@ -996,7 +996,7 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 					project.excludeFile(item.path())
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
