@@ -28,6 +28,11 @@
   }
   ,
   {
+    "caption": "File: Delete",
+    "command": "side_bar_delete"
+  }
+  ,
+  {
     "caption": "Project: Edit",
     "command": "side_bar_project_open_file"
   }

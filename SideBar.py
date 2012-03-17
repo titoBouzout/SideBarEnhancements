@@ -794,7 +794,7 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 				self.run([old], new)
 				return
 		except:
-			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
+			sublime.error_message("Unable to copy:\n\n"+old+"\n\nto\n\n"+new)
 			self.run([old], new)
 			return
 		SideBarProject().refresh();
@@ -854,7 +854,7 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
 		if confirmed == 'False' and s.get('confirm_before_deleting', True):
-			self.confirm(paths)
+			self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
 		else:
 			import sys
 			try:
@@ -870,17 +870,18 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			except:
 				import functools
 				self.window.run_command('hide_panel');
-				self.window.show_input_panel("Permanently Delete:", paths[0], functools.partial(self.on_done, paths[0]), None, None)
+				self.window.show_input_panel("Permanently Delete:", SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 
-	def confirm(self, paths):
+	def confirm(self, paths, display_paths):
 		import functools
 		window = sublime.active_window()
 		window.show_input_panel("BUG!", '', '', None, None)
 		window.run_command('hide_panel');
 
 		yes = []
-		yes.append('Yes');
-		yes.append('Delete the selected items.');
+		yes.append('Yes, delete the selected items.');
+		for item in display_paths:
+			yes.append(item);
 
 		no = []
 		no.append('No');
@@ -958,7 +959,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 					pass
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
