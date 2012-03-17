@@ -469,7 +469,7 @@ class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -484,7 +484,7 @@ class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -499,7 +499,7 @@ class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -514,7 +514,7 @@ class SideBarCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -529,7 +529,7 @@ class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -544,7 +544,7 @@ class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowComm
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -559,7 +559,7 @@ class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -574,7 +574,7 @@ class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -589,7 +589,7 @@ class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -604,7 +604,7 @@ class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowComm
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -619,7 +619,7 @@ class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 			sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return len(paths) > 0
+		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 

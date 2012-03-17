@@ -1,39 +1,70 @@
 [
-  {
-    "caption": "File: New File Relative to Current View",
-    "command": "side_bar_new_file"
-  },
-  {
-    "caption": "File: Rename",
-    "command": "side_bar_rename"
-  },
-  {
-    "caption": "File: Open In Browser",
-    "command": "side_bar_open_in_browser"
-  }
-  ,
-  {
-    "caption": "File: Duplicate",
-    "command": "side_bar_duplicate"
-  }
-  ,
-  {
-    "caption": "File: Reveal",
-    "command": "side_bar_reveal"
-  }
-  ,
-  {
-    "caption": "File: Move",
-    "command": "side_bar_move"
-  }
-  ,
-  {
-    "caption": "File: Delete",
-    "command": "side_bar_delete"
-  }
-  ,
-  {
-    "caption": "Project: Edit",
-    "command": "side_bar_project_open_file"
-  }
+    {
+        "caption": "File: New File Relative to Current View",
+        "command": "side_bar_new_file"
+    },
+    {
+        "caption": "File: Rename",
+        "command": "side_bar_rename"
+    },
+    {
+        "caption": "File: Open In Browser",
+        "command": "side_bar_open_in_browser"
+    },
+    {
+        "caption": "File: Duplicate",
+        "command": "side_bar_duplicate"
+    },
+    {
+        "caption": "File: Reveal",
+        "command": "side_bar_reveal"
+    },
+    {
+        "caption": "File: Move",
+        "command": "side_bar_move"
+    },
+    {
+        "caption": "File: Delete",
+        "command": "side_bar_delete"
+    },
+    {
+        "caption": "Project: Edit",
+        "command": "side_bar_project_open_file"
+    },
+    {
+        "caption": "File: Copy Name",
+        "command": "side_bar_copy_name"
+    },
+    {
+        "caption": "File: Copy Name Encoded",
+        "command": "side_bar_copy_name_encoded"
+    },
+    {
+        "caption": "File: Copy Path",
+        "command": "side_bar_copy_path"
+    },
+    {
+        "caption": "File: Copy Path as URI",
+        "command": "side_bar_copy_path_encoded"
+    },
+    {
+        "caption": "File: Copy Path From Project",
+        "command": "side_bar_copy_path_absolute_from_project"
+    },
+    {
+        "caption": "File: Copy Path From Project Encoded",
+        "command": "side_bar_copy_path_absolute_from_project_encoded"
+    },
+    {
+        "caption": "File: Copy as Tag a",
+        "command": "side_bar_copy_tag_ahref"
+    },
+    {
+        "caption": "File: Copy as Tag script",
+        "command": "side_bar_copy_tag_script"
+    },
+    {
+        "caption": "File: Copy as Tag style",
+        "command": "side_bar_copy_tag_style"
+    }
 ]
