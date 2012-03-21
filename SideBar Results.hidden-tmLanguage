@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>SideBar Results</string>
+
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>match</key>
+			<string>^(.*(\:|/).*)$</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.filename.find-in-files</string>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>text.find-in-files</string>
+</dict>
+</plist>

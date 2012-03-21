@@ -274,8 +274,10 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import functools
+		if paths == []:
+			paths = SideBarProject().getDirectories()
 		self.window.run_command('hide_panel');
-		self.window.show_input_panel("File Path Containing:", '', functools.partial(self.on_done, paths), None, None)
+		self.window.show_input_panel("Search files on which the path contains:", '', functools.partial(self.on_done, paths), None, None)
 
 	def on_done(self, paths, searchTerm):
 		self.searchTerm = searchTerm.strip()
@@ -286,7 +288,7 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 			self.num_files = 0
 			self.find(item.path())
 			content += '\nSearching '+str(self.num_files)+' files for "'+self.searchTerm+'" in \n"'+item.path()+'"\n\n'
-			content += (':\n'.join(self.files))+':\n\n'
+			content += ('\n'.join(self.files))+'\n\n'
 			length = len(self.files)
 			if length > 1:
 				content += str(length)+' matches\n'
@@ -299,7 +301,7 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 			view = sublime.active_window().new_file()
 			view.settings().set('word_wrap', False)
 			view.set_name('Find Results')
-			view.set_syntax_file('Packages/Default/Find Results.hidden-tmLanguage')
+			view.set_syntax_file('Packages/SideBarEnhancements/SideBar Results.hidden-tmLanguage')
 			view.set_scratch(True)
 			edit = view.begin_edit()
 			view.replace(edit, sublime.Region(0, view.size()), content.lstrip());
@@ -325,7 +327,7 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 					self.find(file)
 
 	def match(self, path):
-		return False if path.lower().find(self.searchTerm.lower())== -1 else True
+		return False if path.lower().find(self.searchTerm.lower()) == -1 else True
 
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):

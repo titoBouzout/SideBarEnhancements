@@ -1,5 +1,6 @@
 [
 	{ "keys": ["ctrl+t"], "command": "side_bar_new_file" },
 	{ "keys": ["f12"], "command": "side_bar_open_in_browser" },
-	{ "keys": ["f2"], "command": "side_bar_rename" }
+	{ "keys": ["f2"], "command": "side_bar_rename" },
+	{ "keys": ["alt+f"], "command": "side_bar_find_files_path_containing" }
 ]

@@ -66,5 +66,9 @@
     {
         "caption": "File: Copy as Tag style",
         "command": "side_bar_copy_tag_style"
+    },
+    {
+        "caption": "File: Search Files",
+        "command": "side_bar_find_files_path_containing"
     }
 ]
