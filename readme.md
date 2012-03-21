@@ -20,6 +20,22 @@ All commands available for files and folders(when applicable) .
 
 <img src="http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png" border="0"/>
 
+F12 key
+------------------
+
+F12 key allows you to open the current file in browser.
+If you want to add a url to that feature:
+Right click the sidebar -> project -> edit project
+There add the new preferences:
+
+```
+, "url":"http://localhost/"
+, "url_testing":"http://domain.test/"
+```
+
+```url``` allows you to set the url of your local server, opened via F12
+```url_testing``` allows you to set the url of your production server via, opened via ALT+F12
+
 Todo
 ------------------
 

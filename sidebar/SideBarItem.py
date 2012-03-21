@@ -33,6 +33,13 @@ class SideBarItem:
 			path = path.replace(directory, '', 1)
 		return path.replace('\\', '/')
 
+	def isUnderCurrentProject(self):
+		path = self.path()
+		path2 = self.path()
+		for directory in SideBarProject().getDirectories():
+			path2 = path2.replace(directory, '', 1)
+		return path != path2
+
 	def pathRelativeFromProject(self):
 		return re.sub('^/+', '', self.pathWithoutProject())
 

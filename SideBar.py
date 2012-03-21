@@ -1010,15 +1010,23 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = []):
+	def run(self, paths = [], type = False):
 		import webbrowser
 		project = SideBarProject()
-		url = project.getPreference('url')
+		if type == False or type == 'testing':
+			url = project.getPreference('url')
+		elif type == 'production':
+			url = project.getPreference('url_production')
+		else:
+			url = project.getPreference('url')
 		if url:
 			if url[-1:] != '/':
 				url = url+'/'
 			for item in SideBarSelection(paths).getSelectedItems():
-				webbrowser.open_new_tab(url + item.pathRelativeFromProjectEncoded())
+				if item.isUnderCurrentProject():
+					webbrowser.open_new_tab(url + item.pathRelativeFromProjectEncoded())
+				else:
+					webbrowser.open_new_tab(item.uri())
 		else:
 			for item in SideBarSelection(paths).getSelectedItems():
 				webbrowser.open_new_tab(item.uri())

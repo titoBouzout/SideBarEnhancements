@@ -8,10 +8,6 @@
         "command": "side_bar_rename"
     },
     {
-        "caption": "File: Open In Browser",
-        "command": "side_bar_open_in_browser"
-    },
-    {
         "caption": "File: Duplicate",
         "command": "side_bar_duplicate"
     },
@@ -70,5 +66,15 @@
     {
         "caption": "File: Search Files",
         "command": "side_bar_find_files_path_containing"
+    },
+    {
+        "caption": "File: Open In Browser - Testing Server",
+        "command": "side_bar_open_in_browser",
+        "args":{"paths":[], "type":"testing"}
+    },
+    {
+        "caption": "File: Open In Browser - Production Server",
+        "command": "side_bar_open_in_browser",
+        "args":{"paths":[], "type":"production"}
     }
 ]
