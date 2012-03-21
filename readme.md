@@ -30,11 +30,11 @@ There add the new preferences:
 
 ```
 , "url":"http://localhost/"
-, "url_testing":"http://domain.test/"
+, "url_production":"http://domain.test/"
 ```
 
 ```url``` allows you to set the url of your local server, opened via F12
-```url_testing``` allows you to set the url of your production server, opened via ALT+F12
+```url_production``` allows you to set the url of your production server, opened via ALT+F12
 
 Todo
 ------------------

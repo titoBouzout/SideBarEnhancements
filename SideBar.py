@@ -338,30 +338,32 @@ class SideBarCutCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
-		s.set('cut', "\n".join(items))
-		s.set('copy', '')
-		if len(items) > 1 :
-			sublime.status_message("Items cut")
-		else :
-			sublime.status_message("Item cut")
+
+		if len(items) > 0:
+			s.set('cut', "\n".join(items))
+			s.set('copy', '')
+			if len(items) > 1 :
+				sublime.status_message("Items cut")
+			else :
+				sublime.status_message("Item cut")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		items = []
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
 
-		s.set('cut', '')
-		s.set('copy', "\n".join(items))
-		if len(items) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			s.set('cut', '')
+			s.set('copy', "\n".join(items))
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
@@ -463,165 +465,176 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 
 class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.name())
+			items.append(item.name())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.nameEncoded())
+			items.append(item.nameEncoded())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.path())
+			items.append(item.path())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.uri())
+			items.append(item.uri())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.pathRelativeFromProject())
+			items.append(item.pathRelativeFromProject())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.pathRelativeFromProjectEncoded())
+			items.append(item.pathRelativeFromProjectEncoded())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.pathRelativeFromView())
+			items.append(item.pathRelativeFromView())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.pathRelativeFromViewEncoded())
+			items.append(item.pathRelativeFromViewEncoded())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.pathAbsoluteFromProject())
+			items.append(item.pathAbsoluteFromProject())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append(item.pathAbsoluteFromProjectEncoded())
+			items.append(item.pathAbsoluteFromProjectEncoded())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
 class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			to_copy.append('<a href="'+item.pathAbsoluteFromProjectEncoded()+'">'+item.namePretty()+'</a>')
+			items.append('<a href="'+item.pathAbsoluteFromProjectEncoded()+'">'+item.namePretty()+'</a>')
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
@@ -629,19 +642,19 @@ class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedImages():
 			try:
 				image_type, width, height = self.getImageInfo(item.contentBinary())
-				to_copy.append('<img src="'+item.pathAbsoluteFromProjectEncoded()+'" width="'+str(width)+'" height="'+str(height)+'" border="0"/>')
+				items.append('<img src="'+item.pathAbsoluteFromProjectEncoded()+'" width="'+str(width)+'" height="'+str(height)+'" border="0"/>')
 			except:
-				to_copy.append('<img src="'+item.pathAbsoluteFromProjectEncoded()+'" border="0"/>')
-
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+				items.append('<img src="'+item.pathAbsoluteFromProjectEncoded()+'" border="0"/>')
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	#Project:http://code.google.com/p/bfg-pages/
 	#License:http://www.opensource.org/licenses/bsd-license.php
@@ -712,82 +725,87 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 
 class SideBarCopyTagStyleCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedFilesWithExtension('css'):
-			to_copy.append('<link rel="stylesheet" type="text/css" href="'+item.pathAbsoluteFromProjectEncoded()+'"/>')
+			items.append('<link rel="stylesheet" type="text/css" href="'+item.pathAbsoluteFromProjectEncoded()+'"/>')
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFilesWithExtension('css')
 
 class SideBarCopyTagScriptCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedFilesWithExtension('js'):
-			to_copy.append('<script type="text/javascript" src="'+item.pathAbsoluteFromProjectEncoded()+'"></script>')
+			items.append('<script type="text/javascript" src="'+item.pathAbsoluteFromProjectEncoded()+'"></script>')
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFilesWithExtension('js')
 
 class SideBarCopyProjectDirectoriesCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for directory in SideBarProject().getDirectories():
-			to_copy.append(directory)
+			items.append(directory)
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(to_copy) > 1 :
-			sublime.status_message("Items copied")
-		else :
-			sublime.status_message("Item copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
 		return True
 
 class SideBarCopyContentUtf8Command(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedFiles():
-			to_copy.append(item.contentUTF8())
+			items.append(item.contentUTF8())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
-			sublime.status_message("Items content copied")
-		else :
-			sublime.status_message("Item content copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items content copied")
+			else :
+				sublime.status_message("Item content copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFiles()
 
 class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		for item in SideBarSelection(paths).getSelectedFiles():
-			to_copy.append(item.contentBase64())
+			items.append(item.contentBase64())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
-			sublime.status_message("Items content copied")
-		else :
-			sublime.status_message("Item content copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items content copied")
+			else :
+				sublime.status_message("Item content copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFiles()
 
 class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		to_copy = []
+		items = []
 		project = SideBarProject()
 		url = project.getPreference('url_production')
 		if url:
@@ -795,13 +813,14 @@ class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
 				url = url+'/'
 			for item in SideBarSelection(paths).getSelectedItems():
 				if item.isUnderCurrentProject():
-					to_copy.append(url + item.pathRelativeFromProjectEncoded())
+					items.append(url + item.pathRelativeFromProjectEncoded())
 
-		sublime.set_clipboard("\n".join(to_copy));
-		if len(paths) > 1 :
-			sublime.status_message("Items URL copied")
-		else :
-			sublime.status_message("Item URL copied")
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items URL copied")
+			else :
+				sublime.status_message("Item URL copied")
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasItemsUnderProject()
