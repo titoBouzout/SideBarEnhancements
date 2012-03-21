@@ -64,6 +64,10 @@
         "command": "side_bar_copy_tag_style"
     },
     {
+        "caption": "File: Copy URL",
+        "command": "side_bar_copy_url"
+    },
+    {
         "caption": "File: Search Files",
         "command": "side_bar_find_files_path_containing"
     },

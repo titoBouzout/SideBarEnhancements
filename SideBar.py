@@ -785,6 +785,27 @@ class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFiles()
 
+class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		to_copy = []
+		project = SideBarProject()
+		url = project.getPreference('url_production')
+		if url:
+			if url[-1:] != '/':
+				url = url+'/'
+			for item in SideBarSelection(paths).getSelectedItems():
+				if item.isUnderCurrentProject():
+					to_copy.append(url + item.pathRelativeFromProjectEncoded())
+
+		sublime.set_clipboard("\n".join(to_copy));
+		if len(paths) > 1 :
+			sublime.status_message("Items URL copied")
+		else :
+			sublime.status_message("Item URL copied")
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).hasItemsUnderProject()
+
 class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
 		import functools
@@ -1033,4 +1054,4 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			sublime.status_message('Preference "url" was not found in project file.\n"'+project.getProjectFile()+'", opening local file')
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
+		return SideBarSelection(paths).len() > 0

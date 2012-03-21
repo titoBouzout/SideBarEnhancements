@@ -63,6 +63,9 @@
 			{ "caption": "Name Encoded",                  "id": "side-bar-clip-copy-name-encoded",             "command": "side_bar_copy_name_encoded",                 "args": {"paths": []} },
 			{ "caption": "-", 								            "id": "side-bar-clip-copy-name-encoded-separator"},
 
+			{ "caption": "URL",                 					"id": "side-bar-clip-copy-url",             "command": "side_bar_copy_url",                 "args": {"paths": []} },
+			{ "caption": "-", 								            "id": "side-bar-clip-copy-url-separator"},
+
 			{ "caption": "Tag a",              		        "id": "side-bar-clip-copy-tag-a",                 	 "command": "side_bar_copy_tag_ahref",                  "args": {"paths": []} },
 			{ "caption": "Tag img",                       "id": "side-bar-clip-copy-tag-img",               	 "command": "side_bar_copy_tag_img",                    "args": {"paths": []} },
 			{ "caption": "Tag script",                    "id": "side-bar-clip-copy-tag-script",            	 "command": "side_bar_copy_tag_script",                 "args": {"paths": []} },

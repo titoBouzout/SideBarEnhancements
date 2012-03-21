@@ -53,6 +53,17 @@ class SideBarSelection:
 		else:
 			return False
 
+	def hasItemsUnderProject(self):
+		project = SideBarProject()
+		url = project.getPreference('url_production')
+		if url:
+			for item in self.getSelectedItems():
+				if item.isUnderCurrentProject():
+					return True
+			return False
+		else:
+			return False
+
 	def hasImages(self):
 		return self.hasFilesWithExtension('gif|jpg|jpeg|png')
 
