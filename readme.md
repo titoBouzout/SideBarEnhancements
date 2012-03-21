@@ -34,13 +34,12 @@ There add the new preferences:
 ```
 
 ```url``` allows you to set the url of your local server, opened via F12
-```url_testing``` allows you to set the url of your production server via, opened via ALT+F12
+```url_testing``` allows you to set the url of your production server, opened via ALT+F12
 
 Todo
 ------------------
 
  * Use a real clipboard integrated with the OS
- * A way to copy a filename with URL format. such: http://domain.tld/path/to/file.ext
 
 Installation
 ------------------
