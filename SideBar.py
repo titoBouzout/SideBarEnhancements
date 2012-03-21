@@ -329,6 +329,9 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def match(self, path):
 		return False if path.lower().find(self.searchTerm.lower()) == -1 else True
 
+	def is_enabled(self, paths=[]):
+		return SideBarSelection(paths).len() > 0
+
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
