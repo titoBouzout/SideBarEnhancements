@@ -24,6 +24,14 @@ class SideBarProject:
 		data = data.replace('\t', ' ')
 		data = json.loads(data)
 		projects = data['workspaces']['recent_workspaces']
+
+		if os.path.lexists(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')):
+			data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')), 'r').read()
+			data = data.replace('\t', ' ')
+			data = json.loads(data)
+			if 'workspaces' in data and 'recent_workspaces' in data['workspaces'] and data['workspaces']['recent_workspaces']:
+				projects += data['workspaces']['recent_workspaces']
+			projects = list(set(projects))
 		for project_file in projects:
 			project_file = re.sub(r'^/([^/])/', '\\1:/', project_file);
 			project_json = json.loads(file(project_file, 'r').read())
