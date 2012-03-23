@@ -1,8 +1,6 @@
 # coding=utf8
 import sublime, sublime_plugin
 import os
-import re
-import threading
 
 from sidebar.SideBarItem import SideBarItem
 from sidebar.SideBarSelection import SideBarSelection
@@ -285,20 +283,96 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import functools
-		
+		import re
+		import threading
+		search_path = sublime.active_window().active_view().file_name()
 		view = self.window.new_file() 
 		view.settings().set('word_wrap', False)
 		view.set_name('Open Files Matching')
-		
 		view.set_syntax_file('Packages/SideBarEnhancements/SideBar Results.hidden-tmLanguage')
 		view.set_scratch(True)
 		edit = view.begin_edit()
 		view.settings().set('sidebar_results', True)
+		view.settings().set('ignore_mod', False)
+		view.settings().set('sidebar_search_path', search_path)
 		view.replace(edit, sublime.Region(0, view.size()), "Type to search:     \n\nResults:" + "\n"*100)
 		view.sel().clear()
 		view.sel().add(sublime.Region(20))
-		view.end_edit(edit)   
+		view.end_edit(edit)
 		
+		
+class SideBarFindResultsViewListener(sublime_plugin.EventListener):  
+
+	def on_modified(self, view):
+		if view.settings().get('sidebar_results') == True:
+			path = view.settings().get('sidebar_search_path')
+			self.view = view
+			searchTerm = view.substr(view.line(0)).replace("Type to search:     ", "").strip()
+			self.searchTerm = searchTerm
+			contents = view.substr(sublime.Region(0, view.size()))
+			thread = SideBarFindFilesPathContainingSearchThread([path], searchTerm, view, contents)
+			if view.settings().get('ignore_mod') == False:
+			# if ignore_mod == False:
+					thread.start()
+					
+					self.check_threads([thread])
+			
+	def check_threads(self, threads):
+		global ignore_mod
+		next_threads = []
+		for thread in threads:
+			if thread.is_alive():
+					next_threads.append(thread)
+					continue
+			if thread.open_results:
+				# I have done a quick fix for this...
+				# I use your open-include, but I had to modify it to make it just use the absolute paths,
+				# and I had to delete the bit that checked if the filename was None, but maybe the final  
+				# function should be included in SideBar.py?
+				sublime.active_window().run_command("open_results")
+				sublime.active_window().focus_view(self.view)
+				
+				# Maybe you prefer to keep the search window open after opening the results?
+				sublime.active_window().run_command("close")
+				
+			if thread.result:
+				view = self.view
+				view.settings().set('ignore_mod', True)
+				edit = view.begin_edit()
+				new_contents = thread.result.lstrip() + "\n"*thread.extra_line_count
+				view.replace(edit, sublime.Region(view.line(0).b + 2, view.size()), new_contents);
+				
+				total_contents = view.substr(sublime.Region(0, view.size()))
+				pattern = re.compile("(" + self.searchTerm + ")", re.IGNORECASE)
+				
+				# Here I am finding the region for the first three lines so
+				# that I can test not highlight the searchTerm if it appears
+				# in those lines.
+				# There may be a better way of doing this:
+				line1 = view.full_line(0)
+				line2 = view.full_line(line1.b)
+				line3 = view.full_line(line2.b)
+				first_three_lines = sublime.Region(line1.a, line3.b)
+				
+				regions = []
+				for m in pattern.finditer(total_contents):
+					new_region = sublime.Region(m.start(), m.end())
+					if first_three_lines.contains(new_region):
+						continue
+					regions.append(new_region)
+				
+				# I don't particularly like the default highlight style. I would prefer a more
+				# subtle green text or something.
+				view.add_regions("highlight_matches", regions, "number")
+					
+				view.end_edit(edit)
+				# ignore_mod = False
+				view.settings().set('ignore_mod', False)
+		threads = next_threads
+		
+		if len(threads):
+			sublime.set_timeout(lambda: self.check_threads(threads), 100)
+			return  
 			
 	
 class SideBarFindFilesPathContainingSearchThread(threading.Thread):
@@ -373,84 +447,8 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 		def is_enabled(self, paths=[]):
 			return SideBarSelection(paths).len() > 0
 
-# Using a global was the only method I could readily think of to stop the threads
-# recursively calling the on_modified handler - I thought my computer was going
-# to explode before I realised this bug! All four cores were going at 95%!
-ignore_mod = False
 	
-class SideBarFindResultsViewListener(sublime_plugin.EventListener):  
-
-	def on_modified(self, view):
-		if view.settings().get('sidebar_results') == True:
-			# This needs changing. Again the only way I could think of doing this was
-			# to use a global to set the filename we will use for the search, so I have
-			# this temporary method for the moment:
-			path = sublime.active_window().views()[0].file_name()
-			self.view = view
-			searchTerm = view.substr(view.line(0)).replace("Type to search:     ", "").strip()
-			self.searchTerm = searchTerm
-			contents = view.substr(sublime.Region(0, view.size()))
-			thread = SideBarFindFilesPathContainingSearchThread([path], searchTerm, view, contents)
-			if ignore_mod == False:
-					thread.start()
-					
-					self.check_threads([thread])
-			
-	def check_threads(self, threads):
-		global ignore_mod
-		next_threads = []
-		for thread in threads:
-			if thread.is_alive():
-					next_threads.append(thread)
-					continue
-			if thread.open_results:
-				# I have done a quick fix for this...
-				# I use your open-include, but I had to modify it to make it just use the absolute paths,
-				# and I had to delete the bit that checked if the filename was None, but maybe the final  
-				# function should be included in SideBar.py?
-				sublime.active_window().run_command("open_results")
-				sublime.active_window().focus_view(self.view)
-				
-				# Maybe you prefer to keep the search window open after opening the results?
-				sublime.active_window().run_command("close")
-				
-			if thread.result:
-				view = self.view
-				ignore_mod = True
-				edit = view.begin_edit()
-				new_contents = thread.result.lstrip() + "\n"*thread.extra_line_count
-				view.replace(edit, sublime.Region(view.line(0).b + 2, view.size()), new_contents);
-				
-				total_contents = view.substr(sublime.Region(0, view.size()))
-				pattern = re.compile("(" + self.searchTerm + ")", re.IGNORECASE)
-				
-				# Here I am finding the region for the first three lines so
-				# that I can test not highlight the searchTerm if it appears
-				# in those lines.
-				# There may be a better way of doing this:
-				line1 = view.full_line(0)
-				line2 = view.full_line(line1.b)
-				line3 = view.full_line(line2.b)
-				first_three_lines = sublime.Region(line1.a, line3.b)
-				
-				regions = []
-				for m in pattern.finditer(total_contents):
-					new_region = sublime.Region(m.start(), m.end())
-					if first_three_lines.contains(new_region):
-						continue
-					regions.append(new_region)
-				
-				# I don't particularly like the default highlight style. I would prefer a more
-				# subtle green text or something.
-				view.add_regions("highlight_matches", regions, "number")
-					
-				view.end_edit(edit)
-				ignore_mod = False
-		threads = next_threads
-		
-		if len(threads):
-			sublime.set_timeout(lambda: self.check_threads(threads), 100)
-			return                      
+                    
 														
 	######## ########     ######## ##    ## ########  
 	##       ##     ##    ##       ###   ## ##     ## 
