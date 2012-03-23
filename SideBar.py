@@ -2,6 +2,9 @@
 import sublime, sublime_plugin
 import os
 
+import re
+import threading
+
 from sidebar.SideBarItem import SideBarItem
 from sidebar.SideBarSelection import SideBarSelection
 from sidebar.SideBarProject import SideBarProject
@@ -283,8 +286,6 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import functools
-		import re
-		import threading
 		search_path = sublime.active_window().active_view().file_name()
 		view = self.window.new_file() 
 		view.settings().set('word_wrap', False)
