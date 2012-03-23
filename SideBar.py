@@ -541,7 +541,7 @@ class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -557,7 +557,7 @@ class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowComm
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -605,7 +605,7 @@ class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -621,7 +621,7 @@ class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowComm
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -637,7 +637,7 @@ class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 
@@ -719,7 +719,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 		return content_type, width, height
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasImages()
+		return SideBarSelection(paths).hasImages() and SideBarSelection(paths).hasItemsUnderProject()
 
 
 
@@ -737,7 +737,7 @@ class SideBarCopyTagStyleCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFilesWithExtension('css')
+		return SideBarSelection(paths).hasFilesWithExtension('css') and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyTagScriptCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -753,7 +753,7 @@ class SideBarCopyTagScriptCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFilesWithExtension('js')
+		return SideBarSelection(paths).hasFilesWithExtension('js') and SideBarSelection(paths).hasItemsUnderProject()
 
 class SideBarCopyProjectDirectoriesCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
