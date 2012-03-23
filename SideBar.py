@@ -1,6 +1,7 @@
 # coding=utf8
 import sublime, sublime_plugin
 import os
+import re
 import threading
 
 from sidebar.SideBarItem import SideBarItem
@@ -336,12 +337,11 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 					
 				if self.total > 0:          
 					# This is my method to check for a return key-press.
-					# contents = view.substr(sublime.Region(0, view.size()))
 					lines = self.view_contents.split("\n")
 					if len(lines) > 3:
+						# I like the idea of using the return key instead of another shortcut, so
 						# I am using this to check if the user presses return, then I will open the results, or
-						# selected results with your open-include.
-						# I like the idea of using the return key instead of another shortcut.
+						# selected results with your open-include (not implemented).
 						if lines[3] == "Results:":
 							# I will check for this value in SideBarFindResultsViewListener.check_threads()
 							self.open_results = True
@@ -382,13 +382,18 @@ class SideBarFindResultsViewListener(sublime_plugin.EventListener):
 
 	def on_modified(self, view):
 		if view.settings().get('sidebar_results') == True:
+			# This needs changing. Again the only way I could think of doing this was
+			# to use a global to set the filename we will use for the search, so I have
+			# this temporary method for the moment:
 			path = sublime.active_window().views()[0].file_name()
 			self.view = view
 			searchTerm = view.substr(view.line(0)).replace("Type to search:     ", "").strip()
+			self.searchTerm = searchTerm
 			contents = view.substr(sublime.Region(0, view.size()))
 			thread = SideBarFindFilesPathContainingSearchThread([path], searchTerm, view, contents)
 			if ignore_mod == False:
 					thread.start()
+					
 					self.check_threads([thread])
 			
 	def check_threads(self, threads):
@@ -404,18 +409,41 @@ class SideBarFindResultsViewListener(sublime_plugin.EventListener):
 				# and I had to delete the bit that checked if the filename was None, but maybe the final  
 				# function should be included in SideBar.py?
 				sublime.active_window().run_command("open_results")
+				sublime.active_window().focus_view(self.view)
 				
-				# TODO: Maybe we should close the results window too?
-
+				# Maybe you prefer to keep the search window open after opening the results?
+				sublime.active_window().run_command("close")
+				
 			if thread.result:
 				view = self.view
 				ignore_mod = True
 				edit = view.begin_edit()
-				view.replace(edit, sublime.Region(view.line(0).b + 2, view.size()), thread.result.lstrip() + "\n"*thread.extra_line_count);
-				# TODO: We could add some nice colours to the string match in the results,
-				# but I'm struggling with Python's regex module.
+				new_contents = thread.result.lstrip() + "\n"*thread.extra_line_count
+				view.replace(edit, sublime.Region(view.line(0).b + 2, view.size()), new_contents);
 				
-				# add_regions(key, [regions], scope
+				total_contents = view.substr(sublime.Region(0, view.size()))
+				pattern = re.compile("(" + self.searchTerm + ")", re.IGNORECASE)
+				
+				# Here I am finding the region for the first three lines so
+				# that I can test not highlight the searchTerm if it appears
+				# in those lines.
+				# There may be a better way of doing this:
+				line1 = view.full_line(0)
+				line2 = view.full_line(line1.b)
+				line3 = view.full_line(line2.b)
+				first_three_lines = sublime.Region(line1.a, line3.b)
+				
+				regions = []
+				for m in pattern.finditer(total_contents):
+					new_region = sublime.Region(m.start(), m.end())
+					if first_three_lines.contains(new_region):
+						continue
+					regions.append(new_region)
+				
+				# I don't particularly like the default highlight style. I would prefer a more
+				# subtle green text or something.
+				view.add_regions("highlight_matches", regions, "number")
+					
 				view.end_edit(edit)
 				ignore_mod = False
 		threads = next_threads
