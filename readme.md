@@ -64,6 +64,19 @@ Forum Thread
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
+Update v1.2:
+------------------
+* Improved: Feature "find advanced -> in paths containing" or ALT+F now provides instant search, contribution by @ryecroft, thanks a lot!
+* Fix: When only 1 tab is open and setting "close_windows_when_empty" is true. If the user renames or delete the current file will cause the application to close by itself (it will be perceived as a crash but is not).
+* New: Add to the command palette useful commands as duplicate, reveal, move, open project file, open in browser, refresh, rename
+* New: added keybindings F12 to open in local server, ALT+F12 to open in production server.
+* New: Allows to copy the URL of the selected items.
+* Improved: When renaming/moving remember the tab position and syntax.
+* small fixes:
+- Correct display of commands that are available only for projects
+- Be sure to return None if there is no open project
+- only display a message when using the clipboard if something was copied.
+
 Update v1.1:
 ------------------
 * New: Add boolean preference "confirm_before_deleting" which controls if a the package should ask the user to delete files and folders
