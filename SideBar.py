@@ -283,6 +283,8 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 			paths = SideBarProject().getDirectories()
 		else:
 			paths = [item.path() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()]
+		if paths == []:
+			return
 		view = self.window.new_file()
 		view.settings().set('word_wrap', False)
 		view.set_name('Instant File Search')
