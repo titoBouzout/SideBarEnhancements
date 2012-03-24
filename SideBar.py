@@ -336,6 +336,7 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 				return
 			# print 'run forrest run'
 			self.total = 0
+			self.highlight_from = 0
 			self.match_result = u''
 			self.match_result += 'Type to search: '+self.searchTerm+'\n'
 			for item in SideBarSelection(self.paths).getSelectedDirectoriesOrDirnames():
@@ -351,6 +352,8 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 				else:
 					self.match_result += 'No match'
 				self.match_result += ' in '+str(self.num_files)+' files for term "'+self.searchTerm+'" under \n"'+item.path()+'"\n\n'
+				if self.highlight_from == 0:
+					self.highlight_from = len(self.match_result)
 				self.match_result += ('\n'.join(self.files))
 				self.total = self.total + length
 			self.match_result += '\n'
@@ -363,6 +366,10 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 				sel = sublime.Region(view.sel()[0].begin(), view.sel()[0].end())
 				view.replace(edit, sublime.Region(0, view.size()), self.match_result);
 				view.end_edit(edit)
+				view.erase_regions("sidebar_search_instant_highlight")
+				if self.total < 30000 and len(self.searchTerm) > 1:
+					regions = [item for item in view.find_all(self.searchTerm, sublime.LITERAL|sublime.IGNORECASE) if item.begin() >= self.highlight_from]
+					view.add_regions("sidebar_search_instant_highlight", regions, 'string', sublime.DRAW_EMPTY|sublime.DRAW_OUTLINED|sublime.DRAW_EMPTY_AS_OVERWRITE)
 				view.sel().clear()
 				view.sel().add(sel)
 
