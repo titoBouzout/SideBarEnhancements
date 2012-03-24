@@ -378,7 +378,7 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 				self.num_files = self.num_files+1
 				if self.match(path):
 					self.files.append(path)
-			else:
+			elif os.path.isdir(path):
 				for content in os.listdir(path):
 					file = os.path.join(path, content)
 					if os.path.isfile(file) or os.path.islink(file):
