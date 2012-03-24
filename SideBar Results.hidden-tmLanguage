@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>name</key>
-	<string>SideBar Results</string>
+	<dict>
+		<key>name</key>
+		<string>SideBar Results</string>
 
-	<key>patterns</key>
-	<array>
-		<dict>
-			<key>match</key>
-			<string>^(.*(\:|/).*)$</string>
-			<key>captures</key>
+		<key>patterns</key>
+		<array>
 			<dict>
-				<key>1</key>
+				<key>match</key>
+				<string>(Type to search\:).*</string>
+				<key>captures</key>
 				<dict>
-					<key>name</key>
-					<string>entity.name.filename.find-in-files</string>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>entity.name.function</string>
+					</dict>
 				</dict>
 			</dict>
-		</dict>
-	</array>
-	<key>scopeName</key>
-	<string>text.find-in-files</string>
-</dict>
+			<dict>
+				<key>match</key>
+				<string>([0-9]+) match.*</string>
+				<key>captures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>entity.name.function</string>
+					</dict>
+				</dict>
+			</dict>
+			<dict>
+				<key>match</key>
+				<string>^(.*(\:|/).*)$</string>
+				<key>captures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>entity.name.filename.find-in-files</string>
+					</dict>
+				</dict>
+			</dict>
+		</array>
+		<key>scopeName</key>
+		<string>text.find-in-files</string>
+	</dict>
 </plist>

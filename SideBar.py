@@ -2,8 +2,7 @@
 import sublime, sublime_plugin
 import os
 
-import re
-import threading
+import threading, time
 
 from sidebar.SideBarItem import SideBarItem
 from sidebar.SideBarSelection import SideBarSelection
@@ -273,159 +272,99 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 			return 'In Files With Extension '+(",".join(items))+u'…'
 		else:
 			return u'In Files With Extension…'
-			
-			
-	######## ########      ######  ########    ###    ########  ######## 
-	##       ##     ##    ##    ##    ##      ## ##   ##     ##    ##    
-	##       ##     ##    ##          ##     ##   ##  ##     ##    ##    
-	######   ########      ######     ##    ##     ## ########     ##    
-	##       ##     ##          ##    ##    ######### ##   ##      ##    
-	##       ##     ##    ##    ##    ##    ##     ## ##    ##     ##    
-	##       ########      ######     ##    ##     ## ##     ##    ##    
+
+
+sidebar_instant_search = 0
 
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		import functools
-		search_path = sublime.active_window().active_view().file_name()
-		view = self.window.new_file() 
+		global sidebar_instant_search
+		if paths == [] and SideBarProject().getDirectories():
+			paths = SideBarProject().getDirectories()
+		else:
+			paths = [item.path() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()]
+		view = self.window.new_file()
 		view.settings().set('word_wrap', False)
-		view.set_name('Open Files Matching')
+		view.set_name('Instant File Search')
 		view.set_syntax_file('Packages/SideBarEnhancements/SideBar Results.hidden-tmLanguage')
 		view.set_scratch(True)
 		edit = view.begin_edit()
-		view.settings().set('sidebar_results', True)
-		view.settings().set('ignore_mod', False)
-		view.settings().set('sidebar_search_path', search_path)
-		view.replace(edit, sublime.Region(0, view.size()), "Type to search:     \n\nResults:" + "\n"*100)
-		view.sel().clear()
-		view.sel().add(sublime.Region(20))
+		view.settings().set('sidebar_instant_search_paths', paths)
+		view.replace(edit, sublime.Region(0, view.size()), "Type to search: ")
 		view.end_edit(edit)
-		
-		
-class SideBarFindResultsViewListener(sublime_plugin.EventListener):  
+		view.sel().clear()
+		view.sel().add(sublime.Region(16))
+		sidebar_instant_search += 1
+
+	def is_enabled(self, paths=[]):
+		return True
+
+class SideBarFindResultsViewListener(sublime_plugin.EventListener):
 
 	def on_modified(self, view):
-		if view.settings().get('sidebar_results') == True:
-			path = view.settings().get('sidebar_search_path')
-			self.view = view
-			searchTerm = view.substr(view.line(0)).replace("Type to search:     ", "").strip()
-			self.searchTerm = searchTerm
-			contents = view.substr(sublime.Region(0, view.size()))
-			thread = SideBarFindFilesPathContainingSearchThread([path], searchTerm, view, contents)
-			if view.settings().get('ignore_mod') == False:
-			# if ignore_mod == False:
-					thread.start()
-					
-					self.check_threads([thread])
-			
-	def check_threads(self, threads):
-		global ignore_mod
-		next_threads = []
-		for thread in threads:
-			if thread.is_alive():
-					next_threads.append(thread)
-					continue
-			if thread.open_results:
-				# I have done a quick fix for this...
-				# I use your open-include, but I had to modify it to make it just use the absolute paths,
-				# and I had to delete the bit that checked if the filename was None, but maybe the final  
-				# function should be included in SideBar.py?
-				sublime.active_window().run_command("open_results")
-				sublime.active_window().focus_view(self.view)
-				
-				# Maybe you prefer to keep the search window open after opening the results?
-				sublime.active_window().run_command("close")
-				
-			if thread.result:
-				view = self.view
-				view.settings().set('ignore_mod', True)
-				edit = view.begin_edit()
-				new_contents = thread.result.lstrip() + "\n"*thread.extra_line_count
-				view.replace(edit, sublime.Region(view.line(0).b + 2, view.size()), new_contents);
-				
-				total_contents = view.substr(sublime.Region(0, view.size()))
-				pattern = re.compile("(" + self.searchTerm + ")", re.IGNORECASE)
-				
-				# Here I am finding the region for the first three lines so
-				# that I can test not highlight the searchTerm if it appears
-				# in those lines.
-				# There may be a better way of doing this:
-				line1 = view.full_line(0)
-				line2 = view.full_line(line1.b)
-				line3 = view.full_line(line2.b)
-				first_three_lines = sublime.Region(line1.a, line3.b)
-				
-				regions = []
-				for m in pattern.finditer(total_contents):
-					new_region = sublime.Region(m.start(), m.end())
-					if first_three_lines.contains(new_region):
-						continue
-					regions.append(new_region)
-				
-				# I don't particularly like the default highlight style. I would prefer a more
-				# subtle green text or something.
-				view.add_regions("highlight_matches", regions, "number")
-					
-				view.end_edit(edit)
-				# ignore_mod = False
-				view.settings().set('ignore_mod', False)
-		threads = next_threads
-		
-		if len(threads):
-			sublime.set_timeout(lambda: self.check_threads(threads), 100)
-			return  
-			
-	
+		global sidebar_instant_search
+		if sidebar_instant_search > 0 and view.settings().has('sidebar_instant_search_paths'):
+			row, col = view.rowcol(view.sel()[0].begin())
+			if row != 0 or not view.sel()[0].empty():
+				return
+			paths = view.settings().get('sidebar_instant_search_paths')
+			searchTerm = view.substr(view.line(0)).replace("Type to search:", "").strip()
+			start_time = time.time()
+			view.settings().set('sidebar_search_paths_start_time', start_time)
+			if searchTerm:
+				sublime.set_timeout(lambda:SideBarFindFilesPathContainingSearchThread(paths, searchTerm, view, start_time).start(), 300)
+
+	def on_close(self, view):
+		if view.settings().has('sidebar_instant_search_paths'):
+			global sidebar_instant_search
+			sidebar_instant_search -= 1
+
 class SideBarFindFilesPathContainingSearchThread(threading.Thread):
-		def __init__(self, paths, searchTerm, view, contents):
-				self.result = False
-				self.open_results = False
-				self.view = view
-				self.view_contents = contents
-				self.searchTerm = searchTerm
-				self.paths = paths
-				threading.Thread.__init__(self)
+		def __init__(self, paths, searchTerm, view, start_time):
+			if view.settings().get('sidebar_search_paths_start_time') != start_time:
+				self.should_run = False
+			else:
+				self.should_run = True
+			self.view = view
+			self.searchTerm = searchTerm
+			self.paths = paths
+			self.start_time = start_time
+			threading.Thread.__init__(self)
 
 		def run(self):
-				self.searchTerm = self.searchTerm.strip()
-				self.total = 0
-				view = self.view
-				match_result = u''
-				for item in SideBarSelection(self.paths).getSelectedDirectoriesOrDirnames():
-					self.files = []
-					self.num_files = 0
-					self.find(item.path())
-					match_result += ('\n'.join(self.files))+'\n'
-					length = len(self.files)
-					if length > 1:
-						match_result += str(length)+' matches\n'
-					elif length > 0:
-						match_result += '1 match\n'
-					else:
-						match_result += 'No match\n'
-					self.total = self.total + length
-
-				extra_line_count = 100 - len(match_result.split("\n"))
-				self.extra_line_count = extra_line_count
-				if extra_line_count < 0:
-					extra_line_count = 0
-					
-				if self.total > 0:          
-					# This is my method to check for a return key-press.
-					lines = self.view_contents.split("\n")
-					if len(lines) > 3:
-						# I like the idea of using the return key instead of another shortcut, so
-						# I am using this to check if the user presses return, then I will open the results, or
-						# selected results with your open-include (not implemented).
-						if lines[3] == "Results:":
-							# I will check for this value in SideBarFindResultsViewListener.check_threads()
-							self.open_results = True
-					
-					self.result = "Results:\n" + match_result.lstrip() + "\n"*extra_line_count
-					return
+			if not self.should_run:
+				return
+			# print 'run forrest run'
+			self.total = 0
+			self.match_result = u''
+			self.match_result += 'Type to search: '+self.searchTerm+'\n'
+			for item in SideBarSelection(self.paths).getSelectedDirectoriesOrDirnames():
+				self.files = []
+				self.num_files = 0
+				self.find(item.path())
+				self.match_result += '\n'
+				length = len(self.files)
+				if length > 1:
+					self.match_result += str(length)+' matches'
+				elif length > 0:
+					self.match_result += '1 match'
 				else:
-					self.result = 'No matches...' + "\n"*100
-					return
+					self.match_result += 'No match'
+				self.match_result += ' in '+str(self.num_files)+' files for term "'+self.searchTerm+'" under \n"'+item.path()+'"\n\n'
+				self.match_result += ('\n'.join(self.files))
+				self.total = self.total + length
+			self.match_result += '\n'
+			sublime.set_timeout(lambda:self.on_done(), 0)
+
+		def on_done(self):
+			if self.start_time == self.view.settings().get('sidebar_search_paths_start_time'):
+				view = self.view;
+				edit = view.begin_edit()
+				sel = sublime.Region(view.sel()[0].begin(), view.sel()[0].end())
+				view.replace(edit, sublime.Region(0, view.size()), self.match_result);
+				view.end_edit(edit)
+				view.sel().clear()
+				view.sel().add(sel)
 
 		def find(self, path):
 			if os.path.isfile(path) or os.path.islink(path):
@@ -441,24 +380,9 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 							self.files.append(file)
 					else:
 						self.find(file)
-						
+
 		def match(self, path):
 			return False if path.lower().find(self.searchTerm.lower()) == -1 else True
-
-		def is_enabled(self, paths=[]):
-			return SideBarSelection(paths).len() > 0
-
-	
-                    
-														
-	######## ########     ######## ##    ## ########  
-	##       ##     ##    ##       ###   ## ##     ## 
-	##       ##     ##    ##       ####  ## ##     ## 
-	######   ########     ######   ## ## ## ##     ## 
-	##       ##     ##    ##       ##  #### ##     ## 
-	##       ##     ##    ##       ##   ### ##     ## 
-	##       ########     ######## ##    ## ########  
-					
 
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -526,7 +450,7 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 						already_exists_paths.append(new)
 					elif test == 'False':
 						if os.path.exists(new) and replace == 'False':
-							pass 
+							pass
 						else:
 							try:
 								if not path.move(new, replace == 'True'):
