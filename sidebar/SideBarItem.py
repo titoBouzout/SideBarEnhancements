@@ -375,3 +375,47 @@ class SideBarItem:
 				view.add_regions("bookmarks", rs, "bookmarks", "bookmark", sublime.HIDDEN | sublime.PERSISTENT)
 
 			view.set_viewport_position(options.scroll, False)
+
+	def close_associated_buffers(self):
+		path = self.path()
+		closed_items = []
+		for window in sublime.windows():
+			active_view = window.active_view()
+			views = []
+			for view in window.views():
+				if view.file_name():
+					views.append(view)
+			views.reverse();
+			for view in views:
+				if path == view.file_name():
+					closed_items.append([view.file_name(), view.window(), view.window().get_view_index(view)])
+					if len(window.views()) == 1:
+						window.new_file()
+					window.focus_view(view)
+					window.run_command('revert')
+					window.run_command('close')
+				elif view.file_name().find(path+'\\') == 0:
+					closed_items.append([view.file_name(), view.window(), view.window().get_view_index(view)])
+					if len(window.views()) == 1:
+						window.new_file()
+					window.focus_view(view)
+					window.run_command('revert')
+					window.run_command('close')
+				elif view.file_name().find(path+'/') == 0:
+					closed_items.append([view.file_name(), view.window(), view.window().get_view_index(view)])
+					if len(window.views()) == 1:
+						window.new_file()
+					window.focus_view(view)
+					window.run_command('revert')
+					window.run_command('close')
+
+			# try to repaint
+			try:
+				window.focus_view(active_view)
+				window.focus_view(window.active_view())
+			except:
+				try:
+					window.focus_view(window.active_view())
+				except:
+					pass
+		return closed_items
