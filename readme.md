@@ -66,7 +66,7 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
 Update v1.2:
 ------------------
-* Improved: Feature "find advanced -> in paths containing" or ALT+F now provides instant search, contribution by @ryecroft, thanks a lot!
+* Improved: Feature "find advanced -> in paths containing" or CTRL+ALT+F now provides instant search, contribution by @ryecroft, thanks a lot!
 * Fix: When only 1 tab is open and setting "close_windows_when_empty" is true. If the user renames or delete the current file will cause the application to close by itself (it will be perceived as a crash but is not).
 * New: Add to the command palette useful commands as duplicate, reveal, move, open project file, open in browser, refresh, rename
 * New: added keybindings F12 to open in local server, ALT+F12 to open in production server.
