@@ -904,6 +904,9 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 			sublime.error_message("Unable to copy:\n\n"+old+"\n\nto\n\n"+new)
 			self.run([old], new)
 			return
+		item = SideBarItem(new, os.path.isdir(new))
+		if item.isFile():
+			item.edit();
 		SideBarProject().refresh();
 
 	def is_enabled(self, paths = []):
