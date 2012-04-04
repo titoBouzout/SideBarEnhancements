@@ -5,6 +5,7 @@ import re
 import shutil
 
 from SideBarProject import SideBarProject
+import desktop
 
 class Object():
 	pass
@@ -139,11 +140,6 @@ class SideBarItem:
 			import subprocess
 			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
 		else:
-			import sys
-			path = os.path.join(sublime.packages_path(), 'SideBarEnhancements')
-			if path not in sys.path:
-				sys.path.append(path)
-			import desktop
 			desktop.open(self.path())
 
 	def edit(self):

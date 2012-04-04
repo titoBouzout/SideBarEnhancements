@@ -8,6 +8,8 @@ from sidebar.SideBarItem import SideBarItem
 from sidebar.SideBarSelection import SideBarSelection
 from sidebar.SideBarProject import SideBarProject
 
+from send2trash import send2trash
+
 def disable_default():
 	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
 	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar.sublime-menu.txt'
@@ -966,16 +968,11 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		if confirmed == 'False' and s.get('confirm_before_deleting', True):
 			self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
 		else:
-			import sys
 			try:
-				path = os.path.join(sublime.packages_path(), 'SideBarEnhancements')
-				if path not in sys.path:
-					sys.path.append(path)
-				import send2trash
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 						item.close_associated_buffers()
-					send2trash.send2trash(item.path())
+					send2trash(item.path())
 				SideBarProject().refresh();
 			except:
 				import functools
