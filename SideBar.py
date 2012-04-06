@@ -965,21 +965,35 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
+		print '--------------'
+		print 'deleting paths'
+		print paths
+		print 'confirmed'
+		print confirmed
 		if confirmed == 'False' and s.get('confirm_before_deleting', True):
+			print 'confirmed == False and confirm_before_deleting == True'
 			self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
 		else:
+			print 'trying send to trash'
 			try:
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 						item.close_associated_buffers()
+						print 'closed associated buffers'
+					print 'send2trash'
 					send2trash(item.path())
 				SideBarProject().refresh();
+				print 'file deleted'
+				print 'file exists?'+str(os.path.exists(item.path()))
 			except:
+				print 'something failed'
+				print 'trying Permanent deletion'
 				import functools
 				self.window.run_command('hide_panel');
 				self.window.show_input_panel("Permanently Delete:", SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 
 	def confirm(self, paths, display_paths):
+		print 'confirm'
 		import functools
 		window = sublime.active_window()
 		window.show_input_panel("BUG!", '', '', None, None)
@@ -993,22 +1007,27 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		no = []
 		no.append('No');
 		no.append('Cancel the operation.');
-
+		print 'showing quick panel'
 		window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths))
 
 	def on_confirm(self, paths, result):
 		if result != -1:
 			if result == 0:
+				print 'confirmation accepted'
 				self.run(paths, 'True')
 
 	def on_done(self, old, new):
+		print 'on done'
 		if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 			item = SideBarItem(new, os.path.isdir(new))
 			item.close_associated_buffers()
+		print 'closed associated buffers'
 		self.remove(new)
 		SideBarProject().refresh();
 
 	def remove(self, path):
+		print 'remove'
+		print path
 		if os.path.isfile(path) or os.path.islink(path):
 			self.remove_safe_file(path)
 		else:
@@ -1026,6 +1045,9 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				os.remove(path)
 			except:
 				print "Unable to remove file:\n\n"+path
+		else:
+			print 'path is none'
+			print path
 
 	def remove_safe_dir(self, path):
 		if not SideBarSelection().isNone(path):
