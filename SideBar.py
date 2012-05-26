@@ -178,6 +178,8 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			if sublime.platform() == 'osx':
 				subprocess.Popen(['open', '-a', application, item.nameSystem()], cwd=item.dirnameSystem())
 			elif sublime.platform() == 'windows':
+				for k, v in os.environ.iteritems():
+					application_dir = application_dir.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
 			else:
 				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
