@@ -94,7 +94,7 @@ class SideBarItem:
 		if path == '':
 			return '.'
 		else:
-			return './'+re.sub('^/+', '', path)
+			return re.sub('^/+', '', path)
 
 	def forCwdSystemPathRelativeFromRecursive(self, relativeFrom):
 		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
@@ -103,9 +103,9 @@ class SideBarItem:
 			return '.'
 		else:
 			if self.isDirectory():
-				return './'+re.sub('^/+', '', path)+'/'
+				return re.sub('^/+', '', path)+'/'
 			else:
-				return './'+re.sub('^/+', '', path)
+				return re.sub('^/+', '', path)
 
 	def dirnameSystem(self):
 		import sys
