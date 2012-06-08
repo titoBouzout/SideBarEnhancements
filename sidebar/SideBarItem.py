@@ -5,7 +5,11 @@ import re
 import shutil
 
 from SideBarProject import SideBarProject
-import desktop
+
+try:
+	import desktop
+except:
+	pass
 
 class Object():
 	pass
