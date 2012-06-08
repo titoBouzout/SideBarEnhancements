@@ -39,24 +39,29 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 		self.window.show_input_panel("File Name:", name, functools.partial(self.on_done, paths), None, None)
 
 	def on_done(self, paths, name):
-		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-			item = SideBarItem(item.join(name), False)
-			if item.exists():
-				sublime.error_message("Unable to create file, file or folder exists.")
-				self.run(paths, name)
-				return
-			else:
-				try:
-					item.create()
-					item.edit()
-				except:
-					sublime.error_message("Unable to create file:\n\n"+item.path())
+		paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+		if not paths:
+			paths = SideBarProject().getDirectories()
+			if paths:
+				paths = [SideBarItem(paths[0], False)]
+		if not paths:
+			sublime.active_window().new_file()
+		else:
+			for item in paths:
+				item = SideBarItem(item.join(name), False)
+				if item.exists():
+					sublime.error_message("Unable to create file, file or folder exists.")
 					self.run(paths, name)
 					return
-		SideBarProject().refresh();
-
-	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+				else:
+					try:
+						item.create()
+						item.edit()
+					except:
+						sublime.error_message("Unable to create file:\n\n"+item.path())
+						self.run(paths, name)
+						return
+			SideBarProject().refresh();
 
 class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
