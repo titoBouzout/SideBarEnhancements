@@ -1113,3 +1113,17 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
+
+class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		import subprocess
+		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+			if sublime.platform() == 'osx':
+				subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
+			elif sublime.platform() == 'windows':
+				try:
+					subprocess.Popen(['subl', '.'], cwd=item.pathSystem(), shell=True)
+				except:
+					subprocess.Popen(['sublime_text.exe', '.'], cwd=item.pathSystem(), shell=True)
+			else:
+				subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
