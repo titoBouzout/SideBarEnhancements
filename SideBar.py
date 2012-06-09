@@ -1119,7 +1119,10 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 		import subprocess
 		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
 			if sublime.platform() == 'osx':
-				subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
+				try:
+					subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
+				except:
+					subprocess.Popen(['/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl', '.'], cwd=item.pathSystem())
 			elif sublime.platform() == 'windows':
 				try:
 					subprocess.Popen(['subl', '.'], cwd=item.pathSystem(), shell=True)
