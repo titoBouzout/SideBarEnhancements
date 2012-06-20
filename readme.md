@@ -46,6 +46,11 @@ Installation
 
 Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
 
+Uninstall
+------------------
+
+Follow the instructions here: https://github.com/titoBouzout/SideBarEnhancements/issues/18
+
 Using the External Libraries
 ------------------
 
