@@ -229,7 +229,10 @@ class SideBarItem:
 	def move(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
 		if location.exists() and replace == False:
-			return False
+			if self.path().lower() == location.path().lower():
+				pass
+			else:
+				return False
 		elif location.exists() and location.isFile():
 			os.remove(location.path())
 
