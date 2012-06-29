@@ -22,19 +22,19 @@ class SideBarProject:
 		import json
 		data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read()
 		data = data.replace('\t', ' ')
-		data = json.loads(data)
+		data = json.loads(data, strict=False)
 		projects = data['workspaces']['recent_workspaces']
 
 		if os.path.lexists(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')):
 			data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')), 'r').read()
 			data = data.replace('\t', ' ')
-			data = json.loads(data)
+			data = json.loads(data, strict=False)
 			if 'workspaces' in data and 'recent_workspaces' in data['workspaces'] and data['workspaces']['recent_workspaces']:
 				projects += data['workspaces']['recent_workspaces']
 			projects = list(set(projects))
 		for project_file in projects:
 			project_file = re.sub(r'^/([^/])/', '\\1:/', project_file);
-			project_json = json.loads(file(project_file, 'r').read())
+			project_json = json.loads(file(project_file, 'r').read(), strict=False)
 			if 'folders' in project_json:
 				folders = project_json['folders']
 				found_all = True
@@ -56,8 +56,7 @@ class SideBarProject:
 		if not self.hasOpenedProject():
 			return None
 		import json
-		data = file(self.getProjectFile(), 'r').read().replace('\t', ' ')
-		return json.loads(data)
+		return json.loads(file(self.getProjectFile(), 'r').read(), strict=False)
 
 	def excludeDirectory(self, path):
 		import json
