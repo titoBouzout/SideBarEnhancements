@@ -244,12 +244,29 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		self.window.run_command('hide_panel');
-		if int(sublime.version()) >= 2136:
+		if int(sublime.version()) >= 2137:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
+		elif int(sublime.version()) >= 2136:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":"<open folders>"})
 		elif int(sublime.version()) >= 2134:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "where":""})
 		else:
 			self.window.run_command("show_panel", {"panel": "find_in_files", "location":"<open folders>"})
+
+class SideBarFindInProjectCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		self.window.run_command('hide_panel');
+		if int(sublime.version()) >= 2137:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
+		elif int(sublime.version()) >= 2136:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":"<open folders>"})
+		elif int(sublime.version()) >= 2134:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "where":""})
+		else:
+			self.window.run_command("show_panel", {"panel": "find_in_files", "location":"<open folders>"})
+
+	def is_visible(self, paths = []):
+		return not s.get('disabled_menuitem_find_in_project')
 
 class SideBarFindInProjectFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):

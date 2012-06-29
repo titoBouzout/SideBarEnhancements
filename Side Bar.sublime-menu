@@ -24,6 +24,7 @@
 	{ "caption": "-",                 "id": "side-bar-edit-open-separator" },
 
 	{ "caption": "Find & Replace…", "id": "side-bar-find-selected",    "command": "side_bar_find_in_selected", "args": {"paths": []} },
+	{ "caption": "Find In Project…", "id": "side-bar-find-in-project",    "command": "side_bar_find_in_project", "args": {"paths": []} },
 	{ "caption": "Find Advanced", "id": "side-bar-find-advanced",
 		"children":
 		[

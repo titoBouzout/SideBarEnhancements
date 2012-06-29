@@ -15,6 +15,7 @@
 	"disabled_menuitem_open_run":           false,
 	"disabled_menuitem_open_in_browser":    false,
 	"disabled_menuitem_open_in_new_window": false,
+	"disabled_menuitem_find_in_project":		false,
 	"disabled_menuitem_copy_name":          false,
 	"disabled_menuitem_copy_path":          false,
 	"disabled_menuitem_paste_in_parent":    false
