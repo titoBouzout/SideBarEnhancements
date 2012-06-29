@@ -95,6 +95,9 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFiles()
 
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_edit')
+
 class SideBarOpenCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		for item in SideBarSelection(paths).getSelectedFiles():
@@ -102,6 +105,9 @@ class SideBarOpenCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasFiles()
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_open_run')
 
 class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -533,6 +539,11 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
 		return s.get('cut', '') + s.get('copy', '') != '' and len(SideBarSelection(paths).getSelectedDirectoriesOrDirnames()) == 1
 
+	def is_visible(self, paths = [], in_parent = False):
+		if in_parent == 'True':
+			return not s.get('disabled_menuitem_paste_in_parent')
+		else:
+			return True
 
 class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -550,6 +561,9 @@ class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_copy_name')
+
 class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
@@ -565,6 +579,7 @@ class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
+
 
 class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -613,6 +628,8 @@ class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+
+
 
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -693,6 +710,9 @@ class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowComm
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_copy_path')
 
 class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -791,8 +811,6 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasImages() and SideBarSelection(paths).hasItemsUnderProject()
-
-
 
 class SideBarCopyTagStyleCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1114,6 +1132,9 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_open_in_browser')
+
 class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import subprocess
@@ -1139,3 +1160,6 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 					subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
 				except:
 					subprocess.Popen(['sublime', '.'], cwd=item.pathSystem())
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_open_in_new_window')
