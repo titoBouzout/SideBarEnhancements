@@ -1009,7 +1009,11 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
 
 		if confirmed == 'False' and s.get('confirm_before_deleting', True):
-			self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
+			if sublime.platform() == 'osx':
+				if sublime.ok_cancel_dialog('delete the selected items?'):
+					self.run(paths, 'True')
+			else:
+				self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
 		else:
 			try:
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
