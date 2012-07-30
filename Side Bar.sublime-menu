@@ -103,7 +103,7 @@
 			{ "caption": "Promote as Project Folder", "id": "side-bar-project-item-add",     "command": "side_bar_project_item_add",        "args": {"paths": []} },
 			{ "caption": "Exclude From Project",			"id": "side-bar-project-item-exclude",   "command": "side_bar_project_item_exclude",        "args": {"paths": []} },
 			{ "caption": "-",                					"id": "side-bar-project-item-separator" },
-			{ "caption": "Remove Folder from Project", "command": "remove_folder", "args": { "dirs": []} },
+			{ "caption": "Remove Folder from Project", "id": "side-bar-project-item-remove-folder", "command": "side_bar_project_item_remove_folder", "args": { "paths": []} },
       { "command": "prompt_add_folder", "caption": "Add Folder to Project…", "mnemonic": "d" }
 
 		]

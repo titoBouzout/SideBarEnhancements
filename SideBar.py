@@ -1181,3 +1181,10 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_in_new_window')
+
+class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		self.window.run_command('remove_folder', {"dirs":paths})
+
+	def is_enabled(self, paths =[]):
+		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == True
