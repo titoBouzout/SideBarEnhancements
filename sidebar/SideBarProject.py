@@ -101,12 +101,12 @@ class SideBarProject:
 		file(project_file, 'w+').write(json.dumps(project, indent=1))
 
 	def refresh(self):
-		# try:
-		# 	sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 200);
-		# 	sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 1300);
-		# 	sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 2300);
-		# except:
-		pass
+		try:
+			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 200);
+			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 1300);
+			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 2300);
+		except:
+			pass
 
 	def getPreference(self, name):
 		if not self.hasOpenedProject():
