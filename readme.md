@@ -26,9 +26,9 @@ All commands available for files and folders(when applicable) .
 F12 key allows you to open the current file in browser.
 If you want to add a url to that feature:
 
-1 - Open the Settings folder: .../Sublime Text 2/Packages/../Settings/
-2 - Create a file called "SideBarEnhancements.json"
-3 - Add your paths and URLs with the following structure:
+ * Open the Settings folder: .../Sublime Text 2/Packages/../Settings/
+ * Create a file called "SideBarEnhancements.json"
+ * Add your paths and URLs with the following structure:
 
 ```
 {
