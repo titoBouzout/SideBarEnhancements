@@ -18,5 +18,8 @@
 	"disabled_menuitem_find_in_project":		false,
 	"disabled_menuitem_copy_name":          false,
 	"disabled_menuitem_copy_path":          false,
-	"disabled_menuitem_paste_in_parent":    false
+	"disabled_menuitem_paste_in_parent":    false,
+
+	//if installed in a default location maybe this works.
+	"default_browser": "firefox" //one of this list: http://docs.python.org/library/webbrowser.html#webbrowser.register
 }
