@@ -99,6 +99,7 @@
 		"children":
 		[
 			{ "caption": "Edit Project", "id": "side-bar-project-open-file",      "command": "side_bar_project_open_file",           "args": {"paths": []} },
+			{ "caption": "Edit Projects Preview URLs", "id": "side-bar-project-preview-url",      "command": "side_bar_project_open_project_preview_urls_file",           "args": {"paths": []} },
 			{ "caption": "-",                					"id": "side-bar-project-open-file-separator" },
 			{ "caption": "Promote as Project Folder", "id": "side-bar-project-item-add",     "command": "side_bar_project_item_add",        "args": {"paths": []} },
 			{ "caption": "Exclude From Project",			"id": "side-bar-project-item-exclude",   "command": "side_bar_project_item_exclude",        "args": {"paths": []} },

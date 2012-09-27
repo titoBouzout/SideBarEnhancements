@@ -26,6 +26,10 @@ try:
 except:
 	pass
 
+def expand_vars(path):
+	for k, v in os.environ.iteritems():
+		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
+	return path
 #NOTES
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
@@ -189,9 +193,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			if sublime.platform() == 'osx':
 				subprocess.Popen(['open', '-a', application, item.nameSystem()], cwd=item.dirnameSystem())
 			elif sublime.platform() == 'windows':
-				for k, v in os.environ.iteritems():
-					application_dir = application_dir.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
-				subprocess.Popen([application_name, item.pathSystem()], cwd=application_dir, shell=True)
+				subprocess.Popen([application_name, item.pathSystem()], cwd=expand_vars(application_dir), shell=True)
 			else:
 				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
 
@@ -1101,6 +1103,10 @@ class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 		if project.hasOpenedProject():
 			SideBarItem(project.getProjectFile(), False).edit();
 
+class SideBarProjectOpenProjectPreviewUrlsFileCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		SideBarItem(sublime.packages_path()+'/../Settings/SideBarEnhancements.json', False).edit();
+
 class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		project = SideBarProject()
@@ -1126,11 +1132,10 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = False):
-		import webbrowser
-		try:
-			browser = webbrowser.get(s.get("default_browser"))
-		except:
-			browser = webbrowser
+
+		browser = s.get("default_browser")
+		if browser == '':
+			browser = 'firefox'
 
 		if type == False or type == 'testing':
 			type = 'url_testing'
@@ -1141,9 +1146,142 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 
 		for item in SideBarSelection(paths).getSelectedItems():
 			if item.projectURL(type):
-				browser.open_new_tab(item.projectURL(type) + item.pathRelativeFromProjectEncoded())
+				self.try_open(item.projectURL(type) + item.pathRelativeFromProjectEncoded(), browser)
 			else:
-				browser.open_new_tab(item.uri())
+				self.try_open(item.uri(), browser)
+
+	# def run(self, paths = [], type = False):
+	# 	import webbrowser
+	# 	try:
+	# 		browser = webbrowser.get(s.get("default_browser"))
+	# 	except:
+	# 		browser = webbrowser
+
+	# 	if type == False or type == 'testing':
+	# 		type = 'url_testing'
+	# 	elif type == 'production':
+	# 		type = 'url_production'
+	# 	else:
+	# 		type = 'url_testing'
+
+	# 	for item in SideBarSelection(paths).getSelectedItems():
+	# 		if item.projectURL(type):
+	# 			browser.open_new_tab(item.projectURL(type) + item.pathRelativeFromProjectEncoded())
+	# 		else:
+	# 			browser.open_new_tab(item.uri())
+
+	def try_open(self, url, browser):
+		import subprocess
+
+		browser = browser.lower().strip();
+		if browser == 'chrome':
+			if sublime.platform() == 'osx':
+				items = ['open']
+				commands = ['-a', 'Google Chrome', url]
+			else:
+				items = [
+					'/usr/bin/google-chrome'
+
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe'
+					,'%USERPROFILE%\\Configuración local\\Datos de programa\\Google\\Chrome\\Application\\chrome.exe'
+					,'C:\\Users\\%USERNAME%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
+
+					,'chrome'
+					,'chrome.exe'
+				]
+				commands = ['-new-tab', url]
+		elif browser == 'chromium':
+			if sublime.platform() == 'osx':
+				items = ['open']
+				commands = ['-a', 'Chromium', url]
+			else:
+				items = [
+					'/usr/bin/chromium'
+
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Chromium\\Application\\chrome.exe'
+					,'%USERPROFILE%\\Configuración local\\Datos de programa\\Chromium\\Application\\chrome.exe'
+					,'C:\\Users\\%USERNAME%\\AppData\\Local\\Chromium\\Application\\chrome.exe'
+
+					,'chromium'
+					,'chromium.exe'
+				]
+				commands = ['-new-tab', url]
+		elif browser == 'firefox':
+			if sublime.platform() == 'osx':
+				items = ['open']
+				commands = ['-a', 'Firefox', url]
+			else:
+				items = [
+					'/usr/bin/firefox'
+
+					,'%PROGRAMFILES%\\Nightly\\firefox.exe'
+					,'%PROGRAMFILES(X86)%\\Nightly\\firefox.exe'
+
+					,'%PROGRAMFILES%\\Mozilla Firefox\\firefox.exe'
+					,'%PROGRAMFILES(X86)%\\Mozilla Firefox\\firefox.exe'
+
+					,'firefox'
+					,'firefox.exe'
+				]
+				commands = ['-new-tab', url]
+		elif browser == 'opera':
+			if sublime.platform() == 'osx':
+				items = ['open']
+				commands = ['-a', 'Opera', url]
+			else:
+				items = [
+					'/usr/bin/opera'
+					,'/usr/bin/opera-next'
+					,'/usr/bin/operamobile'
+
+					,'%PROGRAMFILES%\\Opera\\opera.exe'
+					,'%PROGRAMFILES(X86)%\\Opera\\opera.exe'
+
+					,'%PROGRAMFILES%\\Opera Next\\opera.exe'
+					,'%PROGRAMFILES(X86)%\\Opera Next\\opera.exe'
+
+					,'%PROGRAMFILES%\\Opera Mobile Emulator\\OperaMobileEmu.exe'
+					,'%PROGRAMFILES(X86)%\\Opera Mobile Emulator\\OperaMobileEmu.exe'
+
+					,'opera'
+					,'opera.exe'
+				]
+				commands = ['-newtab', url]
+		elif browser == 'safari':
+			if sublime.platform() == 'osx':
+				items = ['open']
+				commands = ['-a', 'Safari', url]
+			else:
+				items = [
+					'/usr/bin/safari'
+
+					,'%PROGRAMFILES%\\Safari\\Safari.exe'
+					,'%PROGRAMFILES(X86)%\\Safari\\Safari.exe'
+
+					,'Safari'
+					,'Safari.exe'
+				]
+				commands = ['-new-tab', '-url', url]
+		else:
+			sublime.error_message('Browser "'+browser+'" not found!\nUse any of the following: firefox, chrome, chromium, opera, safari')
+			return
+
+		for item in items:
+			try:
+				command2 = list(commands)
+				command2.insert(0, expand_vars(item))
+				subprocess.Popen(command2)
+				return
+			except:
+				try:
+					command2 = list(commands)
+					command2.insert(0, item)
+					subprocess.Popen(command2)
+					return
+				except:
+					pass
+
+		sublime.error_message('Browser "'+browser+'" not found!\nIs installed? Which location...?')
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
