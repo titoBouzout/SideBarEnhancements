@@ -1184,8 +1184,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-a', 'Google Chrome', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
-				aKey = OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") 
-				reg_value, reg_type = _winreg.QueryValueEx (hKey, "Local AppData")
+				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") 
+				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
 
 				items = [
 					  reg_value+'\\Chrome\\Application\\chrome.exe'
@@ -1207,8 +1207,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-a', 'Chromium', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
-				aKey = OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") 
-				reg_value, reg_type = _winreg.QueryValueEx (hKey, "Local AppData")
+				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") 
+				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
 
 				items = [
 					  reg_value+'\\Chromium\\Application\\chromium.exe'
