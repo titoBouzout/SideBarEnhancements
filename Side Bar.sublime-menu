@@ -8,6 +8,7 @@
 	{ "caption": "Open / Run",              "id": "side-bar-open",             "command": "side_bar_open",             "args": {"paths": []} },
 	{ "caption": "Open In Browser",              "id": "side-bar-open-in-browser",             "command": "side_bar_open_in_browser",             "args": {"paths": []} },
 	{ "caption": "Open In New Window",              "id": "side-bar-open-in-new-window",             "command": "side_bar_open_in_new_window",             "args": {"paths": []} },
+	{ "caption": "Open With Finder",              "id": "side-bar-open-with-finde",             "command": "side_bar_open_with_finder",             "args": {"paths": []} },
 	{ "caption": "Open With",        "id": "side-bar-files-open-with",
 
 		"children":

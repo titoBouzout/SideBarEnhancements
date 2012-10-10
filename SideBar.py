@@ -1347,6 +1347,15 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_in_new_window')
 
+class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		import subprocess
+		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+			subprocess.Popen(['open', item.nameSystem()], cwd=item.pathSystem())
+
+	def is_visible(self, paths =[]):
+		return sublime.platform() == 'osx'
+
 class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		self.window.run_command('remove_folder', {"dirs":paths})
