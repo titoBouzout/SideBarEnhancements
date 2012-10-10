@@ -1184,11 +1184,14 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-a', 'Google Chrome', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
-				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") 
+				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
 
 				items = [
-					  reg_value+'\\Chrome\\Application\\chrome.exe'
+					'%HOMEPATH%\AppData\Local\Google\Chrome\Application\chrome.exe'
+
+					,reg_value+'\\Chrome\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
 					,'chrome.exe'
@@ -1207,11 +1210,20 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-a', 'Chromium', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
-				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") 
+				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
 
 				items = [
-					  reg_value+'\\Chromium\\Application\\chromium.exe'
+					'%HOMEPATH%\AppData\Local\Google\Chrome SxS\Application\chrome.exe'
+
+					, reg_value+'\\Chromium\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
+					,'chrome.exe'
+
+					, reg_value+'\\Chromium\\Application\\chromium.exe'
+					,'%HOMEPATH%\\Chromium\\Application\\chromium.exe'
 					,'%PROGRAMFILES%\\Chromium\\Application\\chromium.exe'
 					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chromium.exe'
 					,'chromium.exe'
