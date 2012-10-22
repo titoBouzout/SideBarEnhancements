@@ -1353,7 +1353,7 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import subprocess
 		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-			subprocess.Popen(['open', item.nameSystem()], cwd=item.pathSystem())
+			subprocess.Popen(['open', item.nameSystem()], cwd=item.dirnameSystem())
 
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'
