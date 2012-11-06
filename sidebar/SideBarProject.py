@@ -103,6 +103,7 @@ class SideBarProject:
 	def refresh(self):
 		try:
 			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 200);
+			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 600);
 			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 1300);
 			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 2300);
 		except:
