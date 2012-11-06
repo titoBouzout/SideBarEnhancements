@@ -54,7 +54,7 @@ class SideBarItem:
 	def projectURL(self, type):
 		filename = os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'SideBarEnhancements.json'))
 		if os.path.lexists(filename):
-			try:
+			#try:
 				import json
 				data = file(filename, 'r').read()
 				data = data.replace('\t', ' ').replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/').replace('http:/', 'http://').replace('https:/', 'https://')
@@ -62,14 +62,20 @@ class SideBarItem:
 
 				for path in data.keys():
 					path2 = expand_vars(path)
-					if self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/').find(path2.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')) == 0:
+					print '-------------------------------------------------------'
+					print 'searching:'
+					print path2.lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					print 'in:'
+					print self.path().lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					print '-------------------------------------------------------'
+					if self.path().lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/').find(path2.lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')) == 0:
 						url = data[path][type]
 						if url:
 							if url[-1:] != '/':
 								url = url+'/'
 						return url;
-			except:
-				return False
+			#except:
+			#	return False
 		else:
 			return False
 

@@ -22,5 +22,5 @@
 	"disabled_menuitem_paste_in_parent":    false,
 
 	//if installed in a default location maybe this works.
-	"default_browser": "firefox" //one of this list: firefox, chrome, chromium, opera, safari
+	"default_browser": "chrome" //one of this list: firefox, chrome, chromium, opera, safari
 }
