@@ -10,6 +10,7 @@
 
 	"confirm_before_deleting" : true,
 
+	"new_files_relative_to_project_root": false,
 
 	"disabled_menuitem_edit":               false,
 	"disabled_menuitem_open_run":           false,

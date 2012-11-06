@@ -40,14 +40,27 @@ def expand_vars(path):
 
 s = sublime.load_settings('Side Bar.sublime-settings')
 
+class SideBarNewFile2Command(sublime_plugin.WindowCommand):
+	def run(self, paths = [], name = ""):
+		import functools
+		self.window.run_command('hide_panel');
+		self.window.show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
+
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
 		self.window.run_command('hide_panel');
-		self.window.show_input_panel("File Name:", name, functools.partial(self.on_done, paths), None, None)
+		self.window.show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
-	def on_done(self, paths, name):
-		paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+	def on_done(self, paths, relative_to_project, name):
+		if relative_to_project and s.get('new_files_relative_to_project_root'):
+			paths = SideBarProject().getDirectories()
+			if paths:
+				paths = [SideBarItem(paths[0], False)]
+			if not paths:
+				paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+		else:
+			paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
 		if not paths:
 			paths = SideBarProject().getDirectories()
 			if paths:
