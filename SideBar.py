@@ -1060,7 +1060,10 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		no = []
 		no.append('No');
 		no.append('Cancel the operation.');
-		sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
+		if sublime.platform() == 'osx':
+			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
+		else:
+			window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths))
 
 	def on_confirm(self, paths, result):
 		if result != -1:
