@@ -1,5 +1,5 @@
 [
-	{ "keys": ["ctrl+t"], "command": "side_bar_new_file" },
+	{ "keys": ["ctrl+t"], "command": "side_bar_new_file2" },
 	{ "keys": ["f12"],
 		"command": "side_bar_open_in_browser" ,
     "args":{"paths":[], "type":"testing"}
