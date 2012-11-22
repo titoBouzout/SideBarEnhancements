@@ -45,6 +45,33 @@ If you want to add a url to that feature:
 
 ```url_production``` allows you to set the url of your production server, opened via ALT+F12
 
+### Configuring your browser
+
+#### Default browser
+
+Open your user settings and set:
+
+```
+{
+  "default_browser": "chromium"
+}
+```
+*(Available browsers: chrome, chromium, firefox, safari, opera. )*
+
+#### Additional parameters
+
+If you need additional parameters when launching the browser in production/testing: 
+
+```
+{
+  "default_browser": "chromium"
+  "default_browser_parameters_testing": "--allow-file-access-from-files""
+  "default_browser_parameters_production": "--disable-java"
+}
+```
+*(Note: If chrome/chromium is already running in the background these parameters will not take effect.)*
+
+
 # Notes on configuring the `Open With` menu:
 
 Definitions file:  `User/SidebarEnhancements/Open With/Side Bar.sublime-menu` (note the extra subfolder levels).
