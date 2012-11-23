@@ -1152,7 +1152,6 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = False):
-
 		browser = s.get("default_browser")
 		if browser == '':
 			browser = 'firefox'
@@ -1164,11 +1163,16 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		else:
 			type = 'url_testing'
 
+		if type == 'url_production':
+		  params = s.get("default_browser_parameters_production")
+		else:
+		 	params = s.get("default_browser_parameters_testing")
+
 		for item in SideBarSelection(paths).getSelectedItems():
 			if item.projectURL(type):
-				self.try_open(item.projectURL(type) + item.pathRelativeFromProjectEncoded(), browser)
+				self.try_open(item.projectURL(type) + item.pathRelativeFromProjectEncoded(), browser, params)
 			else:
-				self.try_open(item.uri(), browser)
+				self.try_open(item.uri(), browser, params)
 
 	# def run(self, paths = [], type = False):
 	# 	import webbrowser
@@ -1190,14 +1194,14 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	# 		else:
 	# 			browser.open_new_tab(item.uri())
 
-	def try_open(self, url, browser):
+	def try_open(self, url, browser, params):
 		import subprocess
 
 		browser = browser.lower().strip();
 		if browser == 'chrome':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Google Chrome', url]
+				commands = ['-a', 'Google Chrome', params, url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
 				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
@@ -1212,18 +1216,18 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
 					,'chrome.exe'
 				]
-				commands = ['-new-tab', url]
+				commands = ['-new-tab', params, url]
 			else:
 				items = [
 					'/usr/bin/google-chrome'
 					,'chrome'
 				]
-				commands = ['-new-tab', url]
+				commands = ['-new-tab', params, url]
 
 		elif browser == 'chromium':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Chromium', url]
+				commands = ['-a', 'Chromium', params, url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
 				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
@@ -1246,17 +1250,17 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chromium.exe'
 					,'chromium.exe'
 				]
-				commands = ['-new-tab', url]
+				commands = ['-new-tab', params, url]
 			else:
 				items = [
 					'/usr/bin/chromium'
 					,'chromium'
 				]
-				commands = ['-new-tab', url]
+				commands = ['-new-tab', params, url]
 		elif browser == 'firefox':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Firefox', url]
+				commands = ['-a', 'Firefox', params, url]
 			else:
 				items = [
 					'/usr/bin/firefox'
@@ -1270,11 +1274,11 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'firefox'
 					,'firefox.exe'
 				]
-				commands = ['-new-tab', url]
+				commands = ['-new-tab', params, url]
 		elif browser == 'opera':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Opera', url]
+				commands = ['-a', 'Opera', params, url]
 			else:
 				items = [
 					'/usr/bin/opera'
@@ -1293,11 +1297,11 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'opera'
 					,'opera.exe'
 				]
-				commands = ['-newtab', url]
+				commands = ['-newtab', params, url]
 		elif browser == 'safari':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Safari', url]
+				commands = ['-a', 'Safari', params, url]
 			else:
 				items = [
 					'/usr/bin/safari'
@@ -1308,7 +1312,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'Safari'
 					,'Safari.exe'
 				]
-				commands = ['-new-tab', '-url', url]
+				commands = ['-new-tab', params, '-url', url]
 		else:
 			sublime.error_message('Browser "'+browser+'" not found!\nUse any of the following: firefox, chrome, chromium, opera, safari')
 			return
