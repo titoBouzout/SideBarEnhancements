@@ -44,6 +44,7 @@
 	{ "caption": "Copy",              "id": "side-bar-clip-copy",        "command": "side_bar_copy",             "args": {"paths": []} },
 	{ "caption": "Copy Name",         "id": "side-bar-clip-copy-name",                     "command": "side_bar_copy_name",                         "args": {"paths": []} },
 	{ "caption": "Copy Path",         "id": "side-bar-clip-copy-path",    "command": "side_bar_copy_path_absolute_from_project_encoded",        "args": {"paths": []} },
+	{ "caption": "Copy Dir Path",     "id": "side-bar-clip-copy-dir-path",                     "command": "side_bar_copy_dir_path",                         "args": {"paths": []} },
 	{ "caption": "Copy as Text",      "id": "side-bar-clip-copy-as",
 		"children":
 		[
