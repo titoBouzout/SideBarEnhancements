@@ -89,6 +89,13 @@ https://github.com/titoBouzout/SideBarEnhancements
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
+# Contributors:
+
+	- Leif Ringstad
+	- Sven Axelsson
+	- Dalibor Simacek
+	- Stephen Horne
+
 # Update v1.2:
 
 * Improved: Feature "find advanced -> in paths containing" or CTRL+ALT+F now provides instant search, contribution by @ryecroft, thanks a lot!
