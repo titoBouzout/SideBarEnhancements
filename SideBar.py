@@ -1223,13 +1223,13 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
 
 				items = [
-					'%HOMEPATH%\AppData\Local\Google\Chrome\Application\chrome.exe'
+					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
 
 					,reg_value+'\\Chrome\\Application\\chrome.exe'
 					,'%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
-					,'%USERPROFILE%\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe'
+					,'%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe'
 					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
@@ -1255,11 +1255,11 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
 
 				items = [
-					'%HOMEPATH%\AppData\Local\Google\Chrome SxS\Application\chrome.exe'
+					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe'
 
 					, reg_value+'\\Chromium\\Application\\chromium.exe'
-					,'%USERPROFILE%\Local Settings\\Application Data\\Google\\Chrome\\chromium.exe'
-					,'%USERPROFILE%\Local\ Settings\\Application\ Data\\Google\\Chrome\\chromium.exe'
+					,'%USERPROFILE%\\Local Settings\\Application Data\\Google\\Chrome\\chromium.exe'
+					,'%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\chromium.exe'
 					,'%HOMEPATH%\\Chromium\\Application\\chromium.exe'
 					,'%PROGRAMFILES%\\Chromium\\Application\\chromium.exe'
 					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chromium.exe'
@@ -1268,8 +1268,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'chromium.exe'
 
 					, reg_value+'\\Chromium\\Application\\chrome.exe'
-					,'%USERPROFILE%\Local Settings\\Application Data\\Google\\Chrome\\chrome.exe'
-					,'%USERPROFILE%\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe'
+					,'%USERPROFILE%\\Local Settings\\Application Data\\Google\\Chrome\\chrome.exe'
+					,'%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe'
 					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
