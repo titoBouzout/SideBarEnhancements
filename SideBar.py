@@ -1229,6 +1229,12 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
+					,'%USERPROFILE%\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe'
+					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe'
 					,'chrome.exe'
 				]
 				commands = ['-new-tab', url]
@@ -1251,19 +1257,26 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items = [
 					'%HOMEPATH%\AppData\Local\Google\Chrome SxS\Application\chrome.exe'
 
-					, reg_value+'\\Chromium\\Application\\chrome.exe'
-					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
-					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
-					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
-					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe'
-					,'chrome.exe'
-
 					, reg_value+'\\Chromium\\Application\\chromium.exe'
+					,'%USERPROFILE%\Local Settings\\Application Data\\Google\\Chrome\\chromium.exe'
+					,'%USERPROFILE%\Local\ Settings\\Application\ Data\\Google\\Chrome\\chromium.exe'
 					,'%HOMEPATH%\\Chromium\\Application\\chromium.exe'
 					,'%PROGRAMFILES%\\Chromium\\Application\\chromium.exe'
 					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chromium.exe'
+					,'%HOMEPATH%\\Local Settings\\Application\ Data\\Google\\Chrome\\Application\\chromium.exe'
 					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chromium.exe'
 					,'chromium.exe'
+
+					, reg_value+'\\Chromium\\Application\\chrome.exe'
+					,'%USERPROFILE%\Local Settings\\Application Data\\Google\\Chrome\\chrome.exe'
+					,'%USERPROFILE%\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe'
+					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe'
+					,'chrome.exe'
+
 				]
 				commands = ['-new-tab', url]
 			else:
