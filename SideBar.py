@@ -1128,6 +1128,59 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
+
+class SideBarEmptyCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = [], confirmed = 'False'):
+
+		if confirmed == 'False' and s.get('confirm_before_deleting', True):
+			if sublime.platform() == 'osx':
+				if sublime.ok_cancel_dialog('empty the content of the folder?'):
+					self.run(paths, 'True')
+			else:
+				self.confirm([item.path() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()])
+		else:
+			try:
+				for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+					for content in os.listdir(item.path()):
+						file = os.path.join(item.path(), content)
+						if not SideBarSelection().isNone(file):
+							send2trash(file)
+					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+						item.close_associated_buffers()
+			except:
+				pass
+			SideBarProject().refresh();
+
+	def confirm(self, paths, display_paths):
+		import functools
+		window = sublime.active_window()
+		window.show_input_panel("BUG!", '', '', None, None)
+		window.run_command('hide_panel');
+
+		yes = []
+		yes.append('Yes, empty the selected items.');
+		for item in display_paths:
+			yes.append(item);
+
+		no = []
+		no.append('No');
+		no.append('Cancel the operation.');
+		if sublime.platform() == 'osx':
+			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
+		else:
+			window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths))
+
+	def on_confirm(self, paths, result):
+		if result != -1:
+			if result == 0:
+				self.run(paths, 'True')
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() > 0
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_empty')
+
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		for item in SideBarSelection(paths).getSelectedItems():

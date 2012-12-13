@@ -93,6 +93,7 @@
 	{ "caption": "-",                 "id": "side-bar-rename-move-separator" },
 
 	{ "caption": "Delete",            "id": "side-bar-delete",           "command": "side_bar_delete",           "args": {"paths": []} },
+	{ "caption": "Empty",            "id": "side-bar-emptry",           "command": "side_bar_empty",           "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-delete-separator" },
 
   { "caption": "Refresh",           "id": "side-bar-refresh",          "command": "refresh_folder_list" },
