@@ -1,0 +1,21 @@
+
+
+SideBarEnhancements Changelog:
+
+	## Shorcuts collisioning with Sublime2's built-in shortcuts have been removed.
+
+	If you miss these
+
+		- Go to "Preferences" -> "Browse Packages" -> "User"
+		- Open or create file "Default.sublime-keymap"
+
+		- Add this content:
+
+				, { "keys": ["ctrl+t"], "command": "side_bar_new_file2" },
+				{ "keys": ["f2"], "command": "side_bar_rename" },
+				{ "keys": ["ctrl+alt+f"], "command": "side_bar_find_files_path_containing" }
+
+
+	## If you have problems configuring F12 key
+
+		- https://github.com/titoBouzout/SideBarEnhancements#f12-key

@@ -40,6 +40,15 @@ def expand_vars(path):
 
 s = sublime.load_settings('Side Bar.sublime-settings')
 
+def check_version():
+	version = '11.13.2012.1305.0';
+	if s.get('version') != version:
+		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/messages/'+version+'.txt', False).edit();
+		s.set('version', version);
+		sublime.save_settings('Side Bar.sublime-settings')
+
+sublime.set_timeout(lambda:check_version(), 3000);
+
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
