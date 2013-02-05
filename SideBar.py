@@ -50,8 +50,6 @@ def expand_vars(path):
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
-s = sublime.load_settings('Side Bar.sublime-settings')
-
 def check_version():
 	version = '11.13.2012.1305.0';
 	if s.get('version') != version:
@@ -59,7 +57,10 @@ def check_version():
 		s.set('version', version);
 		sublime.save_settings('Side Bar.sublime-settings')
 
-sublime.set_timeout(lambda:check_version(), 3000);
+def plugin_loaded():
+	global s
+	s = sublime.load_settings('Side Bar.sublime-settings')
+	check_version()
 
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
