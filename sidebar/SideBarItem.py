@@ -4,10 +4,10 @@ import os
 import re
 import shutil
 
-from SideBarProject import SideBarProject
+from .SideBarProject import SideBarProject
 
 try:
-	import desktop
+	from . import desktop
 except:
 	pass
 
@@ -15,12 +15,12 @@ class Object():
 	pass
 
 def expand_vars(path):
-	for k, v in os.environ.iteritems():
+	for k, v in list(os.environ.items()):
 		try:
 			# dirty hack, this should be autofixed in python3
-			k = unicode(k.encode('utf8'))
-			v = unicode(v.encode('utf8'))
-			path = path.replace(u'%'+k+'%', v).replace(u'%'+k.lower()+'%', v)
+			k = str(k.encode('utf8'))
+			v = str(v.encode('utf8'))
+			path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 		except:
 			pass
 	return path
@@ -62,29 +62,29 @@ class SideBarItem:
 		if os.path.lexists(filename):
 			#try:
 				import json
-				data = file(filename, 'r').read()
+				data = open(filename, 'r').read()
 				data = data.replace('\t', ' ').replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/').replace('http:/', 'http://').replace('https:/', 'https://')
 				data = json.loads(data, strict=False)
 
-				for path in data.keys():
+				for path in list(data.keys()):
 					path2 = expand_vars(path)
-					print '-------------------------------------------------------'
-					print 'searching:'
+					print('-------------------------------------------------------')
+					print('searching:')
 					path2 = path2.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					print path2
-					print 'in:'
+					print(path2)
+					print('in:')
 					path3 = self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					print path3
-					print '-------------------------------------------------------'
+					print(path3)
+					print('-------------------------------------------------------')
 					path4 = re.sub(re.compile("^"+re.escape(path2), re.IGNORECASE), '', path3);
-					print path4
+					print(path4)
 					if path4 != path3:
 						url = data[path][type]
 						if url:
 							if url[-1:] != '/':
 								url = url+'/'
-						import urllib
-						return url+(re.sub("^/", '', urllib.quote(path4.encode('utf-8'))));
+						import urllib.request, urllib.parse, urllib.error
+						return url+(re.sub("^/", '', urllib.parse.quote(path4.encode('utf-8'))));
 
 			#except:
 			#	return False
@@ -102,26 +102,26 @@ class SideBarItem:
 		return re.sub('^/+', '', self.pathWithoutProject())
 
 	def pathRelativeFromProjectEncoded(self):
-		import urllib
-		return urllib.quote(self.pathRelativeFromProject().encode('utf-8'))
+		import urllib.request, urllib.parse, urllib.error
+		return urllib.parse.quote(self.pathRelativeFromProject().encode('utf-8'))
 
 	def pathRelativeFromView(self):
 		return os.path.relpath(self.path(), os.path.dirname(sublime.active_window().active_view().file_name())).replace('\\', '/')
 
 	def pathRelativeFromViewEncoded(self):
-		import urllib
-		return urllib.quote(os.path.relpath(self.path(), os.path.dirname(sublime.active_window().active_view().file_name())).replace('\\', '/').encode('utf-8'))
+		import urllib.request, urllib.parse, urllib.error
+		return urllib.parse.quote(os.path.relpath(self.path(), os.path.dirname(sublime.active_window().active_view().file_name())).replace('\\', '/').encode('utf-8'))
 
 	def pathAbsoluteFromProject(self):
 		return self.pathWithoutProject()
 
 	def pathAbsoluteFromProjectEncoded(self):
-		import urllib
-		return urllib.quote(self.pathAbsoluteFromProject().encode('utf-8'))
+		import urllib.request, urllib.parse, urllib.error
+		return urllib.parse.quote(self.pathAbsoluteFromProject().encode('utf-8'))
 
 	def uri(self):
-		import urllib
-		return 'file:'+urllib.pathname2url(self.path().encode('utf-8'));
+		import urllib.request, urllib.parse, urllib.error
+		return 'file:'+urllib.request.pathname2url(self.path().encode('utf-8'));
 
 	def join(self, name):
 		return os.path.join(self.path(), name)
@@ -183,8 +183,8 @@ class SideBarItem:
 		return self.name().encode(sys.getfilesystemencoding())
 
 	def nameEncoded(self):
-		import urllib
-		return urllib.quote(self.name().encode('utf-8'));
+		import urllib.request, urllib.parse, urllib.error
+		return urllib.parse.quote(self.name().encode('utf-8'));
 
 	def namePretty(self):
 		return self.name().replace(self.extension(), '').replace('-', ' ').replace('_', ' ').strip();
@@ -213,16 +213,16 @@ class SideBarItem:
 		return codecs.open(self.path(), 'r', 'utf-8').read()
 
 	def contentBinary(self):
-		return file(self.path(), "rb").read()
+		return open(self.path(), "rb").read()
 
 	def contentBase64(self):
-		return 'data:'+self.mime()+';base64,'+(file(self.path(), "rb").read().encode("base64").replace('\n', ''))
+		return 'data:'+self.mime()+';base64,'+(open(self.path(), "rb").read().encode("base64").replace('\n', ''))
 
 	def reveal(self):
 		sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
 
 	def write(self, content):
-		file(self.path(), 'w+').write(content)
+		open(self.path(), 'w+').write(content)
 
 	def mime(self):
 		import mimetypes

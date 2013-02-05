@@ -19,7 +19,7 @@ import os
 import os.path as op
 from datetime import datetime
 import stat
-from urllib import quote
+from urllib.parse import quote
 
 FILES_DIR = 'files'
 INFO_DIR = 'info'

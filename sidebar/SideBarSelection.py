@@ -3,8 +3,8 @@ import sublime
 import os
 import re
 
-from SideBarProject import SideBarProject
-from SideBarItem import SideBarItem
+from .SideBarProject import SideBarProject
+from .SideBarItem import SideBarItem
 
 class SideBarSelection:
 
