@@ -64,16 +64,22 @@ class SideBarItem:
 					path2 = expand_vars(path)
 					print '-------------------------------------------------------'
 					print 'searching:'
-					print path2.lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					path2 = path2.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					print path2
 					print 'in:'
-					print self.path().lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					path3 = self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					print path3
 					print '-------------------------------------------------------'
-					if self.path().lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/').find(path2.lower().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')) == 0:
+					path4 = re.sub(re.compile("^"+re.escape(path2), re.IGNORECASE), '', path3);
+					print path4
+					if path4 != path3:
 						url = data[path][type]
 						if url:
 							if url[-1:] != '/':
 								url = url+'/'
-						return url;
+						import urllib
+						return url+(re.sub("^/", '', urllib.quote(path4.encode('utf-8'))));
+
 			#except:
 			#	return False
 		else:

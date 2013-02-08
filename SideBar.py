@@ -1247,7 +1247,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 
 		for item in SideBarSelection(paths).getSelectedItems():
 			if item.projectURL(type):
-				self.try_open(item.projectURL(type) + item.pathRelativeFromProjectEncoded(), browser)
+				self.try_open(item.projectURL(type), browser)
 			else:
 				self.try_open(item.uri(), browser)
 
