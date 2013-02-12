@@ -1288,6 +1288,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
 
 					,reg_value+'\\Chrome\\Application\\chrome.exe'
+					,reg_value+'\\Google\\Chrome\\Application\\chrome.exe'
 					,'%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
