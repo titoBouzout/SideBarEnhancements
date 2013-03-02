@@ -16,7 +16,9 @@ class Object():
 
 def expand_vars(path):
 	for k, v in os.environ.iteritems():
-		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
+		k = unicode(k.encode('utf8'))
+		v = unicode(v.encode('utf8'))
+		path = path.replace(u'%'+k+'%', v).replace(u'%'+k.lower()+'%', v)
 	return path
 
 class SideBarItem:
