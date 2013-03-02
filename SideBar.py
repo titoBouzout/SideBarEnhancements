@@ -1278,7 +1278,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		if browser == 'chrome':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Google Chrome', url]
+				commands = ['-a', '/Applications/Google Chrome.app', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
 				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
@@ -1288,6 +1288,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
 
 					,reg_value+'\\Chrome\\Application\\chrome.exe'
+					,reg_value+'\\Google\\Chrome\\Application\\chrome.exe'
 					,'%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe'
 					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
@@ -1310,7 +1311,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		elif browser == 'chromium':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Chromium', url]
+				commands = ['-a', '/Applications/Chromium.app', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
 				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
@@ -1350,7 +1351,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		elif browser == 'firefox':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Firefox', url]
+				commands = ['-a', '/Applications/Firefox.app', url]
 			else:
 				items = [
 					'/usr/bin/firefox'
@@ -1368,7 +1369,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		elif browser == 'opera':
 			if sublime.platform() == 'osx':
 				items = ['open']
-				commands = ['-a', 'Opera', url]
+				commands = ['-a', '/Applications/Opera.app', url]
 			else:
 				items = [
 					'/usr/bin/opera'
