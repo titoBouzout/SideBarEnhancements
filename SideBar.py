@@ -32,7 +32,13 @@ except:
 
 def expand_vars(path):
 	for k, v in os.environ.iteritems():
-		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
+		# dirty hack, this should be autofixed in python3
+		try:
+			k = unicode(k.encode('utf8'))
+			v = unicode(v.encode('utf8'))
+			path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
+		except:
+			pass
 	return path
 #NOTES
 # A "directory" for this plugin is a "directory"
