@@ -4,9 +4,10 @@ import os
 
 import threading, time
 
-import sidebar.SideBarItem as SideBarItem
-import sidebar.SideBarSelection as SideBarSelection
-import sidebar.SideBarProject as SideBarProject
+from SideBarItem import SideBarItem
+from SideBarSelection import SideBarSelection
+from SideBarProject import SideBarProject
+
 
 from send2trash import send2trash
 
