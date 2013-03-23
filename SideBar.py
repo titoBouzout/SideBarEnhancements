@@ -7,7 +7,7 @@ import threading, time
 from .sidebar.SideBarItem import SideBarItem
 from .sidebar.SideBarProject import SideBarProject
 from .sidebar.SideBarSelection import SideBarSelection
-import send2trash
+import .send2trash
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
