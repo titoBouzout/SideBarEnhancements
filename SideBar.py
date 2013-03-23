@@ -4,8 +4,8 @@ import os
 
 import threading, time
 
-from . import sidebar
-from . import send2trash
+import sidebar
+import send2trash
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
