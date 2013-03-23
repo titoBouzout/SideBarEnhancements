@@ -47,7 +47,7 @@ def expand_vars(path):
 s = sublime.load_settings('Side Bar.sublime-settings')
 
 def check_version():
-	version = '11.13.2012.1305.0';
+	version = '03.23.2013.0.1';
 	if s.get('version') != version:
 		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/messages/'+version+'.txt', False).edit();
 		s.set('version', version);
