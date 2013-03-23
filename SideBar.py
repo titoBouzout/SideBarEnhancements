@@ -402,7 +402,7 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 		def run(self):
 			if not self.should_run:
 				return
-			# print 'run forrest run'
+			# print('run forrest run')
 			self.total = 0
 			self.highlight_from = 0
 			self.match_result = u''
@@ -1128,17 +1128,17 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				os.remove(path)
 			except:
-				print "Unable to remove file:\n\n"+path
+				print("Unable to remove file:\n\n"+path)
 		else:
-			print 'path is none'
-			print path
+			print('path is none')
+			print(path)
 
 	def remove_safe_dir(self, path):
 		if not SideBarSelection().isNone(path):
 			try:
 				os.rmdir(path)
 			except:
-				print "Unable to remove folder:\n\n"+path
+				print("Unable to remove folder:\n\n"+path)
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False

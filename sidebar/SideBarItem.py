@@ -68,16 +68,16 @@ class SideBarItem:
 
 				for path in data.keys():
 					path2 = expand_vars(path)
-					print '-------------------------------------------------------'
-					print 'searching:'
+					print('-------------------------------------------------------')
+					print('searching:')
 					path2 = path2.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					print path2
-					print 'in:'
+					print(path2)
+					print('in:')
 					path3 = self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					print path3
-					print '-------------------------------------------------------'
+					print(path3)
+					print('-------------------------------------------------------')
 					path4 = re.sub(re.compile("^"+re.escape(path2), re.IGNORECASE), '', path3);
-					print path4
+					print(path4)
 					if path4 != path3:
 						url = data[path][type]
 						if url:
