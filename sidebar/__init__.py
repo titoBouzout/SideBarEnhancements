@@ -1,3 +1,3 @@
-import SideBarItem as SideBarItem
-import SideBarSelection as SideBarSelection
-import SideBarProject as SideBarProject
+from .SideBarItem import SideBarItem
+from .SideBarSelection import SideBarSelection
+from .SideBarProject import SideBarProject

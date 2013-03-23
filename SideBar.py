@@ -4,8 +4,7 @@ import os
 
 import threading, time
 
-from . import sidebar as sidebar
-
+from . import sidebar
 from . import send2trash
 
 # needed for getting local app data path on windows
