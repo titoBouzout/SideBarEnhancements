@@ -4,7 +4,7 @@ import os
 import re
 import shutil
 
-from SideBarProject import SideBarProject
+from .SideBarProject import SideBarProject
 
 try:
 	import desktop
