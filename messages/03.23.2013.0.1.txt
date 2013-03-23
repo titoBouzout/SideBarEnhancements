@@ -1,0 +1,6 @@
+
+
+SideBarEnhancements Changelog:
+
+    ## Make Python 3.3 compatible!
+

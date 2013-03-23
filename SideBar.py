@@ -4,11 +4,10 @@ import os
 
 import threading, time
 
-from sidebar.SideBarItem import SideBarItem
-from sidebar.SideBarSelection import SideBarSelection
-from sidebar.SideBarProject import SideBarProject
-
-from send2trash import send2trash
+from .sidebar.SideBarItem import SideBarItem
+from .sidebar.SideBarProject import SideBarProject
+from .sidebar.SideBarSelection import SideBarSelection
+from . import send2trash
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
@@ -47,7 +46,7 @@ def expand_vars(path):
 s = sublime.load_settings('Side Bar.sublime-settings')
 
 def check_version():
-	version = '11.13.2012.1305.0';
+	version = '03.23.2013.0.1';
 	if s.get('version') != version:
 		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/messages/'+version+'.txt', False).edit();
 		s.set('version', version);
@@ -402,7 +401,7 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 		def run(self):
 			if not self.should_run:
 				return
-			# print 'run forrest run'
+			# print('run forrest run')
 			self.total = 0
 			self.highlight_from = 0
 			self.match_result = u''
@@ -1128,17 +1127,17 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				os.remove(path)
 			except:
-				print "Unable to remove file:\n\n"+path
+				print("Unable to remove file:\n\n"+path)
 		else:
-			print 'path is none'
-			print path
+			print('path is none')
+			print(path)
 
 	def remove_safe_dir(self, path):
 		if not SideBarSelection().isNone(path):
 			try:
 				os.rmdir(path)
 			except:
-				print "Unable to remove folder:\n\n"+path
+				print("Unable to remove folder:\n\n"+path)
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
