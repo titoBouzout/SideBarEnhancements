@@ -4,9 +4,9 @@ import os
 
 import threading, time
 
-from .sidebar.SideBarItem import SideBarItem
-from .sidebar.SideBarSelection import SideBarSelection
-from .sidebar.SideBarProject import SideBarProject
+from . import sidebar.SideBarItem
+from . import sidebar.SideBarSelection
+from . import sidebar.SideBarProject
 
 
 from send2trash import send2trash
