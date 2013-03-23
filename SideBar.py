@@ -5,9 +5,9 @@ import os
 import threading, time
 
 from . import sidebar
-from sidebar import SideBarItem
-from sidebar import SideBarSelection
-from sidebar import SideBarProject
+from . import SideBarItem
+from . import SideBarSelection
+from . import SideBarProject
 from . import send2trash
 
 # needed for getting local app data path on windows
