@@ -1,3 +1,7 @@
+# Sublime Text 3 Compatibilty
+
+Please see: https://github.com/titoBouzout/SideBarEnhancements/tree/st3atyourownrisk
+
 # Description
 
 
