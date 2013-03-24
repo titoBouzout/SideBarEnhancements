@@ -192,7 +192,7 @@ class SideBarItem:
 	def open(self):
 		if sublime.platform() == 'osx':
 			import subprocess
-			subprocess.Popen(['open', '-a', self.nameSystem()], cwd=self.dirnameSystem())
+			subprocess.Popen(['open', self.nameSystem()], cwd=self.dirnameSystem())
 		elif sublime.platform() == 'windows':
 			import subprocess
 			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
