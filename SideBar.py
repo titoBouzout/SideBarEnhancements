@@ -1320,6 +1320,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend([
 					'/usr/bin/google-chrome'
 					,'chrome'
+					,'google-chrome'
 				])
 				commands = ['-new-tab', url]
 
