@@ -95,6 +95,7 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 	- Sven Axelsson
 	- Dalibor Simacek
 	- Stephen Horne
+	- Eric Eldredge
 
 # Update v1.2:
 

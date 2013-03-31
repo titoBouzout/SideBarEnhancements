@@ -121,7 +121,7 @@ class SideBarItem:
 
 	def uri(self):
 		import urllib.request, urllib.parse, urllib.error
-		return 'file:'+urllib.request.pathname2url(self.path().encode('utf-8'));
+		return 'file:'+urllib.request.pathname2url(self.path());
 
 	def join(self, name):
 		return os.path.join(self.path(), name)
