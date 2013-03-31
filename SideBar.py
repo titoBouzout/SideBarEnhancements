@@ -584,6 +584,9 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 		no.append('No');
 		no.append('Continue without replacing');
 
+		while len(no) != len(yes):
+			no.append('ST3 BUG');
+
 		window.show_quick_panel([yes, no], functools.partial(self.on_done, paths, in_parent))
 
 	def on_done(self, paths, in_parent, result):
@@ -1101,6 +1104,10 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		no = []
 		no.append('No');
 		no.append('Cancel the operation.');
+
+		while len(no) != len(yes):
+			no.append('ST3 BUG');
+
 		if sublime.platform() == 'osx':
 			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
 		else:
@@ -1187,6 +1194,10 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 		no = []
 		no.append('No');
 		no.append('Cancel the operation.');
+
+		while len(no) != len(yes):
+			no.append('ST3 BUG');
+
 		if sublime.platform() == 'osx':
 			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
 		else:
