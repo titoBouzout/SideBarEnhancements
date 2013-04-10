@@ -20,9 +20,7 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 All commands available for files and folders(when applicable) .
 
-[img]http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png[/img]
-
-<img src="http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png" border="0"/>
+![Screenshot](http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png)
 
 # F12 key
 
