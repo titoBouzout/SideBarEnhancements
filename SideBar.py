@@ -1365,6 +1365,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend([
 					'/usr/bin/chromium'
 					,'chromium'
+					,'/usr/bin/chromium-browser'
+					,'chromium-browser'
 				])
 				commands = ['-new-tab', url]
 		elif browser == 'firefox':
