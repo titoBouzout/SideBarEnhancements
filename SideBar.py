@@ -1383,6 +1383,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend([
 					'/usr/bin/chromium'
 					,'chromium'
+					,'/usr/bin/chromium-browser'
+          ,'chromium-browser'
 				])
 				commands = ['-new-tab', url]
 		elif browser == 'firefox':
@@ -1485,7 +1487,7 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 					try:
 						subprocess.Popen(['sublime', '.'], cwd=item.pathSystem())
 					except:
-						subprocess.Popen(['/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl', '.'], cwd=item.pathSystem())
+						subprocess.Popen(['/Applications/Sublime Text 3.app/Contents/SharedSupport/bin/subl', '.'], cwd=item.pathSystem())
 			elif sublime.platform() == 'windows':
 				try:
 					subprocess.Popen(['subl', '.'], cwd=item.pathSystem(), shell=True)
