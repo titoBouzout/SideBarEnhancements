@@ -1,7 +1,7 @@
 # Copyright 2010 Hardcoded Software (http://www.hardcoded.net)
 
-# This software is licensed under the "BSD" License as described in the "LICENSE" file, 
-# which should be included with this package. The terms are also available at 
+# This software is licensed under the "BSD" License as described in the "LICENSE" file,
+# which should be included with this package. The terms are also available at
 # http://www.hardcoded.net/licenses/bsd_license
 
 from ctypes import cdll, byref, Structure, c_char, c_char_p
@@ -33,8 +33,8 @@ def check_op_result(op_result):
         raise OSError(msg)
 
 def send2trash(path):
-    if not isinstance(path, bytes):
-        path = path.encode('utf-8')
+    # if not isinstance(path, bytes):
+    #     path = path.encode('utf-8')
     fp = FSRef()
     opts = kFSPathMakeRefDoNotFollowLeafSymlink
     op_result = FSPathMakeRefWithOptions(path, opts, byref(fp), None)

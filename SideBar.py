@@ -193,9 +193,6 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], application = "", extensions = ""):
 		import sys
 		application_dir, application_name = os.path.split(application)
-		application_dir  = application_dir.encode(sys.getfilesystemencoding())
-		application_name = application_name.encode(sys.getfilesystemencoding())
-		application      = application.encode(sys.getfilesystemencoding())
 
 		if extensions == '*':
 			extensions = '.*'

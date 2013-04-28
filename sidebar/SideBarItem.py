@@ -16,13 +16,7 @@ class Object():
 
 def expand_vars(path):
 	for k, v in list(os.environ.items()):
-		try:
-			# dirty hack, this should be autofixed in python3
-			k = str(k.encode('utf8'))
-			v = str(v.encode('utf8'))
-			path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
-		except:
-			pass
+		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 	return path
 
 class SideBarItem:
@@ -40,8 +34,7 @@ class SideBarItem:
 			return path
 
 	def pathSystem(self):
-		import sys
-		return self.path().encode(sys.getfilesystemencoding())
+		return self.path()
 
 	def pathWithoutProject(self):
 		path = self.path()
@@ -84,7 +77,7 @@ class SideBarItem:
 							if url[-1:] != '/':
 								url = url+'/'
 						import urllib.request, urllib.parse, urllib.error
-						return url+(re.sub("^/", '', urllib.parse.quote(path4.encode('utf-8'))));
+						return url+(re.sub("^/", '', urllib.parse.quote(path4)));
 
 			#except:
 			#	return False
@@ -103,21 +96,21 @@ class SideBarItem:
 
 	def pathRelativeFromProjectEncoded(self):
 		import urllib.request, urllib.parse, urllib.error
-		return urllib.parse.quote(self.pathRelativeFromProject().encode('utf-8'))
+		return urllib.parse.quote(self.pathRelativeFromProject())
 
 	def pathRelativeFromView(self):
 		return os.path.relpath(self.path(), os.path.dirname(sublime.active_window().active_view().file_name())).replace('\\', '/')
 
 	def pathRelativeFromViewEncoded(self):
 		import urllib.request, urllib.parse, urllib.error
-		return urllib.parse.quote(os.path.relpath(self.path(), os.path.dirname(sublime.active_window().active_view().file_name())).replace('\\', '/').encode('utf-8'))
+		return urllib.parse.quote(os.path.relpath(self.path(), os.path.dirname(sublime.active_window().active_view().file_name())).replace('\\', '/'))
 
 	def pathAbsoluteFromProject(self):
 		return self.pathWithoutProject()
 
 	def pathAbsoluteFromProjectEncoded(self):
 		import urllib.request, urllib.parse, urllib.error
-		return urllib.parse.quote(self.pathAbsoluteFromProject().encode('utf-8'))
+		return urllib.parse.quote(self.pathAbsoluteFromProject())
 
 	def uri(self):
 		import urllib.request, urllib.parse, urllib.error
@@ -165,8 +158,7 @@ class SideBarItem:
 				return re.sub('^/+', '', path)
 
 	def dirnameSystem(self):
-		import sys
-		return self.dirname().encode(sys.getfilesystemencoding())
+		return self.dirname()
 
 	def dirnameCreate(self):
 		try:
@@ -179,12 +171,11 @@ class SideBarItem:
 		return leaf;
 
 	def nameSystem(self):
-		import sys
-		return self.name().encode(sys.getfilesystemencoding())
+		return self.name()
 
 	def nameEncoded(self):
 		import urllib.request, urllib.parse, urllib.error
-		return urllib.parse.quote(self.name().encode('utf-8'));
+		return urllib.parse.quote(self.name());
 
 	def namePretty(self):
 		return self.name().replace(self.extension(), '').replace('-', ' ').replace('_', ' ').strip();
