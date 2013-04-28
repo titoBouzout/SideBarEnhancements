@@ -24,7 +24,7 @@ if sublime.platform() == 'windows':
 def checkVersion():
 	version = '2012.04.28.1605.1';
 	if s.get('version') != version:
-		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/messages/CHANGELOG', False).edit();
+		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/CHANGELOG', False).edit();
 		s.set('version', version);
 		sublime.save_settings('Side Bar.sublime-settings')
 
