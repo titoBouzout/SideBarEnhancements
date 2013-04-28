@@ -12,16 +12,11 @@ from .sidebar.SideBarProject import SideBarProject
 if sublime.platform() == 'windows':
 	import winreg
 
-def expand_vars(path):
-	for k, v in list(os.environ.items()):
-		# dirty hack, this should be autofixed in python3
-		try:
-			k = str(k.encode('utf8'))
-			v = str(v.encode('utf8'))
+	def expandVars(path):
+		for k, v in list(os.environ.items()):
 			path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
-		except:
-			pass
-	return path
+		return path
+
 #NOTES
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
@@ -203,11 +198,11 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		import subprocess
 		for item in items:
 			if sublime.platform() == 'osx':
-				subprocess.Popen(['open', '-a', application, item.nameSystem()], cwd=item.dirnameSystem())
+				subprocess.Popen(['open', '-a', application, item.name()], cwd=item.dirname())
 			elif sublime.platform() == 'windows':
-				subprocess.Popen([application_name, item.pathSystem()], cwd=expand_vars(application_dir), shell=True)
+				subprocess.Popen([application_name, item.path()], cwd=expandVars(application_dir), shell=True)
 			else:
-				subprocess.Popen([application_name, item.nameSystem()], cwd=item.dirnameSystem())
+				subprocess.Popen([application_name, item.name()], cwd=item.dirname())
 
 	def is_enabled(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
@@ -1428,7 +1423,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		for item in items:
 			try:
 				command2 = list(commands)
-				command2.insert(0, expand_vars(item))
+				command2.insert(0, expandVars(item))
 				subprocess.Popen(command2)
 				return
 			except:
@@ -1464,25 +1459,25 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
 			if sublime.platform() == 'osx':
 				try:
-					subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
+					subprocess.Popen(['subl', '.'], cwd=item.path())
 				except:
 					try:
-						subprocess.Popen(['sublime', '.'], cwd=item.pathSystem())
+						subprocess.Popen(['sublime', '.'], cwd=item.path())
 					except:
-						subprocess.Popen(['/Applications/Sublime Text 3.app/Contents/SharedSupport/bin/subl', '.'], cwd=item.pathSystem())
+						subprocess.Popen(['/Applications/Sublime Text 3.app/Contents/SharedSupport/bin/subl', '.'], cwd=item.path())
 			elif sublime.platform() == 'windows':
 				try:
-					subprocess.Popen(['subl', '.'], cwd=item.pathSystem(), shell=True)
+					subprocess.Popen(['subl', '.'], cwd=item.path(), shell=True)
 				except:
 					try:
-						subprocess.Popen(['sublime', '.'], cwd=item.pathSystem(), shell=True)
+						subprocess.Popen(['sublime', '.'], cwd=item.path(), shell=True)
 					except:
-						subprocess.Popen(['sublime_text.exe', '.'], cwd=item.pathSystem(), shell=True)
+						subprocess.Popen(['sublime_text.exe', '.'], cwd=item.path(), shell=True)
 			else:
 				try:
-					subprocess.Popen(['subl', '.'], cwd=item.pathSystem())
+					subprocess.Popen(['subl', '.'], cwd=item.path())
 				except:
-					subprocess.Popen(['sublime', '.'], cwd=item.pathSystem())
+					subprocess.Popen(['sublime', '.'], cwd=item.path())
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_in_new_window')
@@ -1491,7 +1486,7 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import subprocess
 		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-			subprocess.Popen(['open', item.nameSystem()], cwd=item.dirnameSystem())
+			subprocess.Popen(['open', item.name()], cwd=item.dirname())
 
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'

@@ -9,7 +9,7 @@ from .SideBarProject import SideBarProject
 class Object():
 	pass
 
-def expand_vars(path):
+def expandVars(path):
 	for k, v in list(os.environ.items()):
 		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 	return path
@@ -27,9 +27,6 @@ class SideBarItem:
 			self._path = path
 			self._is_directory = os.path.isdir(path)
 			return path
-
-	def pathSystem(self):
-		return self.path()
 
 	def pathWithoutProject(self):
 		path = self.path()
@@ -55,17 +52,17 @@ class SideBarItem:
 				data = json.loads(data, strict=False)
 
 				for path in list(data.keys()):
-					path2 = expand_vars(path)
-					print('-------------------------------------------------------')
-					print('searching:')
+					path2 = expandVars(path)
+					#print('-------------------------------------------------------')
+					#print('searching:')
 					path2 = path2.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					print(path2)
-					print('in:')
+					#print(path2)
+					#print('in:')
 					path3 = self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					print(path3)
-					print('-------------------------------------------------------')
+					#print(path3)
+					#print('-------------------------------------------------------')
 					path4 = re.sub(re.compile("^"+re.escape(path2), re.IGNORECASE), '', path3);
-					print(path4)
+					#print(path4)
 					if path4 != path3:
 						url = data[path][type]
 						if url:
@@ -120,22 +117,22 @@ class SideBarItem:
 
 	def forCwdSystemPath(self):
 		if self.isDirectory():
-			return self.pathSystem()
+			return self.path()
 		else:
-			return self.dirnameSystem()
+			return self.dirname()
 
 	def forCwdSystemName(self):
 		if self.isDirectory():
 			return '.'
 		else:
-			path = self.pathSystem()
-			branch = self.dirnameSystem()
+			path = self.path()
+			branch = self.dirname()
 			leaf = path.replace(branch, '', 1).replace('\\', '').replace('/', '')
 			return leaf
 
 	def forCwdSystemPathRelativeFrom(self, relativeFrom):
 		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
-		path = self.pathSystem().replace(relative.pathSystem(), '', 1).replace('\\', '/')
+		path = self.path().replace(relative.path(), '', 1).replace('\\', '/')
 		if path == '':
 			return '.'
 		else:
@@ -143,7 +140,7 @@ class SideBarItem:
 
 	def forCwdSystemPathRelativeFromRecursive(self, relativeFrom):
 		relative = SideBarItem(relativeFrom, os.path.isdir(relativeFrom))
-		path = self.pathSystem().replace(relative.pathSystem(), '', 1).replace('\\', '/')
+		path = self.path().replace(relative.path(), '', 1).replace('\\', '/')
 		if path == '':
 			return '.'
 		else:
@@ -151,9 +148,6 @@ class SideBarItem:
 				return re.sub('^/+', '', path)+'/'
 			else:
 				return re.sub('^/+', '', path)
-
-	def dirnameSystem(self):
-		return self.dirname()
 
 	def dirnameCreate(self):
 		try:
@@ -165,9 +159,6 @@ class SideBarItem:
 		branch, leaf = os.path.split(self.path())
 		return leaf;
 
-	def nameSystem(self):
-		return self.name()
-
 	def nameEncoded(self):
 		import urllib.request, urllib.parse, urllib.error
 		return urllib.parse.quote(self.name());
@@ -178,10 +169,10 @@ class SideBarItem:
 	def open(self):
 		if sublime.platform() == 'osx':
 			import subprocess
-			subprocess.Popen(['open', self.nameSystem()], cwd=self.dirnameSystem())
+			subprocess.Popen(['open', self.name()], cwd=self.dirname())
 		elif sublime.platform() == 'windows':
 			import subprocess
-			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
+			subprocess.Popen([self.name()], cwd=self.dirname(), shell=True)
 		else:
 			from . import desktop
 			desktop.open(self.path())
