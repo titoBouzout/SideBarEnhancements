@@ -32,6 +32,7 @@ def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')
 	check_version()
+	sublime.active_window().run_command('reveal_in_side_bar');
 
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
