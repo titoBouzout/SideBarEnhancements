@@ -20,13 +20,13 @@ class SideBarProject:
 		if not self.getDirectories():
 			return None
 		import json
-		data = open(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read()
+		data = open(os.path.dirname(sublime.packages_path())+'/Settings/Session.sublime_session', 'r').read()
 		data = data.replace('\t', ' ')
 		data = json.loads(data, strict=False)
 		projects = data['workspaces']['recent_workspaces']
 
-		if os.path.lexists(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')):
-			data = open(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')), 'r').read()
+		if os.path.lexists(os.path.dirname(sublime.packages_path())+'/Settings/Auto Save Session.sublime_session'):
+			data = open(os.path.dirname(sublime.packages_path())+'/Settings/Auto Save Session.sublime_session', 'r').read()
 			data = data.replace('\t', ' ')
 			data = json.loads(data, strict=False)
 			if 'workspaces' in data and 'recent_workspaces' in data['workspaces'] and data['workspaces']['recent_workspaces']:
