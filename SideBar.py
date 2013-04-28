@@ -4,37 +4,14 @@ import os
 
 import threading, time
 
-try:
-	from .sidebar.SideBarItem import SideBarItem
-	from .sidebar.SideBarSelection import SideBarSelection
-	from .sidebar.SideBarProject import SideBarProject
-	from .send2trash import send2trash
-except ValueError:
-	from sidebar.SideBarItem import SideBarItem
-	from sidebar.SideBarSelection import SideBarSelection
-	from sidebar.SideBarProject import SideBarProject
-	from send2trash import send2trash
-
+from .sidebar.SideBarItem import SideBarItem
+from .sidebar.SideBarSelection import SideBarSelection
+from .sidebar.SideBarProject import SideBarProject
+from .send2trash import send2trash
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
 	import winreg
-
-def disable_default():
-	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
-	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar.sublime-menu.txt'
-	if open(default, 'r').read() ==  open(desired, 'r').read():
-		open(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
-
-	default = sublime.packages_path()+'/Default/Side Bar Mount Point.sublime-menu'
-	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar Mount Point.sublime-menu.txt'
-	if open(default, 'r').read() ==  open(desired, 'r').read():
-		open(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
-
-try:
-	disable_default();
-except:
-	pass
 
 def expand_vars(path):
 	for k, v in list(os.environ.items()):
