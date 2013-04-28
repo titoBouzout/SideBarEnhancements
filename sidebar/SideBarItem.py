@@ -6,11 +6,6 @@ import shutil
 
 from .SideBarProject import SideBarProject
 
-try:
-	from . import desktop
-except:
-	pass
-
 class Object():
 	pass
 
@@ -188,6 +183,7 @@ class SideBarItem:
 			import subprocess
 			subprocess.Popen([self.nameSystem()], cwd=self.dirnameSystem(), shell=True)
 		else:
+			from . import desktop
 			desktop.open(self.path())
 
 	def edit(self):

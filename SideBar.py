@@ -7,7 +7,6 @@ import threading, time
 from .sidebar.SideBarItem import SideBarItem
 from .sidebar.SideBarSelection import SideBarSelection
 from .sidebar.SideBarProject import SideBarProject
-from .send2trash import send2trash
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
@@ -1053,6 +1052,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
 		else:
 			try:
+				from .send2trash import send2trash
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 						item.close_associated_buffers()
@@ -1144,6 +1144,7 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 		else:
 			try:
 				for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+					from .send2trash import send2trash
 					for content in os.listdir(item.path()):
 						file = os.path.join(item.path(), content)
 						if not SideBarSelection().isNone(file):
@@ -1440,12 +1441,12 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					pass
 		try:
 			if sublime.platform() == 'windows':
-					print(url);
-					commands = ['start', url]
+					commands = ['cmd','/c','start', '', url]
 					subprocess.Popen(commands)
 			elif sublime.platform() == 'linux':
 					commands = ['xdg-open', url]
 					subprocess.Popen(commands)
+			return
 		except:
 			pass
 
