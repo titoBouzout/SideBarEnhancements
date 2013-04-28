@@ -21,18 +21,20 @@ if sublime.platform() == 'windows':
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
-def check_version():
-	version = '11.13.2012.1305.0';
+def checkVersion():
+	version = '2012.04.28.1605.1';
 	if s.get('version') != version:
-		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/messages/'+version+'.txt', False).edit();
+		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/messages/CHANGELOG', False).edit();
 		s.set('version', version);
 		sublime.save_settings('Side Bar.sublime-settings')
 
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')
-	check_version()
-	sublime.active_window().run_command('reveal_in_side_bar');
+	for window in sublime.windows():
+	   window.run_command('reveal_in_side_bar');
+	checkVersion()
+
 
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
