@@ -42,7 +42,7 @@ class SideBarItem:
 				return directory
 		return False
 
-	def projectURL(self, type):
+	def url(self, type):
 		filename = os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json'
 		if os.path.lexists(filename):
 			#try:
@@ -196,7 +196,7 @@ class SideBarItem:
 	def contentBase64(self):
 		import base64
 		base64text = base64.b64encode(self.contentBinary()).decode('utf-8')
-		return 'data:'+self.mime()+';base64,'+(base64text.replace('\n', ''))
+		return 'data:'+self.mime()+';charset=utf-8;base64,'+(base64text.replace('\n', ''))
 
 	def reveal(self):
 		sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )

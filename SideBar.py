@@ -1243,30 +1243,10 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			type = 'url_testing'
 
 		for item in SideBarSelection(paths).getSelectedItems():
-			if item.projectURL(type):
-				self.try_open(item.projectURL(type), browser)
+			if item.url(type):
+				self.try_open(item.url(type), browser)
 			else:
 				self.try_open(item.uri(), browser)
-
-	# def run(self, paths = [], type = False):
-	# 	import webbrowser
-	# 	try:
-	# 		browser = webbrowser.get(s.get("default_browser"))
-	# 	except:
-	# 		browser = webbrowser
-
-	# 	if type == False or type == 'testing':
-	# 		type = 'url_testing'
-	# 	elif type == 'production':
-	# 		type = 'url_production'
-	# 	else:
-	# 		type = 'url_testing'
-
-	# 	for item in SideBarSelection(paths).getSelectedItems():
-	# 		if item.projectURL(type):
-	# 			browser.open_new_tab(item.projectURL(type) + item.pathRelativeFromProjectEncoded())
-	# 		else:
-	# 			browser.open_new_tab(item.uri())
 
 	def try_open(self, url, browser):
 		import subprocess
