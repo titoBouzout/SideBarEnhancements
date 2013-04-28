@@ -1203,7 +1203,7 @@ class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 		if project.hasOpenedProject():
 			SideBarItem(project.getProjectFile(), False).edit();
 
-class SideBarProjectOpenProjectPreviewUrlsFileCommand(sublime_plugin.WindowCommand):
+class SideBarPreviewEditUrlsCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		SideBarItem(os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json', False).edit();
 
