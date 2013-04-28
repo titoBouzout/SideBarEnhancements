@@ -4,20 +4,34 @@ SideBarEnhancements Changelog:
 
 	.1
 
-		 BUGS FIXED
+		BUGS FIXED
 
 				* remove some obsolete code
 				* refactor some functions
 				* solve coding mess
 				* Fix for when packages_path is a link
 				* fix open with..
+				* copy url commmand
+				* exclude from project
+				* promote as project folder
+				* no value on browser will use default browser
 
 
-		 IMPROVEMENTS
+		IMPROVEMENTS
 
 				* for each window, locate the focused tab in sidebar at startup
 				* Lazy load sendtotrash, desktop.
 				* 2nd fix #92
+
+		TODO
+
+				* Use a real clipboard integrated with the OS
+				* fix canary
+				* fix.. reveal does not work with "," in path names
+				* hide default menus
+				* copy and paste in brackground
+				* fix instant search (begin edit, end edit)..
+				* copy image cant' copy image sizes
 
 	.0
 

@@ -1,4 +1,4 @@
-# Sublime Text 3 Compatibilty
+*# Sublime Text 3 Compatibilty
 
 Please see: https://github.com/titoBouzout/SideBarEnhancements/tree/st3atyourownrisk
 
@@ -54,15 +54,6 @@ To open it, right-click on any file in an open project and select `Open With > E
 
 - On OSX, the 'application' property simply takes the *name* of an application, to which the file at hand's full path will be passed as if with `open ...`, e.g.: "application": "Google Chrome"
 - On OSX, invoking *shell* commands is NOT supported.
-
-# Todo
-
- * Use a real clipboard integrated with the OS
- * fix canary
- * fix copy url
- * fix.. reveal does not work with "," in path names
- * hide default menus
- * copy and paste in brackground
 
 # Installation
 

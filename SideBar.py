@@ -946,14 +946,10 @@ class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
 class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
-		project = SideBarProject()
-		url = project.getPreference('url_production')
-		if url:
-			if url[-1:] != '/':
-				url = url+'/'
-			for item in SideBarSelection(paths).getSelectedItems():
-				if item.isUnderCurrentProject():
-					items.append(url + item.pathRelativeFromProjectEncoded())
+
+		for item in SideBarSelection(paths).getSelectedItems():
+			if item.isUnderCurrentProject():
+				items.append(item.url('url_production'))
 
 		if len(items) > 0:
 			sublime.set_clipboard("\n".join(items));
@@ -1201,6 +1197,9 @@ class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 		if project.hasOpenedProject():
 			SideBarItem(project.getProjectFile(), False).edit();
 
+	def is_enabled(self, paths = []):
+		return SideBarProject().hasOpenedProject()
+
 class SideBarPreviewEditUrlsCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		SideBarItem(os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json', False).edit();
@@ -1208,22 +1207,27 @@ class SideBarPreviewEditUrlsCommand(sublime_plugin.WindowCommand):
 class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		project = SideBarProject()
-		if project.hasOpenedProject():
-			for item in SideBarSelection(paths).getSelectedDirectories():
-				project.rootAdd(item.path())
+		for item in SideBarSelection(paths).getSelectedDirectories():
+			project.add(item.path())
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).hasDirectories()
 
+class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		self.window.run_command('remove_folder', {"dirs":paths})
+
+	def is_enabled(self, paths =[]):
+		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == True
+
 class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		project = SideBarProject()
-		if project.hasOpenedProject():
-			for item in SideBarSelection(paths).getSelectedItems():
-				if item.isDirectory():
-					project.excludeDirectory(item.path())
-				else:
-					project.excludeFile(item.path())
+		for item in SideBarSelection(paths).getSelectedItems():
+			if item.isDirectory():
+				project.excludeDirectory(item.path(), item.pathRelativeFromProject())
+			else:
+				project.excludeFile(item.path(), item.pathRelativeFromProject())
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
@@ -1473,10 +1477,3 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'
-
-class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = []):
-		self.window.run_command('remove_folder', {"dirs":paths})
-
-	def is_enabled(self, paths =[]):
-		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == True

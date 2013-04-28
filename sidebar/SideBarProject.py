@@ -1,6 +1,4 @@
 import sublime
-import re
-import os
 
 class SideBarProject:
 
@@ -17,88 +15,40 @@ class SideBarProject:
 				return directory
 
 	def getProjectFile(self):
-		if not self.getDirectories():
-			return None
-		import json
-		data = open(os.path.dirname(sublime.packages_path())+'/Settings/Session.sublime_session', 'r').read()
-		data = data.replace('\t', ' ')
-		data = json.loads(data, strict=False)
-		projects = data['workspaces']['recent_workspaces']
-
-		if os.path.lexists(os.path.dirname(sublime.packages_path())+'/Settings/Auto Save Session.sublime_session'):
-			data = open(os.path.dirname(sublime.packages_path())+'/Settings/Auto Save Session.sublime_session', 'r').read()
-			data = data.replace('\t', ' ')
-			data = json.loads(data, strict=False)
-			if 'workspaces' in data and 'recent_workspaces' in data['workspaces'] and data['workspaces']['recent_workspaces']:
-				projects += data['workspaces']['recent_workspaces']
-			projects = list(set(projects))
-		for project_file in projects:
-			project_file = re.sub(r'^/([^/])/', '\\1:/', project_file);
-			project_json = json.loads(open(project_file, 'r').read(), strict=False)
-			if 'folders' in project_json:
-				folders = project_json['folders']
-				found_all = True
-				for directory in self.getDirectories():
-					found = False
-					for folder in folders:
-						folder_path = re.sub(r'^/([^/])/', '\\1:/', folder['path']);
-						if folder_path == directory.replace('\\', '/'):
-							found = True
-							break;
-					if found == False:
-						found_all = False
-						break;
-			if found_all:
-				return project_file
-		return None
+		return sublime.active_window().project_file_name()
 
 	def getProjectJson(self):
-		if not self.hasOpenedProject():
-			return None
-		import json
-		return json.loads(open(self.getProjectFile(), 'r').read(), strict=False)
+		return sublime.active_window().project_data()
 
-	def excludeDirectory(self, path):
-		import json
-		project_file = self.getProjectFile();
-		project = self.getProjectJson()
+	def setProjectJson(self, data):
+		return sublime.active_window().set_project_data(data)
 
-		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
-
-		for folder in project['folders']:
+	def excludeDirectory(self, path, exclude):
+		data = self.getProjectJson()
+		for folder in data['folders']:
 			if path.find(folder['path']) == 0:
 				try:
-					folder['folder_exclude_patterns'].append(re.sub(r'/+$', '', path.replace(folder['path']+'/', '', 1)))
+					folder['folder_exclude_patterns'].append(exclude)
 				except:
-					folder['folder_exclude_patterns'] = [re.sub(r'/+$', '', path.replace(folder['path']+'/', '', 1))]
-				open(project_file, 'w+').write(json.dumps(project, indent=1))
+					folder['folder_exclude_patterns'] = [exclude]
+				self.setProjectJson(data);
 				return
 
-	def excludeFile(self, path):
-		import json
-		project_file = self.getProjectFile();
-		project = self.getProjectJson()
-
-		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
-
-		for folder in project['folders']:
+	def excludeFile(self, path, exclude):
+		data = self.getProjectJson()
+		for folder in data['folders']:
 			if path.find(folder['path']) == 0:
 				try:
-					folder['file_exclude_patterns'].append(path.replace(folder['path']+'/', '', 1))
+					folder['file_exclude_patterns'].append(exclude)
 				except:
-					folder['file_exclude_patterns'] = [path.replace(folder['path']+'/', '', 1)]
-				open(project_file, 'w+').write(json.dumps(project, indent=1))
+					folder['file_exclude_patterns'] = [exclude]
+				self.setProjectJson(data);
 				return
 
-	def rootAdd(self, path):
-		import json
-		project_file = self.getProjectFile();
-		project = self.getProjectJson()
-
-		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
-		project['folders'].append({'path':path});
-
-		open(project_file, 'w+').write(json.dumps(project, indent=1))
+	def add(self, path):
+		data = self.getProjectJson()
+		data['folders'].append({'follow_symlinks':True, 'path':path});
+		self.setProjectJson(data);
 
 	def refresh(self):
 		try:
@@ -106,12 +56,3 @@ class SideBarProject:
 			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 1300);
 		except:
 			pass
-
-	def getPreference(self, name):
-		if not self.hasOpenedProject():
-			return None
-		project = self.getProjectJson()
-		try:
-			return project[name]
-		except:
-			return None
