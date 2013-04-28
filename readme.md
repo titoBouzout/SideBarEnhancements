@@ -58,6 +58,12 @@ To open it, right-click on any file in an open project and select `Open With > E
 # Todo
 
  * Use a real clipboard integrated with the OS
+ * fix canary
+ * fix copy url
+ * fix.. reveal does not work with "," in path names
+ * on startup locate in sidebar
+ * hide default menus
+ * copy and paste in brackground
 
 # Installation
 

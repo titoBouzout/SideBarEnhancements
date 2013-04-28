@@ -194,7 +194,9 @@ class SideBarItem:
 		return open(self.path(), "rb").read()
 
 	def contentBase64(self):
-		return 'data:'+self.mime()+';base64,'+(open(self.path(), "rb").read().encode("base64").replace('\n', ''))
+		import base64
+		base64text = base64.b64encode(self.contentBinary()).decode('utf-8')
+		return 'data:'+self.mime()+';base64,'+(base64text.replace('\n', ''))
 
 	def reveal(self):
 		sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
@@ -230,14 +232,14 @@ class SideBarItem:
 		location.dirnameCreate();
 		if self.isDirectory():
 			if location.exists():
-				self.copy_recursive(self.path(), location.path())
+				self.copyRecursive(self.path(), location.path())
 			else:
 				shutil.copytree(self.path(), location.path())
 		else:
 			shutil.copy2(self.path(), location.path())
 		return True
 
-	def copy_recursive(self, _from, _to):
+	def copyRecursive(self, _from, _to):
 
 		if os.path.isfile(_from) or os.path.islink(_from):
 			try:
@@ -255,7 +257,7 @@ class SideBarItem:
 			for content in os.listdir(_from):
 				__from = os.path.join(_from, content)
 				__to = os.path.join(_to, content)
-				self.copy_recursive(__from, __to)
+				self.copyRecursive(__from, __to)
 
 	def move(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
@@ -271,17 +273,17 @@ class SideBarItem:
 			location.dirnameCreate();
 			os.rename(self.path(), location.path()+'.sublime-temp')
 			os.rename(location.path()+'.sublime-temp', location.path())
-			self._move_moveViews(self.path(), location.path())
+			self._moveMoveViews(self.path(), location.path())
 		else:
 			location.dirnameCreate();
 			if location.exists():
-				self.move_recursive(self.path(), location.path())
+				self.moveRecursive(self.path(), location.path())
 			else:
 				os.rename(self.path(), location.path())
-			self._move_moveViews(self.path(), location.path())
+			self._moveMoveViews(self.path(), location.path())
 		return True
 
-	def move_recursive(self, _from, _to):
+	def moveRecursive(self, _from, _to):
 		if os.path.isfile(_from) or os.path.islink(_from):
 			try:
 				os.makedirs(os.path.dirname(_to));
@@ -298,10 +300,10 @@ class SideBarItem:
 			for content in os.listdir(_from):
 				__from = os.path.join(_from, content)
 				__to = os.path.join(_to, content)
-				self.move_recursive(__from, __to)
+				self.moveRecursive(__from, __to)
 			os.rmdir(_from)
 
-	def _move_moveViews(self, old, location):
+	def _moveMoveViews(self, old, location):
 		for window in sublime.windows():
 			active_view = window.active_view()
 			views = []
@@ -311,13 +313,13 @@ class SideBarItem:
 			views.reverse();
 			for view in views:
 				if old == view.file_name():
-					active_view = self._move_moveView(window, view, location, active_view)
+					active_view = self._moveMoveView(window, view, location, active_view)
 				elif view.file_name().find(old+'\\') == 0:
-					active_view = self._move_moveView(window, view, view.file_name().replace(old+'\\', location+'\\', 1), active_view)
+					active_view = self._moveMoveView(window, view, view.file_name().replace(old+'\\', location+'\\', 1), active_view)
 				elif view.file_name().find(old+'/') == 0:
-					active_view = self._move_moveView(window, view, view.file_name().replace(old+'/', location+'/', 1), active_view)
+					active_view = self._moveMoveView(window, view, view.file_name().replace(old+'/', location+'/', 1), active_view)
 
-	def _move_moveView(self, window, view, location, active_view):
+	def _moveMoveView(self, window, view, location, active_view):
 		if active_view == view:
 			is_active_view = True
 		else:
@@ -358,7 +360,7 @@ class SideBarItem:
 		window.focus_view(_view)
 		window.run_command('close')
 
-		sublime.set_timeout(lambda: self._move_restoreView(view, options, window), 200)
+		sublime.set_timeout(lambda: self._moveRestoreView(view, options, window), 200)
 
 		if is_active_view:
 			window.focus_view(view)
@@ -367,9 +369,9 @@ class SideBarItem:
 			window.focus_view(active_view)
 			return active_view
 
-	def _move_restoreView(self, view, options, window):
+	def _moveRestoreView(self, view, options, window):
 		if view.is_loading():
-			sublime.set_timeout(lambda: self._move_restoreView(view, options, window), 100)
+			sublime.set_timeout(lambda: self._moveRestoreView(view, options, window), 100)
 		else:
 			if options.content != False:
 				edit = view.begin_edit()
@@ -410,7 +412,7 @@ class SideBarItem:
 
 			view.set_viewport_position(options.scroll, False)
 
-	def close_associated_buffers(self):
+	def closeViews(self):
 		path = self.path()
 		closed_items = []
 		for window in sublime.windows():

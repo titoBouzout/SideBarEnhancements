@@ -1050,7 +1050,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				from .send2trash import send2trash
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
-						item.close_associated_buffers()
+						item.closeViews()
 					send2trash(item.path())
 				SideBarProject().refresh();
 			except:
@@ -1090,7 +1090,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def on_done(self, old, new):
 		if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 			item = SideBarItem(new, os.path.isdir(new))
-			item.close_associated_buffers()
+			item.closeViews()
 		self.remove(new)
 		SideBarProject().refresh();
 
@@ -1145,7 +1145,7 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 						if not SideBarSelection().isNone(file):
 							send2trash(file)
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
-						item.close_associated_buffers()
+						item.closeViews()
 			except:
 				pass
 			SideBarProject().refresh();
