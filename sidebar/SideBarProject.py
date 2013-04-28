@@ -20,13 +20,13 @@ class SideBarProject:
 		if not self.getDirectories():
 			return None
 		import json
-		data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read()
+		data = open(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Session.sublime_session')), 'r').read()
 		data = data.replace('\t', ' ')
 		data = json.loads(data, strict=False)
 		projects = data['workspaces']['recent_workspaces']
 
 		if os.path.lexists(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')):
-			data = file(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')), 'r').read()
+			data = open(os.path.normpath(os.path.join(sublime.packages_path(), '..', 'Settings', 'Auto Save Session.sublime_session')), 'r').read()
 			data = data.replace('\t', ' ')
 			data = json.loads(data, strict=False)
 			if 'workspaces' in data and 'recent_workspaces' in data['workspaces'] and data['workspaces']['recent_workspaces']:
@@ -34,7 +34,7 @@ class SideBarProject:
 			projects = list(set(projects))
 		for project_file in projects:
 			project_file = re.sub(r'^/([^/])/', '\\1:/', project_file);
-			project_json = json.loads(file(project_file, 'r').read(), strict=False)
+			project_json = json.loads(open(project_file, 'r').read(), strict=False)
 			if 'folders' in project_json:
 				folders = project_json['folders']
 				found_all = True
@@ -56,7 +56,7 @@ class SideBarProject:
 		if not self.hasOpenedProject():
 			return None
 		import json
-		return json.loads(file(self.getProjectFile(), 'r').read(), strict=False)
+		return json.loads(open(self.getProjectFile(), 'r').read(), strict=False)
 
 	def excludeDirectory(self, path):
 		import json
@@ -71,7 +71,7 @@ class SideBarProject:
 					folder['folder_exclude_patterns'].append(re.sub(r'/+$', '', path.replace(folder['path']+'/', '', 1)))
 				except:
 					folder['folder_exclude_patterns'] = [re.sub(r'/+$', '', path.replace(folder['path']+'/', '', 1))]
-				file(project_file, 'w+').write(json.dumps(project, indent=1))
+				open(project_file, 'w+').write(json.dumps(project, indent=1))
 				return
 
 	def excludeFile(self, path):
@@ -87,7 +87,7 @@ class SideBarProject:
 					folder['file_exclude_patterns'].append(path.replace(folder['path']+'/', '', 1))
 				except:
 					folder['file_exclude_patterns'] = [path.replace(folder['path']+'/', '', 1)]
-				file(project_file, 'w+').write(json.dumps(project, indent=1))
+				open(project_file, 'w+').write(json.dumps(project, indent=1))
 				return
 
 	def rootAdd(self, path):
@@ -98,7 +98,7 @@ class SideBarProject:
 		path = re.sub(r'^([^/])\:/', '/\\1/', path.replace('\\', '/'))
 		project['folders'].append({'path':path});
 
-		file(project_file, 'w+').write(json.dumps(project, indent=1))
+		open(project_file, 'w+').write(json.dumps(project, indent=1))
 
 	def refresh(self):
 		try:

@@ -4,26 +4,32 @@ import os
 
 import threading, time
 
-from sidebar.SideBarItem import SideBarItem
-from sidebar.SideBarSelection import SideBarSelection
-from sidebar.SideBarProject import SideBarProject
+try:
+	from .sidebar.SideBarItem import SideBarItem
+	from .sidebar.SideBarSelection import SideBarSelection
+	from .sidebar.SideBarProject import SideBarProject
+	from .send2trash import send2trash
+except ValueError:
+	from sidebar.SideBarItem import SideBarItem
+	from sidebar.SideBarSelection import SideBarSelection
+	from sidebar.SideBarProject import SideBarProject
+	from send2trash import send2trash
 
-from send2trash import send2trash
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
-	import _winreg
+	import winreg
 
 def disable_default():
 	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
 	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar.sublime-menu.txt'
-	if file(default, 'r').read() ==  file(desired, 'r').read():
-		file(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
+	if open(default, 'r').read() ==  open(desired, 'r').read():
+		open(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
 
 	default = sublime.packages_path()+'/Default/Side Bar Mount Point.sublime-menu'
 	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar Mount Point.sublime-menu.txt'
-	if file(default, 'r').read() ==  file(desired, 'r').read():
-		file(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
+	if open(default, 'r').read() ==  open(desired, 'r').read():
+		open(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
 
 try:
 	disable_default();
@@ -31,11 +37,11 @@ except:
 	pass
 
 def expand_vars(path):
-	for k, v in os.environ.iteritems():
+	for k, v in list(os.environ.items()):
 		# dirty hack, this should be autofixed in python3
 		try:
-			k = unicode(k.encode('utf8'))
-			v = unicode(v.encode('utf8'))
+			k = str(k.encode('utf8'))
+			v = str(v.encode('utf8'))
 			path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 		except:
 			pass
@@ -44,8 +50,6 @@ def expand_vars(path):
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
-s = sublime.load_settings('Side Bar.sublime-settings')
-
 def check_version():
 	version = '11.13.2012.1305.0';
 	if s.get('version') != version:
@@ -53,7 +57,10 @@ def check_version():
 		s.set('version', version);
 		sublime.save_settings('Side Bar.sublime-settings')
 
-sublime.set_timeout(lambda:check_version(), 3000);
+def plugin_loaded():
+	global s
+	s = sublime.load_settings('Side Bar.sublime-settings')
+	check_version()
 
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
@@ -333,11 +340,11 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 			items.append('*'+item.extension())
 		items = list(set(items))
 		if len(items) > 1:
-			return 'In Files With Extensions '+(",".join(items))+u'…'
+			return 'In Files With Extensions '+(",".join(items))+'…'
 		elif len(items) > 0:
-			return 'In Files With Extension '+(",".join(items))+u'…'
+			return 'In Files With Extension '+(",".join(items))+'…'
 		else:
-			return u'In Files With Extension…'
+			return 'In Files With Extension…'
 
 
 sidebar_instant_search = 0
@@ -405,7 +412,7 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 			# print 'run forrest run'
 			self.total = 0
 			self.highlight_from = 0
-			self.match_result = u''
+			self.match_result = ''
 			self.match_result += 'Type to search: '+self.searchTerm+'\n'
 			for item in SideBarSelection(self.paths).getSelectedDirectoriesOrDirnames():
 				self.files = []
@@ -820,7 +827,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 	#Project:http://code.google.com/p/bfg-pages/
 	#License:http://www.opensource.org/licenses/bsd-license.php
 	def getImageInfo(self, data):
-		import StringIO
+		import io
 		import struct
 		data = str(data)
 		size = len(data)
@@ -857,7 +864,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 		# handle JPEGs
 		elif (size >= 2) and data.startswith('\377\330'):
 			content_type = 'image/jpeg'
-			jpeg = StringIO.StringIO(data)
+			jpeg = io.StringIO(data)
 			jpeg.read(2)
 			b = jpeg.read(1)
 			try:
@@ -1128,17 +1135,17 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				os.remove(path)
 			except:
-				print "Unable to remove file:\n\n"+path
+				print("Unable to remove file:\n\n"+path)
 		else:
-			print 'path is none'
-			print path
+			print('path is none')
+			print(path)
 
 	def remove_safe_dir(self, path):
 		if not SideBarSelection().isNone(path):
 			try:
 				os.rmdir(path)
 			except:
-				print "Unable to remove folder:\n\n"+path
+				print("Unable to remove folder:\n\n"+path)
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
@@ -1289,8 +1296,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-a', '/Applications/Google Chrome.app', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
-				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
+				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 
 				if s.get('portable_browser') != '':
 					items.extend([s.get('portable_browser')])
@@ -1330,8 +1337,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-a', '/Applications/Chromium.app', url]
 			elif sublime.platform() == 'windows':
 				# read local app data path from registry
-				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
+				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 				if s.get('portable_browser') != '':
 					items.extend([s.get('portable_browser')])
 				items.extend([
