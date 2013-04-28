@@ -46,7 +46,7 @@ class SideBarItem:
 		return False
 
 	def projectURL(self, type):
-		filename = os.path.dirname(sublime.packages_path())+'Settings/SideBarEnhancements.json'
+		filename = os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json'
 		if os.path.lexists(filename):
 			#try:
 				import json
