@@ -1,8 +1,6 @@
-# Sublime Text 3 Compatibilty
+# Sidebar Enhancements
 
-Please see: https://github.com/titoBouzout/SideBarEnhancements/tree/st3
-
-# Description
+## Description
 
 Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. See: http://www.sublimetext.com/
 
@@ -18,7 +16,7 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 ![Screenshot](http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png)
 
-# F12 key
+## F12 key
 
 F12 key allows you to open the current file in browser.
 If you want to add a url to that feature:
@@ -43,7 +41,7 @@ If you want to add a url to that feature:
 
 ```url_production``` allows you to set the url of your production server, opened via ALT+F12
 
-# Notes on configuring the `Open With` menu:
+## Notes on configuring the `Open With` menu:
 
 Definitions file:  `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (note the extra subfolder levels).
 To open it, right-click on any file in an open project and select `Open With > Edit Applications...`
@@ -51,29 +49,28 @@ To open it, right-click on any file in an open project and select `Open With > E
 - On OSX, the 'application' property simply takes the *name* of an application, to which the file at hand's full path will be passed as if with `open ...`, e.g.: "application": "Google Chrome"
 - On OSX, invoking *shell* commands is NOT supported.
 
-# Installation
+## Installation
 
 Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
 
-# FAQ
+## FAQ
 
 Q: Why the menu is not shown on `Open Files`?
 
 - It should be mentioned that the package's context menu is only available for files and folders **in a project (section `Folders` in the side bar)**, and _not_ on the open files listed at the top of the side bar, due to a limitation of ST2.
 
-# Using the External Libraries
-
+## Using the External Libraries
 
  * "getImageInfo" to get width and height for images from "bfg-pages". See: http://code.google.com/p/bfg-pages/
  * "desktop" to be able to open files with system handlers. See: http://pypi.python.org/pypi/desktop
  * "send2trash" to be able to send to the trash instead of deleting for ever!. See: http://pypi.python.org/pypi/Send2Trash
  * "hurry.filesize" to be able to format file sizes. See: http://pypi.python.org/pypi/hurry.filesize/
 
-# Source-code
+## Source-code
 
 https://github.com/titoBouzout/SideBarEnhancements
 
-# Forum Thread
+## Forum Thread
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
