@@ -8,13 +8,15 @@ SideBarEnhancements Changelog:
 
 				* remove some obsolete code
 				* refactor some functions
-				* solve coding mess
+				* solve encoding mess
 				* Fix for when packages_path is a link
 				* fix open with..
 				* copy url commmand
 				* exclude from project
 				* promote as project folder
 				* no value on browser will use default browser
+				* statubar functions fixes
+				* fix open/run command windows
 
 
 		IMPROVEMENTS
@@ -30,7 +32,7 @@ SideBarEnhancements Changelog:
 				* fix canary
 				* fix.. reveal does not work with "," in path names
 				* hide default menus
-				* copy and paste in brackground
+				* copy and paste in background
 				* fix instant search (begin edit, end edit)..
 				* copy image cant' copy image sizes
 

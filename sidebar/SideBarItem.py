@@ -167,15 +167,27 @@ class SideBarItem:
 		return self.name().replace(self.extension(), '').replace('-', ' ').replace('_', ' ').strip();
 
 	def open(self):
-		if sublime.platform() == 'osx':
+		if self.isDirectory():
 			import subprocess
-			subprocess.Popen(['open', self.name()], cwd=self.dirname())
-		elif sublime.platform() == 'windows':
-			import subprocess
-			subprocess.Popen(['start cmd', self.name()], cwd=self.dirname(), shell=True)
+			if sublime.platform() == 'osx':
+				subprocess.Popen(['/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal', '.'], cwd=self.forCwdSystemPath())
+			elif sublime.platform() == 'windows':
+				try:
+					subprocess.Popen(['start', 'powershell'], cwd=self.forCwdSystemPath(), shell=True)
+				except:
+					subprocess.Popen(['start', 'cmd', '.'], cwd=self.forCwdSystemPath(), shell=True)
+			elif sublime.platform() == 'linux':
+				subprocess.Popen(['gnome-terminal', '.'], cwd=self.forCwdSystemPath())
 		else:
-			from . import desktop
-			desktop.open(self.path())
+			if sublime.platform() == 'osx':
+				import subprocess
+				subprocess.Popen(['open', self.name()], cwd=self.dirname())
+			elif sublime.platform() == 'windows':
+				import subprocess
+				subprocess.Popen(['start',  '', self.path()], cwd=self.dirname(), shell=True)
+			else:
+				from . import desktop
+				desktop.open(self.path())
 
 	def edit(self):
 		return sublime.active_window().open_file(self.path())

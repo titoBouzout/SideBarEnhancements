@@ -1,11 +1,10 @@
-*# Sublime Text 3 Compatibilty
+# Sublime Text 3 Compatibilty
 
 Please see: https://github.com/titoBouzout/SideBarEnhancements/tree/st3atyourownrisk
 
 # Description
 
-
-Provides enhancements to the operations on Side Bar of Files and Folders for Sublime Text 2. See: http://www.sublimetext.com/
+Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text 2. See: http://www.sublimetext.com/
 
 Notably provides delete as "move to trash", open with.. a and clipboard. Close, move, open and restore buffers affected by a rename/move command.
 
@@ -49,7 +48,7 @@ If you want to add a url to that feature:
 
 # Notes on configuring the `Open With` menu:
 
-Definitions file:  `User/SidebarEnhancements/Open With/Side Bar.sublime-menu` (note the extra subfolder levels).
+Definitions file:  `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (note the extra subfolder levels).
 To open it, right-click on any file in an open project and select `Open With > Edit Applications...`
 
 - On OSX, the 'application' property simply takes the *name* of an application, to which the file at hand's full path will be passed as if with `open ...`, e.g.: "application": "Google Chrome"
