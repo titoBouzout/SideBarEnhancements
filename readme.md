@@ -1,23 +1,20 @@
 # Sublime Text 3 Compatibilty
 
-Please see: https://github.com/titoBouzout/SideBarEnhancements/tree/st3atyourownrisk
+Please see: https://github.com/titoBouzout/SideBarEnhancements/tree/st3
 
 # Description
 
-Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text 2. See: http://www.sublimetext.com/
+Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. See: http://www.sublimetext.com/
 
-Notably provides delete as "move to trash", open with.. a and clipboard. Close, move, open and restore buffers affected by a rename/move command.
+Notably provides delete as "move to trash", open with.. and a clipboard. Close, move, open and restore buffers affected by a rename/move command.
 
 Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh....
 
 The not so basic: copy paths as URIs, URLs, content as UTF8, content as data:uri base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate
 
-
 Preference to control if a buffer should be closed when affected by a deletion operation.
 
 Allows to display "file modified date" and "file size" on statusbar.
-
-All commands available for files and folders(when applicable) .
 
 ![Screenshot](http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png)
 
@@ -60,10 +57,6 @@ Install this repository via "Package Control" http://wbond.net/sublime_packages/
 
 # FAQ
 
-Q: Uninstall?
-
- * Follow the instructions here: https://github.com/titoBouzout/SideBarEnhancements/issues/18
-
 Q: Why the menu is not shown on `Open Files`?
 
 - It should be mentioned that the package's context menu is only available for files and folders **in a project (section `Folders` in the side bar)**, and _not_ on the open files listed at the top of the side bar, due to a limitation of ST2.
@@ -78,11 +71,9 @@ Q: Why the menu is not shown on `Open Files`?
 
 # Source-code
 
-
 https://github.com/titoBouzout/SideBarEnhancements
 
 # Forum Thread
-
 
 http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
@@ -118,7 +109,6 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
 # Update v0.9:
 
-
 * Minor tweaks and fixes.
 * Fix: Re-enable move to trash for OSX
 * New: Allow to display "file modified time" and "file size" on statusbar via preferences.
@@ -128,18 +118,15 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
 # Update v0.8:
 
-
 * Full review for when the user has selection of multiples items.
 * New: Added support for bookmarks and marks for when a view is moved.
 
 # Update v0.7:
 
-
 * New: After a rename of a file or folder, the affected views will update(reload) to reflect the new location keeping intact content, selections, folded regions and scroll position.
 * New: File path search
 
 # Update v0.6:
-
 
 * Fix: Paste was pasting on parent folder (Misinterpretation of boolean)
 * Fix: "Open with" works on Linux
@@ -157,13 +144,11 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
 # Update v0.4:
 
-
 * Fix: "Open / Run" fixed on Linux thanks to project [desktop](http://pypi.python.org/pypi/desktop )
 * Improved: "Paste" command copy permission bits, last access time, last modification time, and flags
 * Improved: "Delete" command send files to trash thanks to [Send2Trash](http://pypi.python.org/pypi/Send2Trash ) . NOTE: If "Delete" fails to send to trash it will ask for "Permanently Delete" On confirmation it delete the item forever.
 
 # Update v0.3:
-
 
 * Fixed: Open should run correctly with some strange characters on paths
 * New: "Open with.." is enabled and allows to set custom applications for different file extensions.
@@ -172,12 +157,10 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 
 # Update v0.2:
 
-
  * Copy paths and names in various formats.
  * Removed license to not conflict with sublime
 
 # Update v0.1:
-
 
  * Tweaks here, tweaks there.
  * Renamed repository
