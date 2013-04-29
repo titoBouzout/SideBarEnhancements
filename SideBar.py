@@ -118,7 +118,7 @@ class SideBarOpenCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		for item in SideBarSelection(paths).getSelectedItems():
 			item.open()
-			
+
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 

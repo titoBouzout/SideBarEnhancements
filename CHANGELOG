@@ -17,7 +17,7 @@ SideBarEnhancements Changelog:
 				* no value on browser will use default browser
 				* statubar functions fixes
 				* fix open/run command windows
-
+				* hide default menus
 
 		IMPROVEMENTS
 
@@ -31,7 +31,6 @@ SideBarEnhancements Changelog:
 				* Use a real clipboard integrated with the OS
 				* fix canary
 				* fix.. reveal does not work with "," in path names
-				* hide default menus
 				* copy and paste in background
 				* fix instant search (begin edit, end edit)..
 				* copy image cant' copy image sizes
