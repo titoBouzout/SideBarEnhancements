@@ -1443,28 +1443,13 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import subprocess
-		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-			if sublime.platform() == 'osx':
-				try:
-					subprocess.Popen(['subl', '.'], cwd=item.path())
-				except:
-					try:
-						subprocess.Popen(['sublime', '.'], cwd=item.path())
-					except:
-						subprocess.Popen(['/Applications/Sublime Text 3.app/Contents/SharedSupport/bin/subl', '.'], cwd=item.path())
-			elif sublime.platform() == 'windows':
-				try:
-					subprocess.Popen(['subl', '.'], cwd=item.path(), shell=True)
-				except:
-					try:
-						subprocess.Popen(['sublime', '.'], cwd=item.path(), shell=True)
-					except:
-						subprocess.Popen(['sublime_text.exe', '.'], cwd=item.path(), shell=True)
-			else:
-				try:
-					subprocess.Popen(['subl', '.'], cwd=item.path())
-				except:
-					subprocess.Popen(['sublime', '.'], cwd=item.path())
+		items = []
+		items.append(sublime.executable_path())
+		items.append('.')
+		for item in SideBarSelection(paths).getSelectedItems():
+			items.append(item.forCwdSystemPath())
+			items.append(item.path())
+		subprocess.Popen(items, cwd=items[2])
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_in_new_window')

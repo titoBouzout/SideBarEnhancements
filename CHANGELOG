@@ -22,6 +22,7 @@ SideBarEnhancements Changelog:
 				* for each window, locate the focused tab in sidebar at startup
 				* Lazy load sendtotrash, desktop.
 				* 2nd fix #92
+				* improves open in new window commmand
 
 		TODO
 

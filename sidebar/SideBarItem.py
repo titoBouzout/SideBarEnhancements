@@ -172,7 +172,7 @@ class SideBarItem:
 			subprocess.Popen(['open', self.name()], cwd=self.dirname())
 		elif sublime.platform() == 'windows':
 			import subprocess
-			subprocess.Popen([self.name()], cwd=self.dirname(), shell=True)
+			subprocess.Popen(['start cmd', self.name()], cwd=self.dirname(), shell=True)
 		else:
 			from . import desktop
 			desktop.open(self.path())
