@@ -55,10 +55,12 @@ Download branch "ST3" to the packages folder, and call it "SideBarEnhancements/"
 
 Bascially.. this:
 
+```
 cd Packages/
 git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
 cd "SideBarEnhancements"
 git checkout ST3
+```
 
 ## FAQ
 
