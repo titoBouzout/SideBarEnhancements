@@ -51,7 +51,14 @@ To open it, right-click on any file in an open project and select `Open With > E
 
 ## Installation
 
-Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
+Download branch "ST3" to the packages folder, and call it "SideBarEnhancements/"
+
+Bascially.. this:
+
+cd Packages/
+git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
+cd "SideBarEnhancements"
+git checkout ST3
 
 ## FAQ
 
