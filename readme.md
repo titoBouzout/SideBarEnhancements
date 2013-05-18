@@ -51,7 +51,7 @@ To open it, right-click on any file in an open project and select `Open With > E
 
 ## Installation
 
-Download branch "ST3" to the packages folder, and call it "SideBarEnhancements/"
+Download branch "st3" to the packages folder, and call it "SideBarEnhancements/"
 
 Bascially.. this:
 
@@ -59,7 +59,7 @@ Bascially.. this:
 cd Packages/
 git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
 cd "SideBarEnhancements"
-git checkout ST3
+git checkout st3
 ```
 
 ## FAQ
