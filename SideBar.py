@@ -225,6 +225,13 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
+		window = sublime.active_window()
+		views = []
+		for view in window.views():
+			if view.name() == 'Find Results':
+				views.append(view);
+		for view in views:
+			view.close();
 		items = []
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
