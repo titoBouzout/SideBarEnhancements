@@ -51,13 +51,22 @@ To open it, right-click on any file in an open project and select `Open With > E
 
 ## Installation
 
-Install this repository via "Package Control" http://wbond.net/sublime_packages/package_control
+Download branch "st3" to the packages folder, and call it "SideBarEnhancements/"
+
+Bascially.. this:
+
+```
+cd Packages/
+git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
+cd "SideBarEnhancements"
+git checkout st3
+```
 
 ## FAQ
 
 Q: Why the menu is not shown on `Open Files`?
 
-- It should be mentioned that the package's context menu is only available for files and folders **in a project (section `Folders` in the side bar)**, and _not_ on the open files listed at the top of the side bar, due to a limitation of ST2.
+- It should be mentioned that the package's context menu is only available for files and folders **in a project (section `Folders` in the side bar)**, and _not_ on the open files listed at the top of the side bar, due to a limitation of ST.
 
 ## Using the External Libraries
 
