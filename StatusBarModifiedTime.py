@@ -4,10 +4,10 @@ from os.path import getmtime
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')
-	
+
 class StatusBarModifiedTime(sublime_plugin.EventListener):
 
-	def on_load_async(self, v):
+	def on_activated_async(self, v):
 		if s.get('statusbar_modified_time') and v.file_name():
 			try:
 				self.show(v, getmtime(v.file_name()))

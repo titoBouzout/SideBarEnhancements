@@ -8,7 +8,7 @@ def plugin_loaded():
 
 class StatusBarFileSize(sublime_plugin.EventListener):
 
-	def on_load_async(self, v):
+	def on_activated_async(self, v):
 		if s.get('statusbar_file_size') and v.file_name():
 			try:
 				self.show(v, size(getsize(v.file_name())))
