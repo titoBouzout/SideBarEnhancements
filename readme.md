@@ -16,6 +16,19 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 ![Screenshot](http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png)
 
+## Installation
+
+To install SideBarEnhancements, [download](https://github.com/titoBouzout/SideBarEnhancements/archive/master.zip) or clone this repo into the SublimeText ```Packages``` directory and ```git checkout st3```.  A restart of SublimeText might be nessecary to complete the install.
+
+```
+cd Packages/
+git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
+cd "SideBarEnhancements"
+git checkout st3
+```
+
+
+
 ## F12 key
 
 F12 key allows you to open the current file in browser.
@@ -48,19 +61,6 @@ To open it, right-click on any file in an open project and select `Open With > E
 
 - On OSX, the 'application' property simply takes the *name* of an application, to which the file at hand's full path will be passed as if with `open ...`, e.g.: "application": "Google Chrome"
 - On OSX, invoking *shell* commands is NOT supported.
-
-## Installation
-
-Download branch "st3" to the packages folder, and call it "SideBarEnhancements/"
-
-Bascially.. this:
-
-```
-cd Packages/
-git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
-cd "SideBarEnhancements"
-git checkout st3
-```
 
 ## FAQ
 
