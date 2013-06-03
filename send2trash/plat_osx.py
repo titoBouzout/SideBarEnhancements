@@ -33,8 +33,8 @@ def check_op_result(op_result):
         raise OSError(msg)
 
 def send2trash(path):
-    # if not isinstance(path, bytes):
-    #     path = path.encode('utf-8')
+    if not isinstance(path, bytes):
+        path = path.encode('utf-8')
     fp = FSRef()
     opts = kFSPathMakeRefDoNotFollowLeafSymlink
     op_result = FSPathMakeRefWithOptions(path, opts, byref(fp), None)

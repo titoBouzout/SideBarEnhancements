@@ -1444,4 +1444,3 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'
-
