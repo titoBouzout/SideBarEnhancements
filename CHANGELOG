@@ -9,12 +9,13 @@ SideBarEnhancements Changelog:
 			* fix instant search (begin edit, end edit mess)..
 			* rename of "dirty" view, does not carry changes.
 			* rename of view, does not carry undo/redo history.
+			* reveal on windows on a folder, will open the folder, not reveal the folder.
+			* fix.. reveal does not work with "," in path names
 
 		TODO
 
 				* Use a real clipboard integrated with the OS
 				* fix canary
-				* fix.. reveal does not work with "," in path names
 				* copy and paste in background
 				* copy image cant' copy image sizes
 	.1
