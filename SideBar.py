@@ -8,6 +8,8 @@ from .sidebar.SideBarItem import SideBarItem
 from .sidebar.SideBarSelection import SideBarSelection
 from .sidebar.SideBarProject import SideBarProject
 
+from .Edit import Edit as Edit
+
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
 	import winreg
@@ -22,7 +24,7 @@ def expandVars(path):
 # A "directory" for a user is a "folder"
 
 def checkVersion():
-	version = '2012.04.28.1605.1';
+	version = '2012.06.06.1611.2';
 	if s.get('version') != version:
 		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/CHANGELOG', False).edit();
 		s.set('version', version);
@@ -316,10 +318,9 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 		view.set_name('Instant File Search')
 		view.set_syntax_file('Packages/SideBarEnhancements/SideBar Results.hidden-tmLanguage')
 		view.set_scratch(True)
-		edit = view.begin_edit()
 		view.settings().set('sidebar_instant_search_paths', paths)
-		view.replace(edit, sublime.Region(0, view.size()), "Type to search: ")
-		view.end_edit(edit)
+		with Edit(view) as edit:
+			edit.replace(sublime.Region(0, view.size()), "Type to search: ")
 		view.sel().clear()
 		view.sel().add(sublime.Region(16))
 		sidebar_instant_search += 1
@@ -390,14 +391,13 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 		def on_done(self):
 			if self.start_time == self.view.settings().get('sidebar_search_paths_start_time'):
 				view = self.view;
-				edit = view.begin_edit()
 				sel = sublime.Region(view.sel()[0].begin(), view.sel()[0].end())
-				view.replace(edit, sublime.Region(0, view.size()), self.match_result);
-				view.end_edit(edit)
+				with Edit(view) as edit:
+					edit.replace(sublime.Region(0, view.size()), self.match_result);
 				view.erase_regions("sidebar_search_instant_highlight")
 				if self.total < 30000 and len(self.searchTerm) > 1:
 					regions = [item for item in view.find_all(self.searchTerm, sublime.LITERAL|sublime.IGNORECASE) if item.begin() >= self.highlight_from]
-					view.add_regions("sidebar_search_instant_highlight", regions, 'string', sublime.DRAW_EMPTY|sublime.DRAW_OUTLINED|sublime.DRAW_EMPTY_AS_OVERWRITE)
+					view.add_regions("sidebar_search_instant_highlight", regions, '',  '', sublime.DRAW_EMPTY|sublime.DRAW_OUTLINED|sublime.DRAW_EMPTY_AS_OVERWRITE)
 				view.sel().clear()
 				view.sel().add(sel)
 

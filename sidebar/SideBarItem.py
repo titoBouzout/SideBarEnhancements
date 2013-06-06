@@ -6,6 +6,8 @@ import shutil
 
 from .SideBarProject import SideBarProject
 
+from .Edit import Edit as Edit
+
 class Object():
 	pass
 
@@ -332,97 +334,7 @@ class SideBarItem:
 					active_view = self._moveMoveView(window, view, view.file_name().replace(old+'/', location+'/', 1), active_view)
 
 	def _moveMoveView(self, window, view, location, active_view):
-		if active_view == view:
-			is_active_view = True
-		else:
-			is_active_view = False
-
-		options = Object()
-
-		options.scroll = view.viewport_position()
-
-		options.selections = [[item.a, item.b] for item in view.sel()]
-
-		options.marks = [[item.a, item.b] for item in view.get_regions("mark")]
-
-		options.bookmarks = [[item.a, item.b] for item in view.get_regions("bookmarks")]
-
-		if int(sublime.version()) >= 2167:
-			options.folds = [[item.a, item.b] for item in view.folded_regions()]
-		else:
-			options.folds = [[item.a, item.b] for item in view.unfold(sublime.Region(0, view.size()))]
-
-		options.syntax = view.settings().get('syntax')
-
-		try:
-			_window = window or view.window() or sublime.active_window()
-			options.position = _window.get_view_index(view)
-		except:
-			options.position = False
-
-		window.focus_view(view)
-		if view.is_dirty():
-			options.content = view.substr(sublime.Region(0, view.size()))
-			view.window().run_command('revert')
-		else:
-			options.content = False
-
-		_view = view
-		view = window.open_file(location)
-		window.focus_view(_view)
-		window.run_command('close')
-
-		sublime.set_timeout(lambda: self._moveRestoreView(view, options, window), 200)
-
-		if is_active_view:
-			window.focus_view(view)
-			return view
-		else:
-			window.focus_view(active_view)
-			return active_view
-
-	def _moveRestoreView(self, view, options, window):
-		if view.is_loading():
-			sublime.set_timeout(lambda: self._moveRestoreView(view, options, window), 100)
-		else:
-			if options.content != False:
-				edit = view.begin_edit()
-				view.replace(edit, sublime.Region(0, view.size()), options.content);
-				view.sel().clear()
-				view.sel().add(sublime.Region(0))
-				view.end_edit(edit)
-
-			if options.position != False:
-				try:
-					_window = window or view.window() or sublime.active_window()
-					group, index = options.position
-					_window.set_view_index(view, group, index)
-				except:
-					pass
-
-			if options.syntax:
-				view.settings().set('syntax', options.syntax);
-
-			for r in options.folds:
-				view.fold(sublime.Region(r[0], r[1]))
-
-			view.sel().clear()
-			for r in options.selections:
-				view.sel().add(sublime.Region(r[0], r[1]))
-
-			rs = []
-			for r in options.marks:
-				rs.append(sublime.Region(r[0], r[1]))
-			if len(rs):
-				view.add_regions("mark", rs, "mark", "dot", sublime.HIDDEN | sublime.PERSISTENT)
-
-			rs = []
-			for r in options.bookmarks:
-				rs.append(sublime.Region(r[0], r[1]))
-			if len(rs):
-				view.add_regions("bookmarks", rs, "bookmarks", "bookmark", sublime.HIDDEN | sublime.PERSISTENT)
-
-			view.set_viewport_position(options.scroll, False)
+		view.retarget(location)
 
 	def closeViews(self):
 		path = self.path()
