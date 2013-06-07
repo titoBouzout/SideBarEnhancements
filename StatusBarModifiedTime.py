@@ -1,6 +1,8 @@
 import sublime, sublime_plugin, time
 from os.path import getmtime
 
+s = {}
+
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')

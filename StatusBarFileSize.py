@@ -2,6 +2,8 @@ import sublime, sublime_plugin
 from .hurry.filesize import size
 from os.path import getsize
 
+s = {}
+
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')

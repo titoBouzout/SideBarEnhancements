@@ -23,6 +23,8 @@ def expandVars(path):
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
+s = {}
+
 def checkVersion():
 	version = '2012.06.06.1611.2';
 	if s.get('version') != version:
@@ -189,7 +191,6 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], application = "", extensions = ""):
-		import sys
 		application_dir, application_name = os.path.split(application)
 
 		if extensions == '*':
