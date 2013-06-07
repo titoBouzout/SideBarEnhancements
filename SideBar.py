@@ -526,8 +526,8 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 	def confirm(self, paths, in_parent, data):
 		import functools
 		window = sublime.active_window()
-		# window.show_input_panel("BUG!", '', '', None, None)
-		# window.run_command('hide_panel');
+		window.show_input_panel("BUG!", '', '', None, None)
+		window.run_command('hide_panel');
 
 		yes = []
 		yes.append('Yes, Replace the following items:');
