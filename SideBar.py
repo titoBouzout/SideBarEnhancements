@@ -1057,7 +1057,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		no.append('Cancel the operation.');
 
 		while len(no) != len(yes):
-			no.append('ST3 BUG');
+			no.append('');
 
 		if sublime.platform() == 'osx':
 			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
@@ -1120,8 +1120,8 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 				self.confirm([item.path() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()])
 		else:
 			try:
+				from .send2trash import send2trash
 				for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-					from .send2trash import send2trash
 					for content in os.listdir(item.path()):
 						file = os.path.join(item.path(), content)
 						if not SideBarSelection().isNone(file):
@@ -1148,7 +1148,7 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 		no.append('Cancel the operation.');
 
 		while len(no) != len(yes):
-			no.append('ST3 BUG');
+			no.append('');
 
 		if sublime.platform() == 'osx':
 			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
