@@ -45,38 +45,50 @@ class SideBarItem:
 		return False
 
 	def url(self, type):
-		filename = os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json'
-		if os.path.lexists(filename):
-			#try:
+
+		filenames = []
+
+		# scans a la htaccess
+		item = SideBarItem(self.path(), self.isDirectory())
+		while not os.path.exists(item.join('.sublime/SideBarEnhancements.json')):
+			if item.dirname() == item.path():
+				break;
+			item.path(item.dirname())
+		item  = SideBarItem(item.join('.sublime/SideBarEnhancements.json'), False);
+		if item.exists():
+			filenames.append(item.path())
+
+		filenames.append(os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json')
+
+		from urllib.parse import urljoin
+		import collections
+		for filename in filenames:
+			if os.path.lexists(filename):
 				import json
 				data = open(filename, 'r').read()
 				data = data.replace('\t', ' ').replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/').replace('http:/', 'http://').replace('https:/', 'https://')
-				data = json.loads(data, strict=False)
-
-				for path in list(data.keys()):
-					path2 = expandVars(path)
-					#print('-------------------------------------------------------')
-					#print('searching:')
-					path2 = path2.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					#print(path2)
-					#print('in:')
-					path3 = self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
-					#print(path3)
-					#print('-------------------------------------------------------')
-					path4 = re.sub(re.compile("^"+re.escape(path2), re.IGNORECASE), '', path3);
-					#print(path4)
-					if path4 != path3:
-						url = data[path][type]
+				data = json.loads(data, strict=False, object_pairs_hook=collections.OrderedDict)
+				for key in list(data.keys()):
+					#	print('-------------------------------------------------------')
+					#	print(key);
+					if filename == filenames[len(filenames)-1]:
+						base = expandVars(key)
+					else:
+						base = os.path.normpath(expandVars(os.path.dirname(os.path.dirname(filename))+'/'+key))
+					base = base.replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					#	print(base)
+					current = self.path().replace('\\', '/').replace('\\', '/').replace('//', '/').replace('//', '/')
+					#	print(current)
+					url_path = re.sub(re.compile("^"+re.escape(base), re.IGNORECASE), '', current);
+					#	print(url_path)
+					if url_path != current:
+						url = data[key][type]
 						if url:
 							if url[-1:] != '/':
 								url = url+'/'
 						import urllib.request, urllib.parse, urllib.error
-						return url+(re.sub("^/", '', urllib.parse.quote(path4)));
-
-			#except:
-			#	return False
-		else:
-			return False
+						return url+(re.sub("^/", '', urllib.parse.quote(url_path)));
+		return False
 
 	def isUnderCurrentProject(self):
 		path = self.path()

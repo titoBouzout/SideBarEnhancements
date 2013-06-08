@@ -1238,10 +1238,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			type = 'url_testing'
 
 		for item in SideBarSelection(paths).getSelectedItems():
-			if item.url(type):
-				self.try_open(item.url(type), browser)
-			else:
-				self.try_open(item.uri(), browser)
+			url = item.url(type) or item.uri()
+			self.try_open(url, browser)
 
 	def try_open(self, url, browser):
 		import subprocess

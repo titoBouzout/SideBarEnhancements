@@ -12,6 +12,7 @@ SideBarEnhancements Changelog:
 			* reveal on windows on a folder, will open the folder, not reveal the folder.
 			* fix.. reveal does not work with "," in path names
 			* fix.. a project folder can't be removed via context menu if the project was not saved.
+			* browser preview supports relative urls, and multiple configuration files a la ".htaccess"
 
 		TODO
 

@@ -32,7 +32,12 @@ git checkout st3
 ## F12 key
 
 F12 key allows you to open the current file in browser.
-If you want to add a url to that feature:
+
+```url_testing``` allows you to set the url of your local server, opened via F12
+
+```url_production``` allows you to set the url of your production server, opened via ALT+F12
+
+### With absolute paths
 
  * Right click any file on sidebar and select: "Project -> Edit Projects Preview URLs"
  * Edit this file, and add your paths and URLs with the following structure:
@@ -50,9 +55,43 @@ If you want to add a url to that feature:
 }
 ```
 
-```url_testing``` allows you to set the url of your local server, opened via F12
+### With relative paths
 
-```url_production``` allows you to set the url of your production server, opened via ALT+F12
+Imagine we have a project with the following structure
+
+```
+Project/ < - root project folder
+Project/libs/
+Project/public/ < - the folder we want to load as "http://localhost/"
+Project/private/
+Project/experimental/ < - other folder we may run as experimental/test in another url "http://experimental/"
+```
+
+Then we create configuration file:
+
+```Project/.sublime/SideBarEnhancements.json```
+
+with content:
+
+```
+{
+	"public/":{
+		"url_testing":"http://localhost/",
+		"url_production":"http://domain.tld/"
+	},
+	"experimental/":{
+		"url_testing":"http://experimental/",
+		"url_production":"http://domain.tld/"
+	},
+	"":{
+		"url_testing":"http://the_url_for_the_project_root/",
+		"url_production":"http://the_url_for_the_project_root/"
+	}
+}
+```
+...
+
+You can create config files ```some/folder/.sublime/SideBarEnhancements.json``` anwywhere.
 
 ## Notes on configuring the `Open With` menu:
 
