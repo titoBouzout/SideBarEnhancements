@@ -6,8 +6,6 @@ import shutil
 
 from .SideBarProject import SideBarProject
 
-from .Edit import Edit as Edit
-
 class Object():
 	pass
 
@@ -60,7 +58,6 @@ class SideBarItem:
 
 		filenames.append(os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json')
 
-		from urllib.parse import urljoin
 		import collections
 		for filename in filenames:
 			if os.path.lexists(filename):

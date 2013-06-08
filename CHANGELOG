@@ -16,42 +16,42 @@ SideBarEnhancements Changelog:
 
 		TODO
 
-				* Use a real clipboard integrated with the OS
-				* fix canary
-				* copy and paste in background
-				* copy image cant' copy image sizes
+			* Use a real clipboard integrated with the OS
+			* fix canary
+			* copy and paste in background
+			* copy image cant' copy image sizes
 	.1
 
 		BUGS FIXED
 
-				* remove some obsolete code
-				* refactor some functions
-				* solve encoding mess
-				* Fix for when packages_path is a link
-				* fix open with..
-				* copy url commmand
-				* exclude from project
-				* promote as project folder
-				* no value on browser will use default browser
-				* statusbar functions fixes
-				* fix open/run command windows
-				* hide default menus
+			* remove some obsolete code
+			* refactor some functions
+			* solve encoding mess
+			* Fix for when packages_path is a link
+			* fix open with..
+			* copy url commmand
+			* exclude from project
+			* promote as project folder
+			* no value on browser will use default browser
+			* statusbar functions fixes
+			* fix open/run command windows
+			* hide default menus
 
 		IMPROVEMENTS
 
-				* for each window, locate the focused tab in sidebar at startup
-				* Lazy load sendtotrash, desktop.
-				* 2nd fix #92
-				* improves open in new window commmand
+			* for each window, locate the focused tab in sidebar at startup
+			* Lazy load sendtotrash, desktop.
+			* 2nd fix #92
+			* improves open in new window commmand
 
 		TODO
 
-				* Use a real clipboard integrated with the OS
-				* fix canary
-				* fix.. reveal does not work with "," in path names
-				* copy and paste in background
-				* fix instant search (begin edit, end edit mess)..
-				* copy image cant' copy image sizes
+			* Use a real clipboard integrated with the OS
+			* fix canary
+			* fix.. reveal does not work with "," in path names
+			* copy and paste in background
+			* fix instant search (begin edit, end edit mess)..
+			* copy image cant' copy image sizes
 
 	.0
 
