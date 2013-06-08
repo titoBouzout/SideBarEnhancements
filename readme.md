@@ -69,7 +69,7 @@ Project/experimental/ < - other folder we may run as experimental/test in anothe
 
 Then we create configuration file:
 
-```Project/.sublime/SideBarEnhancements.json```
+`Project/.sublime/SideBarEnhancements.json`
 
 with content:
 
@@ -91,7 +91,7 @@ with content:
 ```
 ...
 
-You can create config files ```some/folder/.sublime/SideBarEnhancements.json``` anwywhere.
+You can create config files ```some/folder/.sublime/SideBarEnhancements.json``` anywhere.
 
 ## Notes on configuring the `Open With` menu:
 
