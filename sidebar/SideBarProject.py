@@ -5,6 +5,9 @@ class SideBarProject:
 	def getDirectories(self):
 		return sublime.active_window().folders()
 
+	def hasDirectories(self):
+		return len(self.getDirectories()) > 0
+
 	def hasOpenedProject(self):
 		return self.getProjectFile() != None
 

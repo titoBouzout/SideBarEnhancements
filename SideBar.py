@@ -1201,7 +1201,9 @@ class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
 		self.window.run_command('remove_folder', {"dirs":paths})
 
 	def is_enabled(self, paths =[]):
-		return SideBarProject().hasOpenedProject()
+		selection = SideBarSelection(paths)
+		project = SideBarProject()
+		return project.hasDirectories() and all([item.path() in project.getDirectories() or not item.exists() for item in selection.getSelectedItems()])
 
 class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
