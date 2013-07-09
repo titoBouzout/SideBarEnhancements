@@ -22,9 +22,7 @@ To install SideBarEnhancements, [download](https://github.com/titoBouzout/SideBa
 
 ```
 cd Packages/
-git clone https://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
-cd "SideBarEnhancements"
-git checkout st3
+git clone -b st3 git://github.com/titoBouzout/SideBarEnhancements.git "SideBarEnhancements"
 ```
 
 
