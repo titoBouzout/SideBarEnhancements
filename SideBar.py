@@ -14,22 +14,6 @@ from send2trash import send2trash
 if sublime.platform() == 'windows':
 	import _winreg
 
-def disable_default():
-	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
-	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar.sublime-menu.txt'
-	if file(default, 'r').read() ==  file(desired, 'r').read():
-		file(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
-
-	default = sublime.packages_path()+'/Default/Side Bar Mount Point.sublime-menu'
-	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar Mount Point.sublime-menu.txt'
-	if file(default, 'r').read() ==  file(desired, 'r').read():
-		file(default, 'w+').write('[/*'+file(desired, 'r').read()+'*/]')
-
-try:
-	disable_default();
-except:
-	pass
-
 def expand_vars(path):
 	for k, v in os.environ.iteritems():
 		# dirty hack, this should be autofixed in python3
