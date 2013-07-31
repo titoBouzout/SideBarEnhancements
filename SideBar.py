@@ -960,8 +960,11 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		item = SideBarItem(old, os.path.isdir(old))
 		try:
 			if not item.copy(new):
-				sublime.error_message("Unable to duplicate, destination exists.")
-				self.run([old], new)
+				# destination exists
+				if SideBarItem(new, os.path.isdir(new)).overwrite():
+					self.on_done(old, new)
+				else:
+					self.run([old], new)
 				return
 		except:
 			sublime.error_message("Unable to copy:\n\n"+old+"\n\nto\n\n"+new)
@@ -991,9 +994,12 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 		item = SideBarItem(old, os.path.isdir(old))
 		try:
 			if not item.move(new):
-				sublime.error_message("Unable to rename, destination exists.")
-				self.run([old], leaf)
-				return
+				# sublime.error_message("Unable to rename, destination exists.")
+				# destination exists
+				if SideBarItem(new, os.path.isdir(new)).overwrite():
+					self.on_done(old, branch, leaf)
+				else:
+					self.run([old], leaf)
 		except:
 			sublime.error_message("Unable to rename:\n\n"+old+"\n\nto\n\n"+new)
 			self.run([old], leaf)
@@ -1016,8 +1022,11 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 		item = SideBarItem(old, os.path.isdir(old))
 		try:
 			if not item.move(new):
-				sublime.error_message("Unable to move, destination exists.")
-				self.run([old], new)
+				# sublime.error_message("Unable to move, destination exists.")
+				if SideBarItem(new, os.path.isdir(new)).overwrite():
+					self.on_done(old, new)
+				else:
+					self.run([old], new)
 				return
 		except:
 			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
