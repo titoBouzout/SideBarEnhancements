@@ -105,6 +105,10 @@ Q: Why the menu is not shown on `Open Files`?
 
 - It should be mentioned that the package's context menu is only available for files and folders **in a project (section `Folders` in the side bar)**, and _not_ on the open files listed at the top of the side bar, due to a limitation of ST.
 
+Q: Why are most of my options grayed out?  What do I do now?
+
+- In Finder, Open `Application Support/Sublime Text 3/Installed Packages` and remove the file `SideBarEnhancements.sublime-package`
+
 ## Using the External Libraries
 
  * "getImageInfo" to get width and height for images from "bfg-pages". See: http://code.google.com/p/bfg-pages/
