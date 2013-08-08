@@ -107,7 +107,10 @@ Q: Why the menu is not shown on `Open Files`?
 
 Q: Why are most of my options grayed out?  What do I do now?
 
-- In Finder, Open `Application Support/Sublime Text 3/Installed Packages` and remove the file `SideBarEnhancements.sublime-package`
+- For Mac OSX, Open `Application Support/Sublime Text 3/Installed Packages` in finder and remove the file `SideBarEnhancements.sublime-package`
+- For Windows, Open `AppData/Roaming/Sublime Text 3/Installed Packages` in explorer and remove the file `SideBarEnhancements.sublime-package`
+- Both of these options work just fine and the file will be recreated
+- After removing the files, Restart Sublime Text 3
 
 ## Using the External Libraries
 
