@@ -219,7 +219,7 @@ class SideBarItem:
 		return 'data:'+self.mime()+';base64,'+(file(self.path(), "rb").read().encode("base64").replace('\n', ''))
 
 	def reveal(self):
-		sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
+		sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": '\"' + self.name() + '\"'} )
 
 	def write(self, content):
 		file(self.path(), 'w+').write(content)
