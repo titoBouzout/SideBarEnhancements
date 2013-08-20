@@ -1239,9 +1239,7 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = False):
 
-		browser = s.get("default_browser")
-		if browser == '':
-			browser = ''
+		browser = s.get("default_browser", "")
 
 		if type == False or type == 'testing':
 			type = 'url_testing'
@@ -1411,6 +1409,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		else:
 			if s.get('portable_browser') != '':
 				items.extend([s.get('portable_browser')])
+			commands = ['-new-tab', url]
 
 		for item in items:
 			try:
