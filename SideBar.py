@@ -1408,6 +1408,9 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'Safari.exe'
 				])
 				commands = ['-new-tab', '-url', url]
+		else:
+			if s.get('portable_browser') != '':
+				items.extend([s.get('portable_browser')])
 
 		for item in items:
 			try:
