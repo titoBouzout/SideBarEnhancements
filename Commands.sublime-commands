@@ -80,5 +80,9 @@
         "caption": "File: Open In Browser - Production Server",
         "command": "side_bar_open_in_browser",
         "args":{"paths":[], "type":"production"}
+    },
+    {
+        "caption": "Side Bar: Refresh",
+        "command": "refresh_folder_list"
     }
 ]
