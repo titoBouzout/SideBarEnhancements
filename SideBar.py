@@ -1224,9 +1224,7 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = False):
 
-		browser = s.get("default_browser")
-		if browser == '':
-			browser = 'firefox'
+		browser = s.get("default_browser", "")
 
 		if type == False or type == 'testing':
 			type = 'url_testing'
@@ -1416,8 +1414,11 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				])
 				commands = ['-new-tab', '-url', url]
 		else:
-			sublime.error_message('Browser "'+browser+'" not found!\nUse any of the following: firefox, chrome, chromium, opera, safari')
-			return
+			if s.get('portable_browser') != '':
+				items.extend([s.get('portable_browser')])
+			commands = ['-new-tab', url]
+			#sublime.error_message('Browser "'+browser+'" not found!\nUse any of the following: firefox, chrome, chromium, opera, safari')
+			#return
 
 		for item in items:
 			try:
