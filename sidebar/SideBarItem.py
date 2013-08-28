@@ -116,8 +116,8 @@ class SideBarItem:
 		return urllib.parse.quote(self.pathAbsoluteFromProject())
 
 	def uri(self):
-		import urllib.request, urllib.parse, urllib.error
-		return 'file:'+urllib.request.pathname2url(self.path());
+		uri = 'file:'+(self.path().replace('\\', '/').replace('//', '/'));
+		return uri
 
 	def join(self, name):
 		return os.path.join(self.path(), name)
