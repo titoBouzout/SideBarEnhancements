@@ -997,8 +997,11 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], newLeaf = False):
 		import functools
 		branch, leaf = os.path.split(SideBarSelection(paths).getSelectedItems()[0].path())
+		name = newLeaf or leaf
 		self.window.run_command('hide_panel');
-		self.window.show_input_panel("New Name:", newLeaf or leaf, functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path(), branch), None, None)
+		sel = self.window.show_input_panel("New Name:", name, functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path(), branch), None, None).sel()
+		sel.clear()
+		sel.add(sublime.Region(0, len(name) - len(os.path.splitext(name)[-1])))
 
 	def on_done(self, old, branch, leaf):
 		self.window.run_command('hide_panel');
