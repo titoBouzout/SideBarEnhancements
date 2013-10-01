@@ -232,7 +232,7 @@ class SideBarItem:
 			sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
 
 	def write(self, content):
-		open(self.path(), 'w+').write(content)
+		open(self.path(), 'w+', encoding='utf8').write(content)
 
 	def mime(self):
 		import mimetypes
