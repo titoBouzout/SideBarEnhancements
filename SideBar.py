@@ -1052,7 +1052,10 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 						item.closeViews()
-					send2trash(item.path())
+					if s.get('disable_send_to_trash', False):
+						self.remove(item.path());
+					else:
+						send2trash(item.path())
 				SideBarProject().refresh();
 			except:
 				import functools

@@ -28,7 +28,9 @@
 
 	"portable_browser": "", // for example:  C:/Program Files (x86)/Nightly/firefox.exe
 
-	"expand_sidebar_on_startup":    					true
+	"expand_sidebar_on_startup":    					true,
+
+	"disable_send_to_trash": false
 
 
 }
