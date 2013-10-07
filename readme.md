@@ -22,8 +22,8 @@ To install SideBarEnhancements, [download](https://github.com/titoBouzout/SideBa
 
 ```
 Close ST3
-rm Sublime Text 3/Installed Packages/SideBarEnhancements.sublime-package
-rm -rf Sublime Text 3/Packages/SideBarEnhancements
+rm Sublime\ Text\ 3/Installed\ Packages/SideBarEnhancements.sublime-package
+rm -rf Sublime\ Text\ 3/Packages/SideBarEnhancements
 git clone -b st3 git://github.com/titoBouzout/SideBarEnhancements.git "Sublime Text 3/Packages/SideBarEnhancements"
 ```
 
