@@ -152,34 +152,6 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 								}
 			},
 
-			//separator
-			{"caption":"-"},
-
-			//application 2
-			{
-				"caption": "SeaMonkey",
-				"id": "side-bar-files-open-with-seamonkey",
-
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
-									"extensions":"" //open all even folders
-								}
-			},
-			//application n
-			{
-				"caption": "Chrome",
-				"id": "side-bar-files-open-with-chrome",
-
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "C:\\\\Documents and Settings\\\\tito\\\\Configuración local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
-									"extensions":".*" //any file with extension
-								}
-			},
-
 			{"caption":"-"}
 		]
 	}
