@@ -22,11 +22,28 @@ To install SideBarEnhancements, Install Package Control 2 First. See:https://sub
 
 Then after restarting, with package control Install this Package.
 
-Manual installation:
+WARNING: Manual installation:
 
 * We don't have time to workaround, provide support and follow threads of  all the possible problems that installing manually can cause.
 * Most users will clone this repo, with sublime opened, which will Install the version of the package for ST2 on ST3, if you do this with ST3 and opened, the installition is likely screwed up.
 * Install with package control please.
+
+Troubleshooting Installtion:
+
+If you have problems with the installtion, do this:
+
+* Open the package folder. Main menu -> Preferences -> Browse Packages.
+* Close Sublime Text.
+* Remove the folder "Packages/SideBarEnhancements"
+* Remove the folder "User/SideBarEnhancements"
+* Navigate one folder up, to "Installed Packages/", check for any instance of SideBarEnhancements and remove it.
+* Open ST, with Package Control go to : Remove Package, check for any instance of SideBarEnhancements and remove it.
+* Restart ST
+* Open ST, check if there is any entry about SideBarEnhancements in Package Control(in sections: "Remove Package" and just in case in "Enable Package")
+* Repeat until you find there no entry about SideBarEnhancements
+* Restart ST
+* Install it via Package Control.
+* It works
 
 ## F12 key
 
