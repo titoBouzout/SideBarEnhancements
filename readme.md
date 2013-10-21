@@ -18,14 +18,15 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 ## Installation
 
-To install SideBarEnhancements, [download](https://github.com/titoBouzout/SideBarEnhancements/archive/st3.zip) or clone this repo into the SublimeText ```Packages``` directory and ```git checkout st3```.  A restart of SublimeText might be nessecary to complete the install.
+To install SideBarEnhancements, Install Package Control 2 First. See:https://sublime.wbond.net/installation
 
-```
-Close ST3
-rm Sublime\ Text\ 3/Installed\ Packages/SideBarEnhancements.sublime-package
-rm -rf Sublime\ Text\ 3/Packages/SideBarEnhancements
-git clone -b st3 git://github.com/titoBouzout/SideBarEnhancements.git "Sublime Text 3/Packages/SideBarEnhancements"
-```
+Then after restarting, with package control Install this Package.
+
+Manual installation:
+
+* We don't have time to workaround, provide support and follow threads of  all the possible problems that installing manually can cause.
+* Most users will clone this repo, with sublime opened, which will Install the version of the package for ST2 on ST3, if you do this with ST3 and opened, the installition is likely screwed up.
+* Install with package control please.
 
 ## F12 key
 
