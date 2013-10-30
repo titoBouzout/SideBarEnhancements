@@ -145,3 +145,4 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 	- Dalibor Simacek
 	- Stephen Horne
 	- Eric Eldredge
+	- Till Theis
