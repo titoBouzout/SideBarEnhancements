@@ -35,7 +35,8 @@
 			{ "caption": "In Project Folders…",  "id": "side-bar-find-project-folders",     "command": "side_bar_find_in_project_folders"},
 			{ "caption": "-", 				"id": "side-bar-find-project-separator"},
 			{ "id": "side-bar-find-in-files-with-extension",     "command": "side_bar_find_in_files_with_extension",   "args": {"paths": []}},
-			{ "caption": "In Paths Containing…",   "id": "side-bar-find-files-path-containing",      "command": "side_bar_find_files_path_containing",   "args": {"paths": []} }
+			{ "caption": "In Paths Containing…",   "id": "side-bar-find-files-path-containing",      "command": "side_bar_find_files_path_containing",   "args": {"paths": []} },
+			{ "caption": "Mass rename selection…",   "id": "side-bar-mass-rename",      "command": "side_bar_mass_rename",   "args": {"paths": []} }
 
 		]
 	},

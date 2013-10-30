@@ -1010,6 +1010,53 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
+class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		import functools
+		Window().run_command('hide_panel');
+		view = Window().show_input_panel("Find:", '', functools.partial(self.on_find, paths), None, None)
+
+	def on_find(self, paths, find):
+		if not find:
+			return
+		import functools
+		Window().run_command('hide_panel');
+		view = Window().show_input_panel("Replace:", '', functools.partial(self.on_replace, paths, find), None, None)
+
+	def on_replace(self, paths, find, replace):
+		if not replace:
+			return
+		if find == '' or replace == '':
+			return None
+		else:
+			to_rename_or_move = []
+			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+				self.recurse(item.path(), to_rename_or_move)
+			print(to_rename_or_move)
+			to_rename_or_move.sort()
+			to_rename_or_move.reverse()
+			for item in to_rename_or_move:
+				if find in item:
+					origin = SideBarItem(item, os.path.isdir(item))
+					destination = SideBarItem(origin.pathProject()+''+origin.pathWithoutProject().replace(find, replace), os.path.isdir(item))
+					origin.move(destination.path());
+			SideBarProject().refresh();
+
+	def recurse(self, path, paths):
+		if os.path.isfile(path) or os.path.islink(path):
+			paths.append(path)
+		else:
+			for content in os.listdir(path):
+				file = os.path.join(path, content)
+				if os.path.isfile(file) or os.path.islink(file):
+					paths.append(file)
+				else:
+					self.recurse(file, paths)
+			paths.append(path)
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+
 class SideBarMoveCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
 		import functools
