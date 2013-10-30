@@ -1032,7 +1032,6 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 			to_rename_or_move = []
 			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 				self.recurse(item.path(), to_rename_or_move)
-			print(to_rename_or_move)
 			to_rename_or_move.sort()
 			to_rename_or_move.reverse()
 			for item in to_rename_or_move:
