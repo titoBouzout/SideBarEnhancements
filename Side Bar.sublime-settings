@@ -24,7 +24,8 @@
 	"disabled_menuitem_empty":    					true,
 
 	//if installed in a default location maybe this works.
-	"default_browser": "chrome", //one of this list: firefox, chrome, chromium, opera, safari
+	//Or use osdefault to let Python find the default browser.
+	"default_browser": "osdefault", //one of this list: osdefault, firefox, chrome, chromium, opera, safari
 
 	"portable_browser": "" // for example:  C:/Program Files (x86)/Nightly/firefox.exe
 
