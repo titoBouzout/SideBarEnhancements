@@ -1237,7 +1237,15 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		browser = browser.lower().strip();
 		items = []
 
-		if browser == 'chrome':
+		if browser == 'osdefault':
+			import webbrowser
+			try:
+				webbrowser.open_new_tab(url)
+			except webbrowser.Error:
+				sublime.error_message('Could not open using the default browser. Please specify a browser in SideBar settings.')
+			return
+
+		elif browser == 'chrome':
 			if sublime.platform() == 'osx':
 				items.extend(['open'])
 				commands = ['-a', '/Applications/Google Chrome.app', url]
@@ -1407,7 +1415,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				except:
 					pass
 
-		sublime.error_message('Browser "'+browser+'" not found!\nIs installed? Which location...?')
+		sublime.error_message('Browser "'+browser+'" not found!\nIn the SideBar settings, please configure the path to this browser or select another browser.')
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
