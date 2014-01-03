@@ -28,8 +28,12 @@ class SideBarProject:
 
 	def excludeDirectory(self, path, exclude):
 		data = self.getProjectJson()
+		from .SideBarItem import SideBarItem
 		for folder in data['folders']:
-			if path.find(folder['path']) == 0:
+			project_folder = folder['path']
+			if project_folder == '.':
+				project_folder = SideBarItem(self.getProjectFile(), False).dirname();
+			if path.find(project_folder) == 0:
 				try:
 					folder['folder_exclude_patterns'].append(exclude)
 				except:
@@ -39,8 +43,12 @@ class SideBarProject:
 
 	def excludeFile(self, path, exclude):
 		data = self.getProjectJson()
+		from .SideBarItem import SideBarItem
 		for folder in data['folders']:
-			if path.find(folder['path']) == 0:
+			project_folder = folder['path']
+			if project_folder == '.':
+				project_folder = SideBarItem(self.getProjectFile(), False).dirname();
+			if path.find(project_folder) == 0:
 				try:
 					folder['file_exclude_patterns'].append(exclude)
 				except:
