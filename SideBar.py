@@ -1316,11 +1316,11 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 
 				commands = ['-new-tab', url]
 			else:
-
 				if s.get('portable_browser') != '':
 					items.extend([s.get('portable_browser')])
 				items.extend([
 					'/usr/bin/google-chrome'
+					,'/opt/google/chrome/chrome'
 					,'chrome'
 					,'google-chrome'
 				])
@@ -1480,11 +1480,14 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					pass
 		try:
 			if sublime.platform() == 'windows':
-					commands = ['cmd','/c','start', '', url]
-					subprocess.Popen(commands)
+				commands = ['cmd','/c','start', '', url]
+				subprocess.Popen(commands)
 			elif sublime.platform() == 'linux':
-					commands = ['xdg-open', url]
-					subprocess.Popen(commands)
+				commands = ['xdg-open', url]
+				subprocess.Popen(commands)
+			else
+				commands = ['open', url]
+				subprocess.Popen(commands)
 			return
 		except:
 			pass
