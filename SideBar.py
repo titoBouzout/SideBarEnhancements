@@ -1485,7 +1485,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			elif sublime.platform() == 'linux':
 				commands = ['xdg-open', url]
 				subprocess.Popen(commands)
-			else
+			else:
 				commands = ['open', url]
 				subprocess.Popen(commands)
 			return
