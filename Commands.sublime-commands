@@ -4,6 +4,10 @@
         "command": "side_bar_new_file"
     },
     {
+        "caption": "File: New File Relative to Project Root",
+        "command": "side_bar_new_file2"
+    },
+    {
         "caption": "File: Rename",
         "command": "side_bar_rename"
     },

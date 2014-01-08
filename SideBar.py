@@ -26,10 +26,9 @@ def expandVars(path):
 s = {}
 
 def checkVersion():
-	version = '2012.06.06.1611.2';
+	version = '2014';
 	if s.get('version') != version:
-		SideBarItem(sublime.packages_path()+'/SideBarEnhancements/CHANGELOG', False).edit();
-		s.set('version', version);
+		s.set('version', "setting no longer updated");
 		sublime.save_settings('Side Bar.sublime-settings')
 
 def plugin_loaded():
@@ -56,7 +55,7 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 		Window().show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
 	def on_done(self, paths, relative_to_project, name):
-		if relative_to_project and s.get('new_files_relative_to_project_root'):
+		if relative_to_project or s.get('new_files_relative_to_project_root'):
 			paths = SideBarProject().getDirectories()
 			if paths:
 				paths = [SideBarItem(paths[0], False)]
