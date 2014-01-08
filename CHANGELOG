@@ -2,6 +2,23 @@
 
 SideBarEnhancements Changelog:
 
+	.3
+
+			* copy image cant' copy image sizes
+			* fix canary https://github.com/titoBouzout/SideBarEnhancements/commit/0d23f3e10650ec8e3792cd7a7f0ceaec2ae84fcb
+			* Apply patch for ubuntu encrypted folder bug.  https://github.com/hsoft/send2trash/issues/1#issuecomment-31734060
+			* open in default browser OSX
+			* Relative vs absolute in project folders
+			* Allow mass rename of folders and files https://github.com/titoBouzout/SideBarEnhancements/commit/dbdaaffa4a53411b1d39337f7ceee6ecef9b73cb
+			* correctly open folders in a new window on mac os x
+
+
+		TODO
+
+			* Use a real clipboard integrated with the OS
+			* copy and paste in background
+			* auto refresh proect folder every x time?
+
 	.2
 
 		BUGS FIXED
@@ -14,12 +31,6 @@ SideBarEnhancements Changelog:
 			* fix.. a project folder can't be removed via context menu if the project was not saved.
 			* browser preview supports relative urls, and multiple configuration files a la ".htaccess"
 
-		TODO
-
-			* Use a real clipboard integrated with the OS
-			* fix canary
-			* copy and paste in background
-			* copy image cant' copy image sizes
 	.1
 
 		BUGS FIXED

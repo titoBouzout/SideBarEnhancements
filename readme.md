@@ -129,6 +129,7 @@ Q: Why the menu is not shown on `Open Files`?
  * "desktop" to be able to open files with system handlers. See: http://pypi.python.org/pypi/desktop
  * "send2trash" to be able to send to the trash instead of deleting for ever!. See: http://pypi.python.org/pypi/Send2Trash
  * "hurry.filesize" to be able to format file sizes. See: http://pypi.python.org/pypi/hurry.filesize/
+ * "Edit.py" ST2/3 Edit Abstraction. See: http://www.sublimetext.com/forum/viewtopic.php?f=6&t=12551
 
 ## Source-code
 
@@ -146,3 +147,8 @@ http://www.sublimetext.com/forum/viewtopic.php?f=5&t=3331
 	- Stephen Horne
 	- Eric Eldredge
 	- Till Theis
+	- Jeremy Gailor
+
+# Like it? Support
+
+	- https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&amount=12%2e00&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
