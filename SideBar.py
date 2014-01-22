@@ -1265,7 +1265,7 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 class SideBarDonateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import webbrowser
-		webbrowser.open_new_tab("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&amount=12%2e00&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
+		webbrowser.open_new_tab("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&item_number=SideBarEnhancements&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = False):

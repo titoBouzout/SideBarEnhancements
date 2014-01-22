@@ -1,6 +1,5 @@
 [
 	{"caption":"-", "id":"side-bar-start-separator"},
-	{ "caption": "Support SidebarEn…", 	  "command": "side_bar_donate", "args": {"paths": []} },
 	{ "caption": "New File…", 	      "id": "side-bar-new-file",         "command": "side_bar_new_file",         "args": {"paths": []} },
 	{ "caption": "New Folder…",       "id": "side-bar-new-directory",       "command": "side_bar_new_directory",       "args": {"paths": []} },
 	{ "caption": "-",                 "id": "side-bar-new-separator"},
@@ -114,5 +113,7 @@
 
 		]
 	},
+  { "caption": "-",                 "id": "side-bar-donate-separator" },
+	{ "caption": "Donate", 	  "command": "side_bar_donate", "args": {"paths": []} },
   { "caption": "-",                 "id": "side-bar-end-separator" }
 ]
