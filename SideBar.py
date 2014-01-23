@@ -1230,7 +1230,9 @@ class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 
 class SideBarPreviewEditUrlsCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		SideBarItem(os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json', False).edit();
+		item = SideBarItem(os.path.dirname(sublime.packages_path())+'/Settings/SideBarEnhancements.json', False)
+		item.dirnameCreate();
+		item.edit();
 
 class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
