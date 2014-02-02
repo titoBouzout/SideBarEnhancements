@@ -1,5 +1,10 @@
 # Sidebar Enhancements
 
+### Translations 
+
+Japanese - http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1
+
+
 ## Description
 
 Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. See: http://www.sublimetext.com/
