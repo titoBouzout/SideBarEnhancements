@@ -2,6 +2,17 @@
 
 SideBarEnhancements Changelog:
 
+	.4
+
+			* paste now runs threaded.
+			* on windows delete files with big file names.
+
+		TODO
+
+			* Use a real clipboard integrated with the OS
+			* auto refresh proect folder every x time?
+			* duplicate, move, rename, delete threaded.
+
 	.3
 
 			* copy image cant' copy image sizes
