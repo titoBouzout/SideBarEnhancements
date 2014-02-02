@@ -204,13 +204,16 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			items = SideBarSelection(paths).getSelectedFilesWithExtension(extensions)
 
 		import subprocess
-		for item in items:
-			if sublime.platform() == 'osx':
-				subprocess.Popen(['open', '-a', application, item.name()], cwd=item.dirname())
-			elif sublime.platform() == 'windows':
-				subprocess.Popen([application_name, item.path()], cwd=expandVars(application_dir), shell=True)
-			else:
-				subprocess.Popen([application_name, item.name()], cwd=item.dirname())
+		try:
+			for item in items:
+				if sublime.platform() == 'osx':
+					subprocess.Popen(['open', '-a', application, item.name()], cwd=item.dirname())
+				elif sublime.platform() == 'windows':
+					subprocess.Popen([application_name, item.path()], cwd=expandVars(application_dir), shell=True)
+				else:
+					subprocess.Popen([application_name, item.name()], cwd=item.dirname())
+		except:
+			sublime.error_message('Unable to "Open With..", probably incorrect path to application, check the Console.')
 
 	def is_enabled(self, paths = [], application = "", extensions = ""):
 		if extensions == '*':
