@@ -1,9 +1,10 @@
+***[Sublime Text 3+](http://www.sublimetext.com/) Package. Install via an updated version of  [Package Control 2+](https://sublime.wbond.net/installation). Just **DON'T** install manually.
+
 # Sidebar Enhancements
 
-### Translations 
+### Translations
 
 Japanese - http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1
-
 
 ## Description
 
@@ -23,7 +24,7 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 ## Installation
 
-To install SideBarEnhancements, Install Package Control 2 First. See:https://sublime.wbond.net/installation
+To install SideBarEnhancements, Install Package Control 2 First. See: https://sublime.wbond.net/installation
 
 Then after restarting, with package control Install this Package.
 
