@@ -210,8 +210,7 @@ class SideBarItem:
 		return self.isDirectory() == False
 
 	def contentUTF8(self):
-		import codecs
-		return codecs.open(self.path(), 'r', 'utf-8', newline='').read()
+		return open(self.path(), 'r', newline='').read()
 
 	def contentBinary(self):
 		return open(self.path(), "rb").read()
@@ -232,7 +231,7 @@ class SideBarItem:
 			sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
 
 	def write(self, content):
-		open(self.path(), 'w+', encoding='utf8', newline='').write(content)
+		open(self.path(), 'w+', encoding='utf8', newline='').write(str(content))
 
 	def mime(self):
 		import mimetypes
