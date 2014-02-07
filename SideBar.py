@@ -1295,7 +1295,7 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 				project.excludeFile(item.path(), item.pathRelativeFromProject())
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarDonateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
