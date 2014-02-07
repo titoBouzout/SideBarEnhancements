@@ -1274,7 +1274,7 @@ class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 			project.add(item.path())
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasDirectories()
+		return SideBarSelection(paths).hasDirectories() and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1296,6 +1296,40 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+
+class SideBarProjectItemExcludeFromIndexCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = [], type = 'item'):
+		Preferences = sublime.load_settings("Preferences.sublime-settings")
+		excluded = Preferences.get("index_exclude_patterns", [])
+		for item in self.items(paths, type):
+			excluded.append(item)
+		excluded = list(set(excluded))
+		Preferences.set("index_exclude_patterns", excluded);
+		sublime.save_settings("Preferences.sublime-settings");
+
+	def is_visible(self, paths = [], type = 'item'):
+		return len(self.items(paths, type)) > 0
+
+	def description(self, paths = [], type = 'item'):
+		items = self.items(paths, type)
+		return 'Exclude From the Index "'+(",".join(items))+'"'
+
+	def items(self, paths = [], type = 'item'):
+		items = []
+		if type == 'item':
+			for item in SideBarSelection(paths).getSelectedItems():
+				if item.isDirectory():
+					items.append(item.path()+'*')
+				else:
+					items.append(item.path())
+		elif type == 'extension':
+			for item in SideBarSelection(paths).getSelectedFiles():
+				items.append('*'+item.extension())
+		elif type == 'file':
+			for item in SideBarSelection(paths).getSelectedFiles():
+				items.append(item.name())
+		items = list(set(items))
+		return items
 
 class SideBarDonateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
