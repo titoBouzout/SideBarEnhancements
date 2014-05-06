@@ -34,9 +34,6 @@ def checkVersion():
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')
-	if s.get('expand_sidebar_on_startup', True):
-		for window in sublime.windows():
-			 window.run_command('reveal_in_side_bar');
 	checkVersion()
 
 def Window():
