@@ -59,6 +59,21 @@ F12 key allows you to open the current file in browser.
 
 ```url_production``` allows you to set the url of your production server, opened via ALT+F12
 
+
+#### Sublime Text 3 F12 key conflict
+
+On ST3 F12 key is bound to ```"goto_definition"``` command by default. To restore the default behaviour use this workaround.
+
+  Go to ```Preferences -> Package Settings -> Side Bar -> Key Bindings - User``` and add the following:
+  
+```
+[
+    { "keys": ["f12"],
+        "command": "goto_definition"
+    },
+]
+```
+
 ### With absolute paths
 
  * Right click any file on sidebar and select: "Project -> Edit Projects Preview URLs"
