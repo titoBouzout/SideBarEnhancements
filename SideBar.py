@@ -131,7 +131,18 @@ class SideBarOpenCommand(sublime_plugin.WindowCommand):
 
 class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
+		platform = '';
+		if sublime.platform() == 'osx':
+			platform = 'OSX'
+		elif sublime.platform() == 'windows':
+			platform = 'Windows'
+		else:
+			platform = 'Linux'
+
 		item = SideBarItem(os.path.join(sublime.packages_path(), 'User', 'SideBarEnhancements', 'Open With', 'Side Bar.sublime-menu'), False)
+		if not item.exists() and False:
+			item = SideBarItem(os.path.join(sublime.packages_path(), 'User', 'SideBarEnhancements', 'Open With', 'Side Bar ('+platform+').sublime-menu'), False)
+
 		if not item.exists():
 			item.create()
 			item.write("""[
