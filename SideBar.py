@@ -39,6 +39,23 @@ def plugin_loaded():
 def Window():
 	return sublime.active_window()
 
+class OpenWithListener(sublime_plugin.EventListener):
+
+	def on_load_async(self, view):
+		if view and view.file_name() and not view.settings().get('open_with_edit'):
+			item = SideBarItem(os.path.join(sublime.packages_path(), 'User', 'SideBarEnhancements', 'Open With', 'Side Bar.sublime-menu'), False)
+			if item.exists():
+				settings = sublime.decode_value(item.contentUTF8())
+				selection = SideBarSelection([view.file_name()])
+				for item in settings[0]['children']:
+					try:
+						if item['open_automatically'] and selection.hasFilesWithExtension(item['args']['extensions']):
+							SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand).run([view.file_name()], item['args']['application'], item['args']['extensions'])
+							view.window().run_command('close')
+							break
+					except:
+						pass
+
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
@@ -160,7 +177,8 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 									"paths": [],
 									"application": "Adobe Photoshop CS5.app", // OSX
 									"extensions":"psd|png|jpg|jpeg"  //any file with these extensions
-								}
+								},
+				"open_automatically" : false // will close the view/tab and launch the application
 			},
 
 			//separator
@@ -176,7 +194,8 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 									"paths": [],
 									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
 									"extensions":"" //open all even folders
-								}
+								},
+				"open_automatically" : false // will close the view/tab and launch the application
 			},
 			//application n
 			{
@@ -186,9 +205,10 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 				"command": "side_bar_files_open_with",
 				"args": {
 									"paths": [],
-									"application": "C:\\\\Documents and Settings\\\\tito\\\\Configuración local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
+									"application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
 									"extensions":".*" //any file with extension
-								}
+						},
+				"open_automatically" : false // will close the view/tab and launch the application
 			},
 
 			{"caption":"-"}
@@ -201,7 +221,7 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 		return True
 
 class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = [], application = "", extensions = ""):
+	def run(self, paths = [], application = "", extensions = "", args=""):
 		application_dir, application_name = os.path.split(application)
 
 		if extensions == '*':
