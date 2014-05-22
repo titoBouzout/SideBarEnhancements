@@ -192,8 +192,7 @@ project and select `Open With > Edit Applications...`
         "open_automatically" : true // will close the view/tab and launch the application
     },
 
-\
- \#\# FAQ
+## FAQ
 
 Q: Why the menu is not shown on `Open Files`?
 
