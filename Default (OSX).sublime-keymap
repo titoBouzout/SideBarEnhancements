@@ -1,10 +1,10 @@
 [
 	{ "keys": ["f12"],
 		"command": "side_bar_open_in_browser" ,
-		"args":{"paths":[], "type":"testing"}
+		"args":{"paths":[], "type":"testing", "browser":""}
 	},
 	{ "keys": ["alt+f12"],
 		"command": "side_bar_open_in_browser",
-		"args":{"paths":[], "type":"production"}
+		"args":{"paths":[], "type":"production", "browser":""}
 	}
 ]

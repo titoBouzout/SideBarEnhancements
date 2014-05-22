@@ -201,6 +201,10 @@ Q: Why the menu is not shown on `Open Files`?
     **in the side bar)**, and *not* on the open files listed at the top
     of the side bar, due to a limitation of ST.
 
+Q: Can the package stop "show preview in a **right** click to a file".
+
+-   No, ​I'm sorry, can't figure out how to prevent it.
+
 ## Using the External Libraries
 
 -   "getImageInfo" to get width and height for images from "bfg-pages".
