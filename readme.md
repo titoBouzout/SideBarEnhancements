@@ -53,6 +53,8 @@ Troubleshooting Installtion:
 
 If you have problems with the installtion, do this:
 
+-   First please note this package only adss a context menu to the "Folders" section and not to the "Open Files" section.
+
 -   Open the package folder. Main menu -\> Preferences -\> Browse
     Packages.
 
@@ -135,6 +137,16 @@ with content:
             "url_production":"http://domain.tld/"
         },
         "experimental/":{
+
+ost"\>
+
+		\<skos:prefLabel\>The concepts I like the most\</skos:prefLabel\>
+
+		\<skos:member rdf:resource="\#top\_category1"/\>
+
+		\<skos:member rdf:resource="\#subcategory\_3"/\>
+
+
             "url_testing":"http://experimental/",
             "url_production":"http://domain.tld/"
         },

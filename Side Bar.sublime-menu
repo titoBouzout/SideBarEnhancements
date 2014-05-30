@@ -120,7 +120,7 @@
 
 		]
 	},
-  { "caption": "-",                 "id": "side-bar-donate-separator" },
+	{ "caption": "-",                 "id": "side-bar-donate-separator" },
 	{ "caption": "Donate", 	  "command": "side_bar_donate", "args": {"paths": []} },
-  { "caption": "-",                 "id": "side-bar-end-separator" }
+	{ "caption": "-",                 "id": "side-bar-end-separator" }
 ]
