@@ -25,16 +25,9 @@ def expandVars(path):
 
 s = {}
 
-def checkVersion():
-	version = '2014';
-	if s.get('version') != version:
-		s.set('version', "setting no longer updated");
-		sublime.save_settings('Side Bar.sublime-settings')
-
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')
-	checkVersion()
 
 def Window():
 	return sublime.active_window()
@@ -712,8 +705,6 @@ class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
-
-
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
@@ -980,6 +971,20 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
 	def on_done(self, old, new):
+		SideBarDuplicateThread(old, new).start()
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+
+class SideBarDuplicateThread(threading.Thread):
+	def __init__(self, old, new):
+		self.old = old
+		self.new = new
+		threading.Thread.__init__(self)
+
+	def run(self):
+		old = self.old
+		new = self.new
 		item = SideBarItem(old, os.path.isdir(old))
 		try:
 			if not item.copy(new):
@@ -997,9 +1002,6 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		if item.isFile():
 			item.edit();
 		SideBarProject().refresh();
-
-	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], newLeaf = False):
