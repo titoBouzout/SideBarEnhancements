@@ -1,27 +1,27 @@
 {
-	"statusbar_modified_time" : false,
-	"statusbar_modified_time_format" : "%A %b %d %H:%M:%S %Y",
+	"statusbar_modified_time": false,
+	"statusbar_modified_time_format": "%A %b %d %H:%M:%S %Y",
 
-	"statusbar_file_size" : false,
+	"statusbar_file_size": false,
 
-	"close_affected_buffers_when_deleting_even_if_dirty" : false,
+	"close_affected_buffers_when_deleting_even_if_dirty": false,
 
-	"hide_open_with_entries_when_there_are_no_applicable" : false,
+	"hide_open_with_entries_when_there_are_no_applicable": false,
 
-	"confirm_before_deleting" : true,
+	"confirm_before_deleting": true,
 
 	"new_files_relative_to_project_root": false,
 
-	"disabled_menuitem_edit":               false,
-	"disabled_menuitem_open_run":           false,
-	"disabled_menuitem_open_in_browser":    false,
+	"disabled_menuitem_edit": false,
+	"disabled_menuitem_open_run": false,
+	"disabled_menuitem_open_in_browser": false,
 	"disabled_menuitem_open_in_new_window": false,
-	"disabled_menuitem_find_in_project":		false,
-	"disabled_menuitem_copy_name":          false,
-	"disabled_menuitem_copy_path":          false,
-	"disabled_menuitem_copy_dir_path":      true,
-	"disabled_menuitem_paste_in_parent":    false,
-	"disabled_menuitem_empty":    					true,
+	"disabled_menuitem_find_in_project": false,
+	"disabled_menuitem_copy_name": false,
+	"disabled_menuitem_copy_path": false,
+	"disabled_menuitem_copy_dir_path": true,
+	"disabled_menuitem_paste_in_parent": false,
+	"disabled_menuitem_empty": true,
 
 	//if installed in a default location maybe this works.
 	"default_browser": "", //one of this list: firefox, chrome, canary, chromium, opera, safari
@@ -29,6 +29,5 @@
 	"portable_browser": "", // for example:  C:/Program Files (x86)/Nightly/firefox.exe
 
 	"disable_send_to_trash": false
-
 
 }
