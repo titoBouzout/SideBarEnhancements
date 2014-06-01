@@ -990,13 +990,13 @@ class SideBarDuplicateThread(threading.Thread):
 			if not item.copy(new):
 				# destination exists
 				if SideBarItem(new, os.path.isdir(new)).overwrite():
-					self.on_done(old, new)
+					self.run()
 				else:
-					self.run([old], new)
+					SideBarDuplicateCommand(sublime_plugin.WindowCommand).run([old], new)
 				return
 		except:
 			sublime.error_message("Unable to copy:\n\n"+old+"\n\nto\n\n"+new)
-			self.run([old], new)
+			SideBarDuplicateCommand(sublime_plugin.WindowCommand).run([old], new)
 			return
 		item = SideBarItem(new, os.path.isdir(new))
 		if item.isFile():
@@ -1108,6 +1108,14 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
+class SideBarDeleteThread(threading.Thread):
+	def __init__(self, paths):
+		self.paths = paths
+		threading.Thread.__init__(self)
+
+	def run(self):
+		SideBarDeleteCommand(sublime_plugin.WindowCommand)._delete_threaded(self.paths)
+
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
 
@@ -1118,24 +1126,27 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			else:
 				self.confirm([item.path() for item in SideBarSelection(paths).getSelectedItems()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedItems()])
 		else:
-			try:
-				from .send2trash import send2trash
-				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
-						item.closeViews()
-					if s.get('disable_send_to_trash', False):
-						if sublime.platform() == 'windows':
-							self.remove('\\\\?\\'+item.path());
-						else:
-							self.remove(item.path());
+			SideBarDeleteThread(paths).start()
+
+	def _delete_threaded(self, paths):
+		try:
+			from .send2trash import send2trash
+			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+				if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+					item.closeViews()
+				if s.get('disable_send_to_trash', False):
+					if sublime.platform() == 'windows':
+						self.remove('\\\\?\\'+item.path());
 					else:
-						send2trash(item.path())
-				SideBarProject().refresh();
-			except:
-				import functools
-				Window().show_input_panel("BUG!", '', '', None, None)
-				Window().run_command('hide_panel');
-				Window().show_input_panel("Permanently Delete:", SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
+						self.remove(item.path());
+				else:
+					send2trash(item.path())
+			SideBarProject().refresh();
+		except:
+			import functools
+			Window().show_input_panel("BUG!", '', '', None, None)
+			Window().run_command('hide_panel');
+			Window().show_input_panel("Permanently Delete:", SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 
 	def confirm(self, paths, display_paths):
 		import functools
@@ -1192,7 +1203,16 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				os.remove(path)
 			except:
-				print("Unable to remove file:\n\n"+path)
+				try:
+					if not os.access(path, os.W_OK):
+						import stat
+						os.chmod(path, stat.S_IWUSR)
+					os.remove(path)
+				except:
+					# raise error in case we were unable to delete.
+					if os.path.exists(path):
+						print("Unable to remove file:\n\n"+path)
+						os.remove(path)
 		else:
 			print('path is none')
 			print(path)
@@ -1202,20 +1222,19 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			try:
 				shutil.rmtree(path)
 			except:
-				print("Unable to remove folder:\n\n"+path)
-				if sublime.platform() == 'windows':
-					try:
+				try:
+					if not os.access(path, os.W_OK):
+						import stat
+						os.chmod(path, stat.S_IWUSR)
+					shutil.rmtree(path)
+				except:
+					# raise error in case we were unable to delete.
+					if os.path.exists(path):
+						print("Unable to remove folder:\n\n"+path)
 						shutil.rmtree(path)
-					except:
-						# raise error in case we were unable to delete.
-						if os.path.exists(path):
-							shutil.rmtree(path)
-						else:
-							pass
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
-
 
 class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
