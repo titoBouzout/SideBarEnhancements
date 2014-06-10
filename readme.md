@@ -1,4 +1,4 @@
-[Sublime Text 3+][]** Package. Install via an updated version of **[Package Control 2][]**. Just DON'T install manually.**
+[Sublime Text 3+][]\*\* Package. Install via an updated version of [Package Control 2][]. Just DON'T install manually.\*\*
 
 # Sidebar Enhancements
 
@@ -196,13 +196,24 @@ Q: Can the package stop "show preview in a **right** click to a file".
 
 # Contributors:
 
-    - Leif Ringstad
-    - Sven Axelsson
-    - Dalibor Simacek
-    - Stephen Horne
-    - Eric Eldredge
-    - Till Theis
-    - Jeremy Gailor
+    - bofm 
+    - Dalibor Simacek 
+    - Devin Rhode 
+    - Eric Eldredge 
+    - Jeremy Gailor 
+    - Joao Antunes 
+    - Leif Ringstad 
+    - Nick Zaccardi 
+    - Patrik Göthe 
+    - Randy Lai 
+    - Raphael DDL Oliveira 
+    - robwala 
+    - Stephen Horne 
+    - Sven Axelsson 
+    - Till Theis 
+    - Todd Wolfson 
+    - Tyler Thrailkill 
+    - Yaroslav Admin
 
 # Like it? Support
 
