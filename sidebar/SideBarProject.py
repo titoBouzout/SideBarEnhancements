@@ -58,7 +58,10 @@ class SideBarProject:
 
 	def add(self, path):
 		data = self.getProjectJson()
-		data['folders'].append({'follow_symlinks':True, 'path':path});
+		if data:
+			data['folders'].append({'follow_symlinks':True, 'path':path});
+		else:
+			data = {'folders': [{'follow_symlinks': True, 'path':path}]}
 		self.setProjectJson(data);
 
 	def refresh(self):
