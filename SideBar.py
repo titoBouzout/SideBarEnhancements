@@ -1653,22 +1653,23 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'
 
-class SideBarAddFolders(sublime_plugin.EventListener):
-	Loaded = []
+class SideBarAutoAddFoldersForOpenedFiles(sublime_plugin.EventListener):
 	def on_activated(self, view):
-		vid = view.id()
-		if vid in self.Loaded: return
 		f = view.file_name()
-		if not f: return
+		if not f or view.settings().has('SideBarAutoAddFoldersForOpenedFiles'):
+			return
 		path = os.path.dirname(f)
-		self.Loaded.append(vid)
 		if s.get('auto_add_folders_for_opened_files_when_project_is_empty') \
 				and not SideBarProject().hasDirectories():
 			if path and os.path.exists(path):
 				SideBarProject().add(path)
+				view.settings().set('SideBarAutoAddFoldersForOpenedFiles', 1)
+				view.run_command('reveal_in_side_bar')
 		elif s.get('auto_add_folders_for_opened_files') \
 				and not SideBarSelection([path]).hasItemsUnderProject():
 			if path and os.path.exists(path):
 				SideBarProject().add(path)
+				view.settings().set('SideBarAutoAddFoldersForOpenedFiles', 1)
+				view.run_command('reveal_in_side_bar')
 
 
