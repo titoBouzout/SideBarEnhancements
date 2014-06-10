@@ -13,7 +13,7 @@
 	"new_files_relative_to_project_root": false,
 
 	"auto_add_folders_for_opened_files_when_project_is_empty": true,
-	"auto_add_folders_for_opened_files": true,
+	"auto_add_folders_for_opened_files": false,
 
 	"disabled_menuitem_edit": false,
 	"disabled_menuitem_open_run": false,
