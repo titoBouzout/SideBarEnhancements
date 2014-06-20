@@ -12,13 +12,6 @@
 
 	"new_files_relative_to_project_root": false,
 
-	"auto_add_folders_for_opened_files_when_project_is_empty": true,
-	"auto_add_folders_for_opened_files": false,
-	"blacklist_for_auto_add_folders_for_opened_files": [
-		"~",
-		"/"
-	],
-
 	"disabled_menuitem_edit": false,
 	"disabled_menuitem_open_run": false,
 	"disabled_menuitem_open_in_browser": false,
