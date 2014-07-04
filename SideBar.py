@@ -1540,6 +1540,23 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					,'firefox.exe'
 				])
 				commands = ['-new-tab', url]
+		elif browser == 'aurora':
+			if sublime.platform() == 'osx':
+				items.extend(['open'])
+				commands = ['-a', '/Applications/Aurora.app', url]
+			else:
+				if s.get('portable_browser') != '':
+					items.extend([s.get('portable_browser')])
+				items.extend([
+					'/usr/bin/aurora'
+
+					,'%PROGRAMFILES%\\Aurora\\firefox.exe'
+					,'%PROGRAMFILES(X86)%\\Aurora\\firefox.exe'
+
+					,'firefox'
+					,'firefox.exe'
+				])
+				commands = ['-new-tab', url]
 		elif browser == 'opera':
 			if sublime.platform() == 'osx':
 				items.extend(['open'])
