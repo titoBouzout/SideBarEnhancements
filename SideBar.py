@@ -1543,7 +1543,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		elif browser == 'aurora':
 			if sublime.platform() == 'osx':
 				items.extend(['open'])
-				commands = ['-a', '/Applications/Aurora.app', url]
+				commands = ['-a', '/Applications/FirefoxAurora.app', url]
 			else:
 				if s.get('portable_browser') != '':
 					items.extend([s.get('portable_browser')])
