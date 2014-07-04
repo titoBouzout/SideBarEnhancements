@@ -28,6 +28,8 @@
 
 	"portable_browser": "", // for example:  C:/Program Files (x86)/Nightly/firefox.exe
 
-	"disable_send_to_trash": false
+	"disable_send_to_trash": false,
+
+	"use_powershell": true
 
 }

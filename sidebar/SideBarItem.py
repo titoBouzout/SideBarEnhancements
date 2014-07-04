@@ -177,15 +177,18 @@ class SideBarItem:
 	def namePretty(self):
 		return self.name().replace(self.extension(), '').replace('-', ' ').replace('_', ' ').strip();
 
-	def open(self):
+	def open(self, use_powershell = True):
 		if self.isDirectory():
 			import subprocess
 			if sublime.platform() == 'osx':
 				subprocess.Popen(['/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal', '.'], cwd=self.forCwdSystemPath())
 			elif sublime.platform() == 'windows':
-				try:
-					subprocess.Popen(['start', 'powershell'], cwd=self.forCwdSystemPath(), shell=True)
-				except:
+				if use_powershell:
+					try:
+						subprocess.Popen(['start', 'powershell'], cwd=self.forCwdSystemPath(), shell=True)
+					except:
+						subprocess.Popen(['start', 'cmd', '.'], cwd=self.forCwdSystemPath(), shell=True)
+				else:
 					subprocess.Popen(['start', 'cmd', '.'], cwd=self.forCwdSystemPath(), shell=True)
 			elif sublime.platform() == 'linux':
 				subprocess.Popen(['gnome-terminal', '.'], cwd=self.forCwdSystemPath())
