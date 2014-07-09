@@ -215,7 +215,7 @@ class SideBarItem:
 		return self.isDirectory() == False
 
 	def contentUTF8(self):
-		return open(self.path(), 'r', newline='').read()
+		return open(self.path(), 'r', newline='', encoding='utf-8').read()
 
 	def contentBinary(self):
 		return open(self.path(), "rb").read()
