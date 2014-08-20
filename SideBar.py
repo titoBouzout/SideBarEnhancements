@@ -1298,7 +1298,11 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		for item in SideBarSelection(paths).getSelectedItems():
+		if len(paths) > 1:
+			paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+		else:
+			paths = SideBarSelection(paths).getSelectedItems()
+		for item in paths:
 			item.reveal()
 
 	def is_enabled(self, paths = []):
