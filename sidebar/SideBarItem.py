@@ -162,7 +162,7 @@ class SideBarItem:
 
 	def dirnameCreate(self):
 		try:
-			os.makedirs(self.dirname())
+			os.makedirs(self.dirname(), 0o775)
 		except:
 			pass
 
@@ -260,7 +260,7 @@ class SideBarItem:
 	def create(self):
 		if self.isDirectory():
 			self.dirnameCreate()
-			os.makedirs(self.path())
+			os.makedirs(self.path(), 0o775)
 		else:
 			self.dirnameCreate()
 			self.write('')
@@ -286,7 +286,7 @@ class SideBarItem:
 
 		if os.path.isfile(_from) or os.path.islink(_from):
 			try:
-				os.makedirs(os.path.dirname(_to));
+				os.makedirs(os.path.dirname(_to), 0o775);
 			except:
 				pass
 			if os.path.exists(_to):
@@ -294,7 +294,7 @@ class SideBarItem:
 			shutil.copy2(_from, _to)
 		else:
 			try:
-				os.makedirs(_to);
+				os.makedirs(_to, 0o775);
 			except:
 				pass
 			for content in os.listdir(_from):
@@ -329,7 +329,7 @@ class SideBarItem:
 	def moveRecursive(self, _from, _to):
 		if os.path.isfile(_from) or os.path.islink(_from):
 			try:
-				os.makedirs(os.path.dirname(_to));
+				os.makedirs(os.path.dirname(_to), 0o775);
 			except:
 				pass
 			if os.path.exists(_to):
@@ -337,7 +337,7 @@ class SideBarItem:
 			os.rename(_from, _to)
 		else:
 			try:
-				os.makedirs(_to);
+				os.makedirs(_to, 0o775);
 			except:
 				pass
 			for content in os.listdir(_from):
