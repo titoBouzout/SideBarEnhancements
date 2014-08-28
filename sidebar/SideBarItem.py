@@ -263,7 +263,11 @@ class SideBarItem:
 			os.makedirs(self.path(), 0o775)
 		else:
 			self.dirnameCreate()
-			self.write('')
+			if sublime.platform() != 'windows':
+				import subprocess
+				subprocess.Popen(['touch', self.name()], cwd=self.dirname())
+			else:
+				self.write('')
 
 	def copy(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
@@ -376,23 +380,7 @@ class SideBarItem:
 					views.append(view)
 			views.reverse();
 			for view in views:
-				if path == view.file_name():
-					if view.window():
-						closed_items.append([view.file_name(), view.window(), view.window().get_view_index(view)])
-					if len(window.views()) == 1:
-						window.new_file()
-					window.focus_view(view)
-					window.run_command('revert')
-					window.run_command('close')
-				elif view.file_name().find(path+'\\') == 0:
-					if view.window():
-						closed_items.append([view.file_name(), view.window(), view.window().get_view_index(view)])
-					if len(window.views()) == 1:
-						window.new_file()
-					window.focus_view(view)
-					window.run_command('revert')
-					window.run_command('close')
-				elif view.file_name().find(path+'/') == 0:
+				if path == view.file_name() or view.file_name().find(path+'\\') == 0 or view.file_name().find(path+'/') == 0:
 					if view.window():
 						closed_items.append([view.file_name(), view.window(), view.window().get_view_index(view)])
 					if len(window.views()) == 1:
