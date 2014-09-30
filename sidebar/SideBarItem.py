@@ -263,11 +263,7 @@ class SideBarItem:
 			os.makedirs(self.path(), 0o775)
 		else:
 			self.dirnameCreate()
-			if sublime.platform() != 'windows':
-				import subprocess
-				subprocess.Popen(['touch', self.name()], cwd=self.dirname())
-			else:
-				self.write('')
+			self.write('')
 
 	def copy(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
