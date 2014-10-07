@@ -10,6 +10,13 @@ from .sidebar.SideBarProject import SideBarProject
 
 from .Edit import Edit as Edit
 
+try:
+    from urllib import quote as urlquote
+    from urllib import unquote as urlunquote
+except ImportError:
+    from urllib.parse import quote as urlquote
+    from urllib.parse import unquote as urlunquote
+
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
 	import winreg
@@ -954,6 +961,29 @@ class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
 		for item in SideBarSelection(paths).getSelectedItems():
 			if item.isUnderCurrentProject():
 				items.append(item.url('url_production'))
+
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items URL copied")
+			else :
+				sublime.status_message("Item URL copied")
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).hasItemsUnderProject()
+
+class SideBarCopyUrlDecodedCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		items = []
+
+		for item in SideBarSelection(paths).getSelectedItems():
+			if item.isUnderCurrentProject():
+				txt = item.url('url_production')
+				try:
+					txt = urlunquote(txt.encode('utf8')).decode('utf8')
+				except TypeError:
+					txt = urlunquote(txt)
+				items.append(txt)
 
 		if len(items) > 0:
 			sublime.set_clipboard("\n".join(items));

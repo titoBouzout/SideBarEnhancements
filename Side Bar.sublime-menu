@@ -71,6 +71,7 @@
 			{ "caption": "-", 								            "id": "side-bar-clip-copy-name-encoded-separator"},
 
 			{ "caption": "URL",                 					"id": "side-bar-clip-copy-url",             "command": "side_bar_copy_url",                 "args": {"paths": []} },
+			{ "caption": "URL Decoded",                 					"id": "side-bar-clip-copy-url-decoded",             "command": "side_bar_copy_url_decoded",                 "args": {"paths": []} },
 			{ "caption": "-", 								            "id": "side-bar-clip-copy-url-separator"},
 
 			{ "caption": "Tag a",              		        "id": "side-bar-clip-copy-tag-a",                 	 "command": "side_bar_copy_tag_ahref",                  "args": {"paths": []} },
