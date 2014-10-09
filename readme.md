@@ -217,7 +217,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
 
 # Like it? Support
 
-    - https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&amount=12%2e00&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+[Donate to support this project.](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&amount=12%2e00&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
   [Sublime Text 3+]: http://www.sublimetext.com/
   [Package Control 2]: https://sublime.wbond.net/installation
