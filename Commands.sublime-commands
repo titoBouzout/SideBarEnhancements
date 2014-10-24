@@ -20,6 +20,10 @@
         "command": "side_bar_reveal"
     },
     {
+        "caption": "File: Locate",
+        "command": "reveal_in_side_bar"
+    },
+    {
         "caption": "File: Move",
         "command": "side_bar_move"
     },
