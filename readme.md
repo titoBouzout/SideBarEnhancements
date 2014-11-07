@@ -200,6 +200,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
     - Dalibor Simacek 
     - Devin Rhode 
     - Eric Eldredge 
+    - Hewei Liu
     - Jeremy Gailor 
     - Joao Antunes 
     - Leif Ringstad 
@@ -214,6 +215,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
     - Todd Wolfson 
     - Tyler Thrailkill 
     - Yaroslav Admin
+
 
 # Like it? Support
 
