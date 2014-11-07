@@ -221,7 +221,7 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 		return True
 
 class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
-	def run(self, paths = [], application = "", extensions = "", args=""):
+	def run(self, paths = [], application = "", extensions = "", args=[]):
 		application_dir, application_name = os.path.split(application)
 
 		if extensions == '*':
@@ -235,11 +235,11 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		try:
 			for item in items:
 				if sublime.platform() == 'osx':
-					subprocess.Popen(['open', '-a', application, item.name()], cwd=item.dirname())
+					subprocess.Popen(['open', '-a', application] + args + [item.name()], cwd=item.dirname())
 				elif sublime.platform() == 'windows':
-					subprocess.Popen([application_name, item.path()], cwd=expandVars(application_dir), shell=True)
+					subprocess.Popen([application_name] + args + [item.path()], cwd=expandVars(application_dir), shell=True)
 				else:
-					subprocess.Popen([application_name, item.name()], cwd=item.dirname())
+					subprocess.Popen([application_name] + args + [item.name()], cwd=item.dirname())
 		except:
 			sublime.error_message('Unable to "Open With..", probably incorrect path to application, check the Console.')
 
