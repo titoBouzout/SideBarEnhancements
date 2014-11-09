@@ -176,7 +176,8 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 				"args": {
 									"paths": [],
 									"application": "Adobe Photoshop CS5.app", // OSX
-									"extensions":"psd|png|jpg|jpeg"  //any file with these extensions
+									"extensions":"psd|png|jpg|jpeg",  //any file with these extensions
+									"args":[]
 								},
 				"open_automatically" : false // will close the view/tab and launch the application
 			},
@@ -193,7 +194,8 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 				"args": {
 									"paths": [],
 									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
-									"extensions":"" //open all even folders
+									"extensions":"", //open all even folders
+									"args":[]
 								},
 				"open_automatically" : false // will close the view/tab and launch the application
 			},
@@ -206,7 +208,8 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 				"args": {
 									"paths": [],
 									"application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
-									"extensions":".*" //any file with extension
+									"extensions":".*", //any file with extension
+									"args":[]
 						},
 				"open_automatically" : false // will close the view/tab and launch the application
 			},
