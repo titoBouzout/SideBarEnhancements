@@ -9,7 +9,7 @@ from .sidebar.SideBarItem import SideBarItem
 from .sidebar.SideBarSelection import SideBarSelection
 from .sidebar.SideBarProject import SideBarProject
 
-from .Edit import Edit as Edit
+from .edit.Edit import Edit as Edit
 from .hurry.filesize import size as hurry_size
 
 try:
@@ -1492,30 +1492,30 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				commands = ['-new-tab', url]
 
 		elif browser == 'canary':
-				if sublime.platform() == 'osx':
-						items.extend(['open'])
-						commands = ['-a', '/Applications/Google Chrome Canary.app', url]
-				elif sublime.platform() == 'windows':
-					# read local app data path from registry
-					aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-					reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
+			if sublime.platform() == 'osx':
+					items.extend(['open'])
+					commands = ['-a', '/Applications/Google Chrome Canary.app', url]
+			elif sublime.platform() == 'windows':
+				# read local app data path from registry
+				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 
-					if s.get('portable_browser') != '':
-						items.extend([s.get('portable_browser')])
-					items.extend([
-						'%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe'
+				if s.get('portable_browser') != '':
+					items.extend([s.get('portable_browser')])
+				items.extend([
+					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe'
 
-						,reg_value+'\\Chrome SxS\\Application\\chrome.exe'
-						,reg_value+'\\Google\\Chrome SxS\\Application\\chrome.exe'
-						,'%HOMEPATH%\\Google\\Chrome SxS\\Application\\chrome.exe'
-						,'%PROGRAMFILES%\\Google\\Chrome SxS\\Application\\chrome.exe'
-						,'%PROGRAMFILES(X86)%\\Google\\Chrome SxS\\Application\\chrome.exe'
-						,'%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome SxS\\chrome.exe'
-						,'%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome SxS\\Application\\chrome.exe'
-						,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome SxS\\Application\\chrome.exe'
-					])
+					,reg_value+'\\Chrome SxS\\Application\\chrome.exe'
+					,reg_value+'\\Google\\Chrome SxS\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Google\\Chrome SxS\\Application\\chrome.exe'
+					,'%PROGRAMFILES%\\Google\\Chrome SxS\\Application\\chrome.exe'
+					,'%PROGRAMFILES(X86)%\\Google\\Chrome SxS\\Application\\chrome.exe'
+					,'%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome SxS\\chrome.exe'
+					,'%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome SxS\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome SxS\\Application\\chrome.exe'
+				])
 
-					commands = ['-new-tab', url]
+				commands = ['-new-tab', url]
 
 		elif browser == 'chromium':
 			if sublime.platform() == 'osx':
