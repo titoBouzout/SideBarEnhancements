@@ -1,12 +1,9 @@
 # coding=utf8
 import sublime, sublime_plugin
-import os, shutil
 
+import os, shutil
 import threading, time
 
-from .sidebar.SideBarItem import SideBarItem
-from .sidebar.SideBarSelection import SideBarSelection
-from .sidebar.SideBarProject import SideBarProject
 
 from .edit.Edit import Edit as Edit
 from .hurry.filesize import size as hurry_size
@@ -17,6 +14,8 @@ try:
 except ImportError:
 	# from urllib.parse import quote as urlquote
 	from urllib.parse import unquote as urlunquote
+
+from .SideBarAPI import SideBarItem, SideBarSelection, SideBarProject
 
 #NOTES
 # A "directory" for this plugin is a "directory"
