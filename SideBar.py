@@ -2,7 +2,6 @@
 import sublime, sublime_plugin
 import os, shutil
 
-
 import threading, time
 
 from .sidebar.SideBarItem import SideBarItem
@@ -19,16 +18,11 @@ except ImportError:
 	# from urllib.parse import quote as urlquote
 	from urllib.parse import unquote as urlunquote
 
-# needed for getting local app data path on windows
-if sublime.platform() == 'windows':
-	import winreg
-
 #NOTES
 # A "directory" for this plugin is a "directory"
 # A "directory" for a user is a "folder"
 
 s = {}
-
 def plugin_loaded():
 	global s
 	s = sublime.load_settings('Side Bar.sublime-settings')
@@ -1446,6 +1440,9 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 
 	def try_open(self, url, browser):
 		import subprocess
+
+		if sublime.platform() == 'windows':
+			import winreg
 
 		browser = browser.lower().strip();
 		items = []
