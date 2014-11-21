@@ -2,6 +2,7 @@
 import sublime, sublime_plugin
 import os, shutil
 
+
 import threading, time
 
 from .sidebar.SideBarItem import SideBarItem
@@ -9,22 +10,18 @@ from .sidebar.SideBarSelection import SideBarSelection
 from .sidebar.SideBarProject import SideBarProject
 
 from .Edit import Edit as Edit
+from .hurry.filesize import size as hurry_size
 
 try:
-    from urllib import quote as urlquote
-    from urllib import unquote as urlunquote
+	#from urllib import quote as urlquote
+	from urllib import unquote as urlunquote
 except ImportError:
-    from urllib.parse import quote as urlquote
-    from urllib.parse import unquote as urlunquote
+	# from urllib.parse import quote as urlquote
+	from urllib.parse import unquote as urlunquote
 
 # needed for getting local app data path on windows
 if sublime.platform() == 'windows':
 	import winreg
-
-def expandVars(path):
-	for k, v in list(os.environ.items()):
-		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
-	return path
 
 #NOTES
 # A "directory" for this plugin is a "directory"
@@ -38,6 +35,11 @@ def plugin_loaded():
 
 def Window():
 	return sublime.active_window()
+
+def expandVars(path):
+	for k, v in list(os.environ.items()):
+		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
+	return path
 
 class OpenWithListener(sublime_plugin.EventListener):
 
@@ -1075,14 +1077,14 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import functools
 		Window().run_command('hide_panel');
-		view = Window().show_input_panel("Find:", '', functools.partial(self.on_find, paths), None, None)
+		Window().show_input_panel("Find:", '', functools.partial(self.on_find, paths), None, None)
 
 	def on_find(self, paths, find):
 		if not find:
 			return
 		import functools
 		Window().run_command('hide_panel');
-		view = Window().show_input_panel("Replace:", '', functools.partial(self.on_replace, paths, find), None, None)
+		Window().show_input_panel("Replace:", '', functools.partial(self.on_replace, paths, find), None, None)
 
 	def on_replace(self, paths, find, replace):
 		if not replace:
@@ -1709,3 +1711,41 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'
+
+class StatusBarFileSize(sublime_plugin.EventListener):
+
+	def on_activated_async(self, v):
+		if s.get('statusbar_file_size') and v.file_name():
+			try:
+				self.show(v, hurry_size(os.path.getsize(v.file_name())))
+			except:
+				pass
+
+	def on_post_save_async(self, v):
+		if s.get('statusbar_file_size') and v.file_name():
+			try:
+				self.show(v, hurry_size(os.path.getsize(v.file_name())))
+			except:
+				pass
+
+	def show(self, v, size):
+		v.set_status('statusbar_file_size', size);
+
+class StatusBarModifiedTime(sublime_plugin.EventListener):
+
+	def on_activated_async(self, v):
+		if s.get('statusbar_modified_time') and v.file_name():
+			try:
+				self.show(v, os.path.getmtime(v.file_name()))
+			except:
+				pass
+
+	def on_post_save_async(self, v):
+		if s.get('statusbar_modified_time') and v.file_name():
+			try:
+				self.show(v, os.path.getmtime(v.file_name()))
+			except:
+				pass
+
+	def show(self, v, mtime):
+		v.set_status('statusbar_modified_time',  time.strftime(s.get('statusbar_modified_time_format'), time.localtime(mtime)));
