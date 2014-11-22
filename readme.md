@@ -491,4 +491,4 @@ You should have received a copy of the GNU General Public License along with thi
   [Send2Trash]: http://pypi.python.org/pypi/Send2Trash
   [bfg-pages]: http://code.google.com/p/bfg-pages/
   [tito.bouzout@gmail.com]: tito.bouzout@gmail.com
-  [Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support SideBarEnhancements%20Developer&amount=12.00&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted
+  [Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20SideBarEnhancements%20Developer&amount=12.00&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted
