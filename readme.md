@@ -1,4 +1,4 @@
-[Sublime Text 3+][] Package. **Install via **an updated version of [Package Control 2][]. Just **DON'T install manually**.
+[Sublime Text 3+][] Package. **Install via** an updated version of [Package Control 2][]. Just **DON'T install manually**.
 
 # Sidebar Enhancements
 
@@ -71,6 +71,8 @@ If you have problems with the installtion, do this:
 
 ## F12 key
 
+(Please note that from version 2.122104 this package no longers provides the key , you need to manually add it to your sublime-keymap file (see next section))
+
 F12 key allows you to open the current file in browser.
 
 `url_testing` allows you to set the url of your local server, opened via F12
@@ -133,15 +135,26 @@ You can create config files `some/folder/.sublime/SideBarEnhancements.json` anyw
 
 #### F12 key conflict
 
-On Sublime Text 3 `F12` key is bound to `"goto_definition"` command by default. To restore the default behaviour use this workaround.
+On Sublime Text 3 `F12` key is bound to `"goto_definition"` command by default. This package was conflicting with that key, this no longers happens. You need to manually add the keys now: Go to `Preferences -> Package Settings -> Side Bar -> Key Bindings - User` and add any of the following:
 
-Go to `Preferences -> Package Settings -> Side Bar -> Key Bindings - User` and add the following:
-
-    [
-        { "keys": ["f12"],
-            "command": "goto_definition"
-        },
-    ]
+        [
+            { "keys": ["f12"],
+                "command": "side_bar_open_in_browser" ,
+                "args":{"paths":[], "type":"testing", "browser":""}
+            },
+            { "keys": ["alt+f12"],
+                "command": "side_bar_open_in_browser",
+                "args":{"paths":[], "type":"production", "browser":""}
+            },
+            {
+                "keys": ["ctrl+t"],
+                "command": "side_bar_new_file2"
+            },
+            {
+                "keys": ["f2"],
+                "command": "side_bar_rename"
+            },
+        ]
 
 ## Notes on configuring the `Open With` menu:
 
@@ -161,7 +174,8 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
         "args": {
             "paths": [],
             "application": "Adobe Photoshop CS5.app", // OSX
-            "extensions":"psd|png|jpg|jpeg"  //any file with these extensions
+            "extensions":"psd|png|jpg|jpeg",  //any file with these extensions
+            "args":[]
         }
         "open_automatically" : true // will close the view/tab and launch the application
     },
@@ -255,6 +269,8 @@ Update 2.122104
 -   remove "changelog" file, in favor of this readme
 
 -   remove "license" file, in favor of this readme
+
+-   removed conflicting keys!
 
 Update 2.0.4
 
@@ -458,7 +474,7 @@ Copyright (C) 2014 Tito Bouzout [tito.bouzout@gmail.com][]
 
 This license apply to all the files inside this program unless noted different for some files or portions of code inside these files.
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation. http://www.gnu.org/licenses/gpl.html
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation. <http://www.gnu.org/licenses/gpl.html>
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
@@ -475,4 +491,4 @@ You should have received a copy of the GNU General Public License along with thi
   [Send2Trash]: http://pypi.python.org/pypi/Send2Trash
   [bfg-pages]: http://code.google.com/p/bfg-pages/
   [tito.bouzout@gmail.com]: tito.bouzout@gmail.com
-  [Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support  SideBarEnhancements Developer&amount=12.00&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted
+  [Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support SideBarEnhancements Developer&amount=12.00&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted
