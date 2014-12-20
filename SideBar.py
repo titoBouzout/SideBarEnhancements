@@ -34,6 +34,9 @@ def expandVars(path):
 		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 	return path
 
+class Object():
+	pass
+
 class OpenWithListener(sublime_plugin.EventListener):
 
 	def on_load_async(self, view):
@@ -219,6 +222,8 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 		return True
 
 class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = [], application = "", extensions = ""):
+		self.run(self, paths = [], application = "", extensions = "", args=[])
 	def run(self, paths = [], application = "", extensions = "", args=[]):
 		application_dir, application_name = os.path.split(application)
 
@@ -242,6 +247,8 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			sublime.error_message('Unable to "Open With..", probably incorrect path to application, check the Console.')
 
 	def is_enabled(self, paths = [], application = "", extensions = ""):
+		self.is_enabled(self, paths = [], application = "", extensions = "", args=[])
+	def is_enabled(self, paths = [], application = "", extensions = "", args=[]):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
@@ -250,6 +257,8 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			return SideBarSelection(paths).hasFilesWithExtension(extensions)
 
 	def is_visible(self, paths = [], application = "", extensions = ""):
+		self.is_visible(self, paths = [], application = "", extensions = "", args=[])
+	def is_visible(self, paths = [], application = "", extensions = "", args=[]):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
@@ -335,9 +344,6 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		else:
 			return 'In Files With Extension…'
 
-class Object:
-	pass
-
 Object.sidebar_instant_search = 0
 Object.sidebar_instant_search_start_time = 0
 
@@ -354,11 +360,10 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 		view.set_name('Instant File Search')
 		view.set_syntax_file('Packages/SideBarEnhancements/SideBar Results.hidden-tmLanguage')
 		view.set_scratch(True)
-		view.settings().set('sidebar_instant_search_paths', paths)
-		with Edit(view) as edit:
-			edit.replace(sublime.Region(0, view.size()), "Type to search: ")
+		view.run_command('insert', {"characters": "Type to search: "})
 		view.sel().clear()
 		view.sel().add(sublime.Region(16,16))
+		view.settings().set('sidebar_instant_search_paths', paths)
 		Object.sidebar_instant_search += 1
 
 	def is_enabled(self, paths=[]):
