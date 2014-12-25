@@ -71,7 +71,7 @@ If you have problems with the installtion, do this:
 
 ## F12 key
 
-(Please note that from version 2.122104 this package no longers provides the key , you need to manually add it to your sublime-keymap file (see next section))
+(Please note that from version 2.122104 this package no longers provides the key, you need to manually add it to your sublime-keymap file (see next section))
 
 F12 key allows you to open the current file in browser.
 
