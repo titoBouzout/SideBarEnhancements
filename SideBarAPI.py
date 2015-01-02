@@ -493,7 +493,7 @@ class SideBarItem:
 		try:
 			return re.compile('(\.[^\.]+(\.[^\.]{2,4})?)$').findall('name'+self.name())[0][0].lower()
 		except:
-			return self.name()
+			return os.path.splitext('name'+self.name())[1].lower()
 
 	def exists(self):
 		return os.path.isdir(self.path()) or os.path.isfile(self.path())
