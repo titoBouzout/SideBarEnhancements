@@ -458,10 +458,10 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 					self.find(file)
 
 	def match_regexp(self, path):
-		return self.searchTermRegExp.search(path) and not [s for s in self.ignore_paths if s in path]
+		return self.searchTermRegExp.search(path) and not [1 for s in self.ignore_paths if s in path]
 
 	def match_string(self, path):
-		return self.searchTerm in path
+		return self.searchTerm in path and not [1 for s in self.ignore_paths if s in path]
 
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
