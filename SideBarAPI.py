@@ -490,7 +490,10 @@ class SideBarItem:
 		return mimetypes.guess_type(self.path())[0] or 'application/octet-stream'
 
 	def extension(self):
-		return os.path.splitext('name'+self.name())[1].lower()
+		try:
+			return re.compile('(\.[^\.]+(\.[^\.]{2,4})?)$').findall('name'+self.name())[0][0].lower()
+		except:
+			return self.name()
 
 	def exists(self):
 		return os.path.isdir(self.path()) or os.path.isfile(self.path())
