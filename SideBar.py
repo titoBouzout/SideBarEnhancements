@@ -428,10 +428,13 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 			sel = view.sel()[0].begin()
 			if sel > 16+len(self.searchTerm):
 				sel = 16+len(self.searchTerm)
-			view.sel().clear()
-			with Edit(view) as edit:
-				edit.replace(sublime.Region(0, view.size()), match_result);
-			view.sel().add(sublime.Region(sel, sel))
+			if sublime.platform() == 'osx':
+				view.run_command('side_bar_enhancements_write_to_view', {'content' :match_result, 'position': sel})
+			else:
+				with Edit(view) as edit:
+					edit.replace(sublime.Region(0, view.size()), match_result);
+				view.sel().clear()
+				view.sel().add(sublime.Region(sel, sel))
 
 			view.erase_regions("sidebar_search_instant_highlight")
 			if total < 30000 and len(self.searchTerm) > 1:
@@ -462,6 +465,14 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 
 	def match_string(self, path):
 		return self.searchTerm in path and not [1 for s in self.ignore_paths if s in path]
+
+class SideBarEnhancementsWriteToViewCommand(sublime_plugin.TextCommand):
+	def run(self, edit, content, position):
+		view = self.view
+		view.replace(edit, sublime.Region(0, view.size()), content);
+		view.sel().clear()
+		view.sel().add(sublime.Region(position,position))
+		view.end_edit(edit)
 
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
