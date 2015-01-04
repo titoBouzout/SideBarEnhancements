@@ -699,7 +699,6 @@ class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() > 0
 
-
 class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
@@ -1056,23 +1055,29 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
 	def on_done(self, old, new):
-		SideBarDuplicateThread(old, new).start()
+		key = 'duplicate-'+str(time.time())
+		SideBarDuplicateThread(old, new, key).start()
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarDuplicateThread(threading.Thread):
-	def __init__(self, old, new):
+	def __init__(self, old, new, key):
 		self.old = old
 		self.new = new
+		self.key = key
 		threading.Thread.__init__(self)
 
 	def run(self):
 		old = self.old
 		new = self.new
+		key = self.key
+		window_set_status(key, 'Duplicating…')
+
 		item = SideBarItem(old, os.path.isdir(old))
 		try:
 			if not item.copy(new):
+				window_set_status(key, '')
 				# destination exists
 				if SideBarItem(new, os.path.isdir(new)).overwrite():
 					self.run()
@@ -1080,6 +1085,7 @@ class SideBarDuplicateThread(threading.Thread):
 					SideBarDuplicateCommand(sublime_plugin.WindowCommand).run([old], new)
 				return
 		except:
+			window_set_status(key, '')
 			sublime.error_message("Unable to copy:\n\n"+old+"\n\nto\n\n"+new)
 			SideBarDuplicateCommand(sublime_plugin.WindowCommand).run([old], new)
 			return
@@ -1087,6 +1093,7 @@ class SideBarDuplicateThread(threading.Thread):
 		if item.isFile():
 			item.edit();
 		SideBarProject().refresh();
+		window_set_status(key, '')
 
 class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], newLeaf = False):
