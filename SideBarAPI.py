@@ -12,6 +12,8 @@ def expandVars(path):
 		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 	return path
 
+BINARY = re.compile('\.(psd|ai|cdr|ico|cache|sublime-package|eot|svgz|ttf|woff|zip|tar|gz|rar|bz2|jar|xpi|mov|mpeg|avi|mpg|flv|wmv|mp3|wav|aif|aiff|snd|wma|asf|asx|pcm|pdf|doc|docx|xls|xlsx|ppt|pptx|rtf|sqlite|sqlitedb|fla|swf|exe)$', re.I)
+
 class SideBarSelection:
 
 	def __init__(self, paths = []):
@@ -451,9 +453,12 @@ class SideBarItem:
 				print('using desktop')
 
 	def edit(self):
-		view = sublime.active_window().open_file(self.path())
-		view.settings().set('open_with_edit', True);
-		return view
+		if BINARY.search(self.path()):
+			return None
+		else:
+			view = sublime.active_window().open_file(self.path())
+			view.settings().set('open_with_edit', True);
+			return view
 
 	def isDirectory(self):
 		return self._is_directory
