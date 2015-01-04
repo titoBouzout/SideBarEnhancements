@@ -1221,6 +1221,8 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			SideBarDeleteThread(paths).start()
 
 	def _delete_threaded(self, paths):
+		key = 'delete-'+str(time.time())
+		window_set_status(key, 'Deleting…')
 		try:
 			from .send2trash import send2trash
 			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
@@ -1239,6 +1241,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 			Window().show_input_panel("BUG!", '', '', None, None)
 			Window().run_command('hide_panel');
 			Window().show_input_panel("Permanently Delete:", SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
+		window_set_status(key, '')
 
 	def confirm(self, paths, display_paths):
 		import functools
