@@ -372,7 +372,10 @@ class SideBarFindResultsViewListener(sublime_plugin.EventListener):
 		if Object.sidebar_instant_search > 0 and view.settings().has('sidebar_instant_search_paths'):
 			searchTerm = view.substr(view.line(0)).replace("Type to search:", "").strip()
 			if searchTerm and Object.sidebar_instant_search_id != searchTerm:
-				SideBarFindFilesPathContainingSearchThread(searchTerm, view).start()
+				SideBarFindFilesPathContainingSearchThread(view, searchTerm).start()
+			elif not searchTerm:
+				view.set_name('Instant File Search')
+
 	def on_close(self, view):
 		if view.settings().has('sidebar_instant_search_paths'):
 			Object.sidebar_instant_search -= 1
@@ -380,70 +383,75 @@ class SideBarFindResultsViewListener(sublime_plugin.EventListener):
 				Object.sidebar_instant_search = 0
 
 class SideBarFindFilesPathContainingSearchThread(threading.Thread):
-	def __init__(self, searchTerm, view):
+	def __init__(self, view, searchTerm):
 		self.view = view
-		self.paths = view.settings().get('sidebar_instant_search_paths')
-		self.ignore_paths = view.settings().get('file_exclude_patterns', [])
 		self.searchTerm = searchTerm
-		try:
-			self.searchTermRegExp = re.compile(searchTerm, re.I | re.U)
-			self.match_function = self.match_regexp
-			self.search_type = 'REGEXP'
-		except:
-			self.match_function = self.match_string
-			self.search_type = 'LITERAL'
-
 		threading.Thread.__init__(self)
 
 	def run(self):
 		if Object.sidebar_instant_search_id == self.searchTerm:
 			return
-		Object.sidebar_instant_search_id = self.searchTerm
+		searchTerm = self.searchTerm
+		Object.sidebar_instant_search_id = searchTerm
+		view = self.view
 
-		total = 0
-		highlight_from = 0
-		match_result = ''
-		match_result += 'Type to search: '+self.searchTerm+'\n'
-		for item in SideBarSelection(self.paths).getSelectedDirectoriesOrDirnames():
-			self.files = []
-			self.num_files = 0
-			self.find(item.path())
-			match_result += '\n'
-			length = len(self.files)
-			if length > 1:
-				match_result += str(length)+' matches'
-			elif length > 0:
-				match_result += '1 match'
-			else:
-				match_result += 'No match'
-			match_result += ' in '+str(self.num_files)+' files for term "'+self.searchTerm+'" using '+self.search_type+' under \n"'+item.path()+'"\n\n'
-			if highlight_from == 0:
-				highlight_from = len(match_result)
-			match_result += ('\n'.join(self.files))
-			total += length
-		match_result += '\n'
+		paths = view.settings().get('sidebar_instant_search_paths')
+		self.ignore_paths = view.settings().get('file_exclude_patterns', [])
+		try:
+			self.searchTermRegExp = re.compile(searchTerm, re.I | re.U)
+			self.match_function = self.match_regexp
+			search_type = 'REGEXP'
+		except:
+			self.match_function = self.match_string
+			search_type = 'LITERAL'
 
-		if Object.sidebar_instant_search_id == self.searchTerm:
-			view = self.view;
-			sel = view.sel()[0].begin()
-			if sel > 16+len(self.searchTerm):
-				sel = 16+len(self.searchTerm)
-			if sublime.platform() == 'osx':
-				view.run_command('side_bar_enhancements_write_to_view', {'content' :match_result, 'position': sel})
-			else:
-				with Edit(view) as edit:
-					edit.replace(sublime.Region(0, view.size()), match_result);
-				view.sel().clear()
-				view.sel().add(sublime.Region(sel, sel))
-
-			view.erase_regions("sidebar_search_instant_highlight")
-			if total < 30000 and len(self.searchTerm) > 1:
-				if self.search_type == 'REGEXP':
-					regions = [item for item in view.find_all(self.searchTerm, sublime.IGNORECASE) if item.begin() >= highlight_from]
+		if Object.sidebar_instant_search_id == searchTerm:
+			total = 0
+			highlight_from = 0
+			match_result = ''
+			match_result += 'Type to search: '+searchTerm+'\n'
+			find = self.find
+			for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+				self.files = []
+				self.num_files = 0
+				find(item.path())
+				match_result += '\n'
+				length = len(self.files)
+				if length > 1:
+					match_result += str(length)+' matches'
+				elif length > 0:
+					match_result += '1 match'
 				else:
-					regions = [item for item in view.find_all(self.searchTerm, sublime.LITERAL|sublime.IGNORECASE) if item.begin() >= highlight_from]
+					match_result += 'No match'
+				match_result += ' in '+str(self.num_files)+' files for term "'+searchTerm+'" using '+search_type+' under \n"'+item.path()+'"\n\n'
+				if highlight_from == 0:
+					highlight_from = len(match_result)
+				match_result += ('\n'.join(self.files))
+				total += length
+			match_result += '\n'
 
-				view.add_regions("sidebar_search_instant_highlight", regions, 'entity.name.function', '', sublime.PERSISTENT | sublime.DRAW_SQUIGGLY_UNDERLINE | sublime.DRAW_NO_FILL | sublime.DRAW_NO_OUTLINE | sublime.DRAW_EMPTY_AS_OVERWRITE)
+			if Object.sidebar_instant_search_id == searchTerm:
+				sel = view.sel()
+				position = sel[0].begin()
+				if position > 16+len(searchTerm):
+					position = 16+len(searchTerm)
+				if sublime.platform() == 'osx':
+					view.run_command('side_bar_enhancements_write_to_view', {'content' :match_result, 'position': position, 'searchTerm': searchTerm})
+				else:
+					with Edit(view) as edit:
+						edit.replace(sublime.Region(0, view.size()), match_result);
+					sel.clear()
+					sel.add(sublime.Region(position, position))
+				view.set_name(searchTerm+' - IFS')
+				if Object.sidebar_instant_search_id == searchTerm:
+					view.erase_regions("sidebar_search_instant_highlight")
+					if total < 5000 and len(searchTerm) > 1:
+						if search_type == 'REGEXP':
+							regions = [item for item in view.find_all(searchTerm, sublime.IGNORECASE) if item.begin() >= highlight_from]
+						else:
+							regions = [item for item in view.find_all(searchTerm, sublime.LITERAL|sublime.IGNORECASE) if item.begin() >= highlight_from]
+						if Object.sidebar_instant_search_id == searchTerm:
+							view.add_regions("sidebar_search_instant_highlight", regions, 'entity.name.function', '', sublime.PERSISTENT | sublime.DRAW_SQUIGGLY_UNDERLINE | sublime.DRAW_NO_FILL | sublime.DRAW_NO_OUTLINE | sublime.DRAW_EMPTY_AS_OVERWRITE)
 
 	def find(self, path):
 		if os.path.isfile(path) or os.path.islink(path):
@@ -467,12 +475,13 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 		return self.searchTerm in path and not [1 for s in self.ignore_paths if s in path]
 
 class SideBarEnhancementsWriteToViewCommand(sublime_plugin.TextCommand):
-	def run(self, edit, content, position):
-		view = self.view
-		view.replace(edit, sublime.Region(0, view.size()), content);
-		view.sel().clear()
-		view.sel().add(sublime.Region(position,position))
-		view.end_edit(edit)
+	def run(self, edit, content, position, searchTerm):
+		if Object.sidebar_instant_search_id == searchTerm:
+			view = self.view
+			view.replace(edit, sublime.Region(0, view.size()), content);
+			view.sel().clear()
+			view.sel().add(sublime.Region(position,position))
+			view.end_edit(edit)
 
 class SideBarCutCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
