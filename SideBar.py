@@ -9,17 +9,11 @@ from .edit.Edit import Edit as Edit
 from .hurry.filesize import size as hurry_size
 
 try:
-	#from urllib import quote as urlquote
 	from urllib import unquote as urlunquote
 except ImportError:
-	# from urllib.parse import quote as urlquote
 	from urllib.parse import unquote as urlunquote
 
 from .SideBarAPI import SideBarItem, SideBarSelection, SideBarProject
-
-#NOTES
-# A "directory" for this plugin is a "directory"
-# A "directory" for a user is a "folder"
 
 global Pref, s
 Pref = {}
@@ -1078,7 +1072,6 @@ class SideBarDuplicateThread(threading.Thread):
 		try:
 			if not item.copy(new):
 				window_set_status(key, '')
-				# destination exists
 				if SideBarItem(new, os.path.isdir(new)).overwrite():
 					self.run()
 				else:
@@ -1344,7 +1337,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				except:
 					# raise error in case we were unable to delete.
 					if os.path.exists(path):
-						print("Unable to remove file:\n\n"+path)
+						print("Unable to remove file:\n"+path)
 						os.remove(path)
 		else:
 			print('path is none')
@@ -1363,7 +1356,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 				except:
 					# raise error in case we were unable to delete.
 					if os.path.exists(path):
-						print("Unable to remove folder:\n\n"+path)
+						print("Unable to remove folder:\n"+path)
 						shutil.rmtree(path)
 
 	def is_enabled(self, paths = []):
@@ -1553,7 +1546,6 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend(['open'])
 				commands = ['-a', '/Applications/Google Chrome.app', url]
 			elif sublime.platform() == 'windows':
-				# read local app data path from registry
 				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 
@@ -1594,7 +1586,6 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 					items.extend(['open'])
 					commands = ['-a', '/Applications/Google Chrome Canary.app', url]
 			elif sublime.platform() == 'windows':
-				# read local app data path from registry
 				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 
@@ -1620,7 +1611,6 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend(['open'])
 				commands = ['-a', '/Applications/Chromium.app', url]
 			elif sublime.platform() == 'windows':
-				# read local app data path from registry
 				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 				if s.get('portable_browser') != '':
