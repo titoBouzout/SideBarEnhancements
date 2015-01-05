@@ -1105,27 +1105,46 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
 	def on_done(self, old, branch, leaf):
+		key = 'rename-'+str(time.time())
+		SideBarRenameThread(old, branch, leaf, key).start()
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+
+class SideBarRenameThread(threading.Thread):
+	def __init__(self, old, branch, leaf, key):
+		self.old = old
+		self.branch = branch
+		self.leaf = leaf
+		self.key = key
+		threading.Thread.__init__(self)
+
+	def run(self):
+		old = self.old
+		branch = self.branch
+		leaf = self.leaf
+		key = self.key
+		window_set_status(key, 'Renaming…')
+
 		Window().run_command('hide_panel');
 		leaf = leaf.strip();
 		new = os.path.join(branch, leaf)
 		item = SideBarItem(old, os.path.isdir(old))
 		try:
 			if not item.move(new):
-				# sublime.error_message("Unable to rename, destination exists.")
-				# destination exists
 				if SideBarItem(new, os.path.isdir(new)).overwrite():
-					self.on_done(old, branch, leaf)
+					self.run()
 				else:
-					self.run([old], leaf)
+					window_set_status(key, '')
+					SideBarRenameCommand(sublime_plugin.WindowCommand).run([old], leaf)
 		except:
+			window_set_status(key, '')
 			sublime.error_message("Unable to rename:\n\n"+old+"\n\nto\n\n"+new)
-			self.run([old], leaf)
+			SideBarRenameCommand(sublime_plugin.WindowCommand).run([old], leaf)
 			raise
 			return
 		SideBarProject().refresh();
-
-	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+		window_set_status(key, '')
 
 class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1182,23 +1201,42 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
 	def on_done(self, old, new):
-		item = SideBarItem(old, os.path.isdir(old))
-		try:
-			if not item.move(new):
-				# sublime.error_message("Unable to move, destination exists.")
-				if SideBarItem(new, os.path.isdir(new)).overwrite():
-					self.on_done(old, new)
-				else:
-					self.run([old], new)
-				return
-		except:
-			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
-			self.run([old], new)
-			return
-		SideBarProject().refresh();
+		key = 'move-'+str(time.time())
+		SideBarMoveThread(old, new, key).start()
 
 	def is_enabled(self, paths = []):
 		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+
+class SideBarMoveThread(threading.Thread):
+	def __init__(self, old, new, key):
+		self.old = old
+		self.new = new
+		self.key = key
+		threading.Thread.__init__(self)
+
+	def run(self):
+		old = self.old
+		new = self.new
+		key = self.key
+		window_set_status(key, 'Moving…')
+
+		item = SideBarItem(old, os.path.isdir(old))
+		try:
+			if not item.move(new):
+				if SideBarItem(new, os.path.isdir(new)).overwrite():
+					self.run()
+				else:
+					window_set_status(key, '')
+					SideBarMoveCommand(sublime_plugin.WindowCommand).run([old], new)
+				return
+		except:
+			window_set_status(key, '')
+			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
+			SideBarMoveCommand(sublime_plugin.WindowCommand).run([old], new)
+			raise
+			return
+		SideBarProject().refresh();
+		window_set_status(key, '')
 
 class SideBarDeleteThread(threading.Thread):
 	def __init__(self, paths):
