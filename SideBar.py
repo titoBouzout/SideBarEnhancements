@@ -353,7 +353,6 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		else:
 			return 'In Files With Extension…'
 
-Object.sidebar_instant_search = 0
 Object.sidebar_instant_search_id = 0
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -372,24 +371,17 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 		view.sel().clear()
 		view.sel().add(sublime.Region(16,16))
 		view.settings().set('sidebar_instant_search_paths', paths)
-		Object.sidebar_instant_search += 1
 	def is_enabled(self, paths=[]):
 		return True
 
 class SideBarFindFilesPathContainingViewListener(sublime_plugin.EventListener):
 	def on_modified(self, view):
-		if Object.sidebar_instant_search > 0 and view.settings().has('sidebar_instant_search_paths'):
+		if view.settings().has('sidebar_instant_search_paths'):
 			searchTerm = view.substr(view.line(0)).replace("Type to search:", "").strip()
 			if searchTerm and Object.sidebar_instant_search_id != searchTerm:
 				SideBarFindFilesPathContainingSearchThread(view, searchTerm).start()
 			elif not searchTerm:
 				view.set_name('Instant File Search')
-
-	def on_close(self, view):
-		if view.settings().has('sidebar_instant_search_paths'):
-			Object.sidebar_instant_search -= 1
-			if Object.sidebar_instant_search < 0:
-				Object.sidebar_instant_search = 0
 
 class SideBarFindFilesPathContainingSearchThread(threading.Thread):
 	def __init__(self, view, searchTerm):
