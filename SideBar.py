@@ -76,7 +76,7 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 		Window().show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
 	def on_done(self, paths, relative_to_project, name):
-		if relative_to_project or s.get('new_files_relative_to_project_root'):
+		if relative_to_project or s.get('new_files_relative_to_project_root', False):
 			paths = SideBarProject().getDirectories()
 			if paths:
 				paths = [SideBarItem(paths[0], False)]
@@ -140,7 +140,7 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).hasFiles()
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_edit')
+		return not s.get('disabled_menuitem_edit', False)
 
 class SideBarOpenCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -151,7 +151,7 @@ class SideBarOpenCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).len() > 0
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_open_run')
+		return not s.get('disabled_menuitem_open_run', False)
 
 class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -274,7 +274,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			return SideBarSelection(paths).len() > 0
 		else:
 			has = SideBarSelection(paths).hasFilesWithExtension(extensions)
-			return has or (not has and not s.get("hide_open_with_entries_when_there_are_no_applicable"))
+			return has or (not has and not s.get("hide_open_with_entries_when_there_are_no_applicable", False))
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -317,7 +317,7 @@ class SideBarFindInProjectCommand(sublime_plugin.WindowCommand):
 		Window().run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
 
 	def is_visible(self, paths = []):
-		return not s.get('disabled_menuitem_find_in_project')
+		return not s.get('disabled_menuitem_find_in_project', False)
 
 class SideBarFindInProjectFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -531,7 +531,7 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths = [], in_parent = False):
 		if in_parent == 'True':
-			return not s.get('disabled_menuitem_paste_in_parent')
+			return not s.get('disabled_menuitem_paste_in_parent', False)
 		else:
 			return True
 
@@ -667,7 +667,7 @@ class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).len() > 0
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_copy_name')
+		return not s.get('disabled_menuitem_copy_name', False)
 
 class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -718,7 +718,7 @@ class SideBarCopyDirPathCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).len() > 0
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_copy_dir_path')
+		return not s.get('disabled_menuitem_copy_dir_path', False)
 
 class SideBarCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -833,7 +833,7 @@ class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowComm
 		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_copy_path')
+		return not s.get('disabled_menuitem_copy_path', False)
 
 class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1409,7 +1409,7 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).len() > 0
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_empty')
+		return not s.get('disabled_menuitem_empty', True)
 
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1541,8 +1541,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
 
@@ -1563,8 +1563,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 
 				commands = ['-new-tab', url]
 			else:
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'/usr/bin/google-chrome'
 					,'/opt/google/chrome/chrome'
@@ -1581,8 +1581,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
 
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe'
 
@@ -1605,8 +1605,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			elif sublime.platform() == 'windows':
 				aKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
 				reg_value, reg_type = winreg.QueryValueEx (aKey, "Local AppData")
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe'
 
@@ -1633,8 +1633,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				])
 				commands = ['-new-tab', url]
 			else:
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'/usr/bin/chromium'
 					,'chromium'
@@ -1647,8 +1647,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend(['open'])
 				commands = ['-a', '/Applications/Firefox.app', url]
 			else:
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'/usr/bin/firefox'
 
@@ -1667,8 +1667,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend(['open'])
 				commands = ['-a', '/Applications/FirefoxAurora.app', url]
 			else:
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'/usr/bin/aurora'
 
@@ -1684,8 +1684,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend(['open'])
 				commands = ['-a', '/Applications/Opera.app', url]
 			else:
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'/usr/bin/opera'
 					,'/usr/bin/opera-next'
@@ -1709,8 +1709,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				items.extend(['open'])
 				commands = ['-a', 'Safari', url]
 			else:
-				if s.get('portable_browser') != '':
-					items.extend([s.get('portable_browser')])
+				if s.get('portable_browser', '') != '':
+					items.extend([s.get('portable_browser', '')])
 				items.extend([
 					'/usr/bin/safari'
 
@@ -1722,8 +1722,8 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 				])
 				commands = ['-new-tab', '-url', url]
 		else:
-			if s.get('portable_browser') != '':
-				items.extend([s.get('portable_browser')])
+			if s.get('portable_browser', '') != '':
+				items.extend([s.get('portable_browser', '')])
 			commands = ['-new-tab', url]
 
 		for item in items:
@@ -1760,7 +1760,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		return SideBarSelection(paths).len() > 0
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_open_in_browser')
+		return not s.get('disabled_menuitem_open_in_browser', False)
 
 class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1781,7 +1781,7 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 		subprocess.Popen(items, cwd=items[1])
 
 	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_open_in_new_window')
+		return not s.get('disabled_menuitem_open_in_new_window', False)
 
 class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1795,14 +1795,14 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 class StatusBarFileSize(sublime_plugin.EventListener):
 
 	def on_activated_async(self, v):
-		if s.get('statusbar_file_size') and v.file_name():
+		if s.get('statusbar_file_size', False) and v.file_name():
 			try:
 				self.show(v, hurry_size(os.path.getsize(v.file_name())))
 			except:
 				pass
 
 	def on_post_save_async(self, v):
-		if s.get('statusbar_file_size') and v.file_name():
+		if s.get('statusbar_file_size', False) and v.file_name():
 			try:
 				self.show(v, hurry_size(os.path.getsize(v.file_name())))
 			except:
@@ -1814,18 +1814,18 @@ class StatusBarFileSize(sublime_plugin.EventListener):
 class StatusBarModifiedTime(sublime_plugin.EventListener):
 
 	def on_activated_async(self, v):
-		if s.get('statusbar_modified_time') and v.file_name():
+		if s.get('statusbar_modified_time', False) and v.file_name():
 			try:
 				self.show(v, os.path.getmtime(v.file_name()))
 			except:
 				pass
 
 	def on_post_save_async(self, v):
-		if s.get('statusbar_modified_time') and v.file_name():
+		if s.get('statusbar_modified_time', False) and v.file_name():
 			try:
 				self.show(v, os.path.getmtime(v.file_name()))
 			except:
 				pass
 
 	def show(self, v, mtime):
-		v.set_status('statusbar_modified_time',  time.strftime(s.get('statusbar_modified_time_format'), time.localtime(mtime)));
+		v.set_status('statusbar_modified_time',  time.strftime(s.get('statusbar_modified_time_format', '%A %b %d %H:%M:%S %Y'), time.localtime(mtime)));
