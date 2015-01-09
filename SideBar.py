@@ -1385,18 +1385,8 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 			else:
 				self.confirm([item.path() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()], [item.pathWithoutProject() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()])
 		else:
-			try:
-				from .send2trash import send2trash
-				for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-					for content in os.listdir(item.path()):
-						file = os.path.join(item.path(), content)
-						if not SideBarSelection().isNone(file):
-							send2trash(file)
-					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
-						item.closeViews()
-			except:
-				pass
-			SideBarProject().refresh();
+			key = 'move-'+str(time.time())
+			SideBarEmptyThread(paths, key).start()
 
 	def confirm(self, paths, display_paths):
 		import functools
@@ -1431,6 +1421,30 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_empty', True)
+
+class SideBarEmptyThread(threading.Thread):
+	def __init__(self, paths, key):
+		self.paths = paths
+		self.key = key
+		threading.Thread.__init__(self)
+
+	def run(self):
+		paths = self.paths
+		key = self.key
+		window_set_status(key, 'Emptying…')
+		try:
+			from .send2trash import send2trash
+			for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+				for content in os.listdir(item.path()):
+					file = os.path.join(item.path(), content)
+					if not SideBarSelection().isNone(file):
+						send2trash(file)
+				if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+					item.closeViews()
+		except:
+			pass
+		SideBarProject().refresh();
+		window_set_status(key, '')
 
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
