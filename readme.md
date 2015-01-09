@@ -220,6 +220,11 @@ Q: Can the package stop "show preview in a **right** click to a file".
 
 ## Change Log
 
+Update 2.010905
+
+-   "Open in browser", "mass rename" and "empty" runs now in own thread
+-   Always initialize to default settings (in case users hack the package and remove some preference)
+
 Update 2.010405
 
 -   rename and move runs now threaded
@@ -382,7 +387,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/gpl.html>
 
-## Like it? Support
+## Helpful!? Support, Many thanks ^_^
 
 [Donate to support this project.][]
 
