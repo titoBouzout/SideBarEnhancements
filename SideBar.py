@@ -1145,11 +1145,33 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 		Window().show_input_panel("Replace:", '', functools.partial(self.on_replace, paths, find), None, None)
 
 	def on_replace(self, paths, find, replace):
+		key = 'mass-renaming-'+str(time.time())
+		SideBarMassRenameThread(paths, find, replace, key).start()
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+
+class SideBarMassRenameThread(threading.Thread):
+	def __init__(self, paths, find, replace, key):
+		self.paths = paths
+		self.find = find
+		self.replace = replace
+		self.key = key
+		threading.Thread.__init__(self)
+
+	def run(self):
+		paths = self.paths
+		find = self.find
+		replace = self.replace
+		key = self.key
+
 		if not replace:
 			return
 		if find == '' or replace == '':
 			return None
 		else:
+			window_set_status(key, 'Mass renaming…')
+
 			to_rename_or_move = []
 			for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 				self.recurse(item.path(), to_rename_or_move)
@@ -1158,9 +1180,11 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 			for item in to_rename_or_move:
 				if find in item:
 					origin = SideBarItem(item, os.path.isdir(item))
-					destination = SideBarItem(origin.pathProject()+''+origin.pathWithoutProject().replace(find, replace), os.path.isdir(item))
+					destination = SideBarItem(origin.pathProject()+''+(origin.pathWithoutProject().replace(find, replace)), os.path.isdir(item))
 					origin.move(destination.path());
+
 			SideBarProject().refresh();
+			window_set_status(key, '')
 
 	def recurse(self, path, paths):
 		if os.path.isfile(path) or os.path.islink(path):
@@ -1173,9 +1197,6 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 				else:
 					self.recurse(file, paths)
 			paths.append(path)
-
-	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
 
 class SideBarMoveCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
