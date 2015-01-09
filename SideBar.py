@@ -1555,6 +1555,26 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		else:
 			type = 'url_testing'
 
+		SideBarOpenInBrowserThread(paths, type, browser).start()
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() > 0
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_open_in_browser', False)
+
+class SideBarOpenInBrowserThread(threading.Thread):
+	def __init__(self, paths, type, browser):
+		self.paths = paths
+		self.type = type
+		self.browser = browser
+		threading.Thread.__init__(self)
+
+	def run(self):
+		paths = self.paths
+		type = self.type
+		browser = self.browser
+
 		for item in SideBarSelection(paths).getSelectedItems():
 			url = item.url(type) or item.uri()
 			self.try_open(url, browser)
@@ -1790,12 +1810,6 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			pass
 
 		sublime.error_message('Browser "'+browser+'" not found!\nIs installed? Which location...?')
-
-	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
-
-	def is_visible(self, paths =[]):
-		return not s.get('disabled_menuitem_open_in_browser', False)
 
 class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
