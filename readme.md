@@ -1,5 +1,7 @@
 [Sublime Text 3+][] Package. **Install via** an updated version of [Package Control 2][]. Just **DON'T install manually**.
 
+
+
 # Sidebar Enhancements
 
 ### In other languages
@@ -8,6 +10,8 @@ Japanese - <http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancement
 Russian - <https://www.youtube.com/watch?v=8I0dJTd58kI&feature=youtu.be&a>
 
 ## Description
+
+# [Sublime Text 3+][] Package, It does NOT WORK with ST2, DOES NOT; Use Sublime Text 3 Please.
 
 Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. <http://www.sublimetext.com/>
 
