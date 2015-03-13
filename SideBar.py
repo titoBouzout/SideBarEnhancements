@@ -1844,15 +1844,15 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 
 class StatusBarFileSize(sublime_plugin.EventListener):
 
-	def on_activated_async(self, v):
-		if s.get('statusbar_file_size', False) and v.file_name():
+	def on_activated(self, v):
+		if v.file_name() and s.get('statusbar_file_size', False):
 			try:
 				self.show(v, hurry_size(os.path.getsize(v.file_name())))
 			except:
 				pass
 
-	def on_post_save_async(self, v):
-		if s.get('statusbar_file_size', False) and v.file_name():
+	def on_post_save(self, v):
+		if v.file_name() and s.get('statusbar_file_size', False):
 			try:
 				self.show(v, hurry_size(os.path.getsize(v.file_name())))
 			except:
@@ -1863,15 +1863,15 @@ class StatusBarFileSize(sublime_plugin.EventListener):
 
 class StatusBarModifiedTime(sublime_plugin.EventListener):
 
-	def on_activated_async(self, v):
-		if s.get('statusbar_modified_time', False) and v.file_name():
+	def on_activated(self, v):
+		if v.file_name() and s.get('statusbar_modified_time', False):
 			try:
 				self.show(v, os.path.getmtime(v.file_name()))
 			except:
 				pass
 
-	def on_post_save_async(self, v):
-		if s.get('statusbar_modified_time', False) and v.file_name():
+	def on_post_save(self, v):
+		if v.file_name() and s.get('statusbar_modified_time', False):
 			try:
 				self.show(v, os.path.getmtime(v.file_name()))
 			except:
