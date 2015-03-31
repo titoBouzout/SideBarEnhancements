@@ -1149,7 +1149,7 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 		SideBarMassRenameThread(paths, find, replace, key).start()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+		return SideBarSelection(paths).len() > 0
 
 class SideBarMassRenameThread(threading.Thread):
 	def __init__(self, paths, find, replace, key):
@@ -1165,9 +1165,7 @@ class SideBarMassRenameThread(threading.Thread):
 		replace = self.replace
 		key = self.key
 
-		if not replace:
-			return
-		if find == '' or replace == '':
+		if find == '':
 			return None
 		else:
 			window_set_status(key, 'Mass renaming…')
