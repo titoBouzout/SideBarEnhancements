@@ -1279,10 +1279,15 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 					send2trash(item.path())
 			SideBarProject().refresh();
 		except:
-			import functools
-			Window().show_input_panel("BUG!", '', '', None, None)
-			Window().run_command('hide_panel');
-			Window().show_input_panel("Permanently Delete:", SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
+			if sublime.ok_cancel_dialog('There is no trash bin, permanently delete?', 'Yes, Permanent Deletion'):
+				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
+					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
+						item.closeViews()
+					if sublime.platform() == 'windows':
+						self.remove('\\\\?\\'+item.path());
+					else:
+						self.remove(item.path());
+				SideBarProject().refresh();
 		window_set_status(key, '')
 
 	def confirm(self, paths, display_paths):
