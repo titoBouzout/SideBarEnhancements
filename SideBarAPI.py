@@ -230,8 +230,7 @@ class SideBarProject:
 					folder['folder_exclude_patterns'].append(exclude)
 				except:
 					folder['folder_exclude_patterns'] = [exclude]
-				self.setProjectJson(data);
-				return
+		self.setProjectJson(data);
 
 	def excludeFile(self, path, exclude):
 		data = self.getProjectJson()
@@ -244,8 +243,7 @@ class SideBarProject:
 					folder['file_exclude_patterns'].append(exclude)
 				except:
 					folder['file_exclude_patterns'] = [exclude]
-				self.setProjectJson(data);
-				return
+		self.setProjectJson(data);
 
 	def add(self, path):
 		data = self.getProjectJson()
