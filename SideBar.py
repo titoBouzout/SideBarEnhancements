@@ -242,7 +242,6 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 			items = SideBarSelection(paths).getSelectedItems()
 		else:
 			items = SideBarSelection(paths).getSelectedFilesWithExtension(extensions)
-
 		import subprocess
 		try:
 			for item in items:
@@ -253,7 +252,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 				else:
 					subprocess.Popen([application_name] + args + [item.name()], cwd=item.dirname())
 		except:
-			sublime.error_message('Unable to "Open With..", probably incorrect path to application, check the Console.')
+			sublime.error_message('Unable to "Open With..", probably incorrect path to application.')
 
 	def is_enabled(self, paths = [], application = "", extensions = ""):
 		self.is_enabled(self, paths = [], application = "", extensions = "", args=[])
@@ -376,6 +375,7 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 
 class SideBarFindFilesPathContainingViewListener(sublime_plugin.EventListener):
 	def on_modified(self, view):
+		view.settings().has('sidebar_instant_search_paths') # for some reason the first call in some conditions returns true, but not the next one WTH
 		if view.settings().has('sidebar_instant_search_paths'):
 			searchTerm = view.substr(view.line(0)).replace("Type to search:", "").strip()
 			if searchTerm and Object.sidebar_instant_search_id != searchTerm:
