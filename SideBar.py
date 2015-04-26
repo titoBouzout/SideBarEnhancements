@@ -1845,7 +1845,7 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 	def is_visible(self, paths =[]):
 		return sublime.platform() == 'osx'
 
-class StatusBarFileSize(sublime_plugin.EventListener):
+class SideBarStatusBarFileSize(sublime_plugin.EventListener):
 
 	def on_activated(self, v):
 		if v.file_name() and s.get('statusbar_file_size', False):
@@ -1864,7 +1864,7 @@ class StatusBarFileSize(sublime_plugin.EventListener):
 	def show(self, v, size):
 		v.set_status('statusbar_file_size', size);
 
-class StatusBarModifiedTime(sublime_plugin.EventListener):
+class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
 
 	def on_activated(self, v):
 		if v.file_name() and s.get('statusbar_modified_time', False):
@@ -1882,3 +1882,9 @@ class StatusBarModifiedTime(sublime_plugin.EventListener):
 
 	def show(self, v, mtime):
 		v.set_status('statusbar_modified_time',  time.strftime(s.get('statusbar_modified_time_format', '%A %b %d %H:%M:%S %Y'), time.localtime(mtime)));
+
+class SideBarDefaultNewFolder(sublime_plugin.EventListener):
+	def on_new(self, view):
+		paths = SideBarProject().getDirectories()
+		if paths:
+			view.settings().set('default_dir', paths[0])
