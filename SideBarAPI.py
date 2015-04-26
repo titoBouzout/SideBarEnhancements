@@ -18,7 +18,7 @@ class SideBarSelection:
 
 	def __init__(self, paths = []):
 
-		if len(paths) < 1:
+		if not paths or len(paths) < 1:
 			try:
 				path = sublime.active_window().active_view().file_name()
 				if self.isNone(path):
