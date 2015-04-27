@@ -487,6 +487,7 @@ class SideBarItem:
 
 	def write(self, content):
 		open(self.path(), 'w+', encoding='utf8', newline='').write(str(content))
+		os.chmod(self.path(), 0o644)
 
 	def mime(self):
 		import mimetypes
