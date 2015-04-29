@@ -408,7 +408,7 @@ class SideBarItem:
 
 	def dirnameCreate(self):
 		try:
-			os.makedirs(self.dirname(), 0o755)
+			self._makedirs(self.dirname())
 		except:
 			pass
 
@@ -487,7 +487,10 @@ class SideBarItem:
 
 	def write(self, content):
 		open(self.path(), 'w+', encoding='utf8', newline='').write(str(content))
-		os.chmod(self.path(), 0o644)
+		oldmask = os.umask(0o000)
+		if oldmask == 0:
+			os.chmod(self.path(), 0o644)
+		os.umask(oldmask)
 
 	def mime(self):
 		import mimetypes
@@ -514,10 +517,18 @@ class SideBarItem:
 	def create(self):
 		if self.isDirectory():
 			self.dirnameCreate()
-			os.makedirs(self.path(), 0o755)
+			self._makedirs(self.path())
 		else:
 			self.dirnameCreate()
 			self.write('')
+
+	def _makedirs(self, path):
+		oldmask = os.umask(0o000)
+		if oldmask == 0:
+			os.makedirs(path, 0o755);
+		else:
+			os.makedirs(path);
+		os.umask(oldmask)
 
 	def copy(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
@@ -540,7 +551,7 @@ class SideBarItem:
 
 		if os.path.isfile(_from) or os.path.islink(_from):
 			try:
-				os.makedirs(os.path.dirname(_to), 0o755);
+				self._makedirs(os.path.dirname(_to));
 			except:
 				pass
 			if os.path.exists(_to):
@@ -548,7 +559,7 @@ class SideBarItem:
 			shutil.copy2(_from, _to)
 		else:
 			try:
-				os.makedirs(_to, 0o755);
+				self._makedirs(_to);
 			except:
 				pass
 			for content in os.listdir(_from):
@@ -583,7 +594,7 @@ class SideBarItem:
 	def moveRecursive(self, _from, _to):
 		if os.path.isfile(_from) or os.path.islink(_from):
 			try:
-				os.makedirs(os.path.dirname(_to), 0o755);
+				self._makedirs(os.path.dirname(_to));
 			except:
 				pass
 			if os.path.exists(_to):
@@ -591,7 +602,7 @@ class SideBarItem:
 			os.rename(_from, _to)
 		else:
 			try:
-				os.makedirs(_to, 0o755);
+				self._makedirs(_to);
 			except:
 				pass
 			for content in os.listdir(_from):
