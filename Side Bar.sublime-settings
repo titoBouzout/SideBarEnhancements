@@ -31,6 +31,8 @@
 
 	"disable_send_to_trash": false,
 
-	"use_powershell": true
+	"use_powershell": true,
+
+	"auto_close_empty_groups": false
 
 }

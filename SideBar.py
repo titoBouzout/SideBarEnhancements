@@ -1904,3 +1904,26 @@ class SideBarDefaultNewFolder(sublime_plugin.EventListener):
 		paths = SideBarProject().getDirectories()
 		if paths:
 			view.settings().set('default_dir', paths[0])
+
+
+class SideBarAutoCloseEmptyGroupsCommand(sublime_plugin.EventListener):
+	def on_close(self, view):
+		if s.get('auto_close_empty_groups', False):
+			sublime.set_timeout(self.run, 250);
+
+	def run(self):
+		window = Window()
+		if window.num_groups() > 1:
+			to_close = []
+			for i in range(1, window.num_groups()):
+				if len(window.views_in_group(i)) < 1:
+					to_close.append(i)
+			to_close.reverse()
+			for item in to_close:
+				window.focus_group(item)
+				window.run_command('close_pane')
+			if len(to_close) > 0:
+				window.focus_group(0)
+				window.run_command('close_file')
+
+
