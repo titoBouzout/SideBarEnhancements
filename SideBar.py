@@ -142,6 +142,22 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_edit', False)
 
+class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+
+		window = Window()
+		window.run_command('set_layout', {"cols": [0.0, 0.5, 1.0], "rows": [0.0, 1.0], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]})
+		window.focus_group(1)
+		for item in SideBarSelection(paths).getSelectedFiles():
+			view = item.edit()
+			window.set_view_index(view, 1, 0)
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).hasFiles()
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_edit', False) and not s.get('disabled_menuitem_edit_to_right', False)
+
 class SideBarOpenCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		for item in SideBarSelection(paths).getSelectedItems():

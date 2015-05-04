@@ -13,6 +13,7 @@
 	"new_files_relative_to_project_root": false,
 
 	"disabled_menuitem_edit": false,
+	"disabled_menuitem_edit_to_right": false,
 	"disabled_menuitem_open_run": false,
 	"disabled_menuitem_open_in_browser": false,
 	"disabled_menuitem_open_in_new_window": false,
