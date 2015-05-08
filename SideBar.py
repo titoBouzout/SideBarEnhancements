@@ -19,6 +19,9 @@ global Pref, s
 Pref = {}
 s = {}
 
+def escapeCMDWindows(string):
+	return string.replace('^', '^^')
+
 class Pref():
 	def load(self):
 		pass
@@ -264,9 +267,9 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 				if sublime.platform() == 'osx':
 					subprocess.Popen(['open', '-a', application] + args + [item.name()], cwd=item.dirname())
 				elif sublime.platform() == 'windows':
-					subprocess.Popen([application_name] + args + [item.path()], cwd=expandVars(application_dir), shell=True)
+					subprocess.Popen([application_name] + args + [escapeCMDWindows(item.path())], cwd=expandVars(application_dir), shell=True)
 				else:
-					subprocess.Popen([application_name] + args + [item.name()], cwd=item.dirname())
+					subprocess.Popen([application_name] + args + [escapeCMDWindows(item.name())], cwd=item.dirname())
 		except:
 			sublime.error_message('Unable to "Open With..", probably incorrect path to application.')
 

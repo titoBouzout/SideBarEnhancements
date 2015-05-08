@@ -12,6 +12,9 @@ def expandVars(path):
 		path = path.replace('%'+k+'%', v).replace('%'+k.lower()+'%', v)
 	return path
 
+def escapeCMDWindows(string):
+	return string.replace('^', '^^')
+
 BINARY = re.compile('\.(psd|ai|cdr|ico|cache|sublime-package|eot|svgz|ttf|woff|zip|tar|gz|rar|bz2|jar|xpi|mov|mpeg|avi|mpg|flv|wmv|mp3|wav|aif|aiff|snd|wma|asf|asx|pcm|pdf|doc|docx|xls|xlsx|ppt|pptx|rtf|sqlite|sqlitedb|fla|swf|exe)$', re.I)
 
 class SideBarSelection:
@@ -444,7 +447,7 @@ class SideBarItem:
 				subprocess.Popen(['open', self.name()], cwd=self.dirname())
 			elif sublime.platform() == 'windows':
 				import subprocess
-				subprocess.Popen(['start',  '', self.path()], cwd=self.dirname(), shell=True)
+				subprocess.Popen(['start',  '', escapeCMDWindows(self.path())], cwd=self.dirname(), shell=True)
 			else:
 				from . import desktop
 				desktop.open(self.path())
@@ -479,9 +482,9 @@ class SideBarItem:
 		if sublime.platform() == 'windows':
 			import subprocess
 			if self.isDirectory():
-				subprocess.Popen(["explorer", self.path()])
+				subprocess.Popen(["explorer", escapeCMDWindows(self.path())])
 			else:
-				subprocess.Popen(["explorer", '/select,', self.path()])
+				subprocess.Popen(["explorer", '/select,', escapeCMDWindows(self.path())])
 		else:
 			sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
 
