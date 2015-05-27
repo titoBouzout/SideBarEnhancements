@@ -489,7 +489,8 @@ class SideBarItem:
 			sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
 
 	def write(self, content):
-		open(self.path(), 'w+', encoding='utf8', newline='').write(str(content))
+		with open(self.path(), 'w+', encoding='utf8', newline='') as f:
+			f.write(str(content))
 
 		if 3000 <= int(sublime.version()) < 3088:
 			# Fixes as best as possible a new file permissions issue
