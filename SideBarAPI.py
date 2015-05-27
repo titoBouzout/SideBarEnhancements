@@ -491,7 +491,7 @@ class SideBarItem:
 	def write(self, content):
 		open(self.path(), 'w+', encoding='utf8', newline='').write(str(content))
 
-		if int(sublime.version()) < 3088 and int(sublime.version()) >= 3000:
+		if 3000 <= int(sublime.version()) < 3088:
 			# Fixes as best as possible a new file permissions issue
 			# See https://github.com/titoBouzout/SideBarEnhancements/issues/203
 			# See https://github.com/SublimeTextIssues/Core/issues/239
@@ -531,7 +531,7 @@ class SideBarItem:
 			self.write('')
 
 	def _makedirs(self, path):
-		if int(sublime.version()) < 3088 and int(sublime.version()) >= 3000:
+		if 3000 <= int(sublime.version()) < 3088:
 			# Fixes as best as possible a new directory permissions issue
 			# See https://github.com/titoBouzout/SideBarEnhancements/issues/203
 			# See https://github.com/SublimeTextIssues/Core/issues/239
