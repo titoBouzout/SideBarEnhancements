@@ -489,11 +489,17 @@ class SideBarItem:
 			sublime.active_window().run_command("open_dir", {"dir": self.dirname(), "file": self.name()} )
 
 	def write(self, content):
-		open(self.path(), 'w+', encoding='utf8', newline='').write(str(content))
-		oldmask = os.umask(0o000)
-		if oldmask == 0:
-			os.chmod(self.path(), 0o644)
-		os.umask(oldmask)
+		with open(self.path(), 'w+', encoding='utf8', newline='') as f:
+			f.write(str(content))
+
+		if 3000 <= int(sublime.version()) < 3088:
+			# Fixes as best as possible a new file permissions issue
+			# See https://github.com/titoBouzout/SideBarEnhancements/issues/203
+			# See https://github.com/SublimeTextIssues/Core/issues/239
+			oldmask = os.umask(0o000)
+			if oldmask == 0:
+				os.chmod(self.path(), 0o644)
+			os.umask(oldmask)
 
 	def mime(self):
 		import mimetypes
@@ -526,12 +532,18 @@ class SideBarItem:
 			self.write('')
 
 	def _makedirs(self, path):
-		oldmask = os.umask(0o000)
-		if oldmask == 0:
-			os.makedirs(path, 0o755);
+		if 3000 <= int(sublime.version()) < 3088:
+			# Fixes as best as possible a new directory permissions issue
+			# See https://github.com/titoBouzout/SideBarEnhancements/issues/203
+			# See https://github.com/SublimeTextIssues/Core/issues/239
+			oldmask = os.umask(0o000)
+			if oldmask == 0:
+				os.makedirs(path, 0o755);
+			else:
+				os.makedirs(path);
+			os.umask(oldmask)
 		else:
-			os.makedirs(path);
-		os.umask(oldmask)
+			os.makedirs(path)
 
 	def copy(self, location, replace = False):
 		location = SideBarItem(location, os.path.isdir(location));
