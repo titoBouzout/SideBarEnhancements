@@ -8,6 +8,14 @@
         "command": "side_bar_new_file2"
     },
     {
+        "caption": "File: New Folder Relative to Current View",
+        "command": "side_bar_new_directory"
+    },
+    {
+        "caption": "File: New Folder Relative to Project Root",
+        "command": "side_bar_new_directory2"
+    },
+    {
         "caption": "File: Rename",
         "command": "side_bar_rename"
     },

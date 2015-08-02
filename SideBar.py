@@ -110,14 +110,29 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 						return
 			SideBarProject().refresh();
 
+class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
+	def run(self, paths = [], name = ""):
+		import functools
+		Window().run_command('hide_panel');
+		Window().show_input_panel("Folder Name:", name, functools.partial(SideBarNewDirectoryCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
+
 class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
 		Window().run_command('hide_panel');
-		Window().show_input_panel("Folder Name:", name, functools.partial(self.on_done, paths), None, None)
+		Window().show_input_panel("Folder Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
-	def on_done(self, paths, name):
-		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+	def on_done(self, paths, relative_to_project, name):
+		if relative_to_project or s.get('new_folders_relative_to_project_root', False):
+			paths = SideBarProject().getDirectories()
+			if paths:
+				paths = [SideBarItem(paths[0], True)]
+			if not paths:
+				paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+		else:
+			paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+
+		for item in paths:
 			item = SideBarItem(item.join(name), True)
 			if item.exists():
 				sublime.error_message("Unable to create folder, folder or file exists.")
