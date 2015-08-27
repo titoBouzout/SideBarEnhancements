@@ -6,6 +6,15 @@
     },
     { "caption" : "-" },
     {
+        "caption": "File: Rename",
+        "command": "side_bar_rename"
+    },
+    {
+        "caption": "File: Duplicate",
+        "command": "side_bar_duplicate"
+    },
+    { "caption" : "-" },
+    {
         "caption": "File: Copy Name",
         "command": "side_bar_copy_name"
     },
