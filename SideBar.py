@@ -1298,7 +1298,8 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 					send2trash(item.path())
 			SideBarProject().refresh();
 		except:
-			if sublime.ok_cancel_dialog('There is no trash bin, permanently delete?', 'Yes, Permanent Deletion'):
+			should_confirm = s.get('confirm_before_permanently_deleting', True)
+			if not should_confirm or sublime.ok_cancel_dialog('There is no trash bin, permanently delete?', 'Yes, Permanent Deletion'):
 				for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 					if s.get('close_affected_buffers_when_deleting_even_if_dirty', False):
 						item.closeViews()
