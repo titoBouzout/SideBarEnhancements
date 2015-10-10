@@ -5,6 +5,8 @@ import os, shutil
 import threading, time
 import re
 
+import locale
+
 from .edit.Edit import Edit as Edit
 from .hurry.filesize import size as hurry_size
 
@@ -1889,6 +1891,7 @@ class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
 	def on_activated(self, v):
 		if v.file_name() and s.get('statusbar_modified_time', False):
 			try:
+				locale.setlocale(locale.LC_TIME, s.get('statusbar_modified_time_locale', 'C'))
 				self.show(v, os.path.getmtime(v.file_name()))
 			except:
 				pass

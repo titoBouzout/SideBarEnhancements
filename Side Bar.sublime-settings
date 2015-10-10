@@ -1,6 +1,7 @@
 {
 	"statusbar_modified_time": false,
 	"statusbar_modified_time_format": "%A %b %d %H:%M:%S %Y",
+	"statusbar_modified_time": "C",
 
 	"statusbar_file_size": false,
 
