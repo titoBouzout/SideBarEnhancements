@@ -6,7 +6,7 @@
 
 ### In other languages
 
-Japanese - <http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1>  
+Japanese - <http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1>
 Russian - <https://www.youtube.com/watch?v=8I0dJTd58kI&feature=youtu.be&a>
 
 ## Description
@@ -217,12 +217,17 @@ Q: Can the package stop "show preview in a **right** click to a file".
 -   Todd Wolfson
 -   Tyler Thrailkill
 -   Yaroslav Admin
+-   Aleksandar Urosevic
 
 ## TODO
 
 <https://github.com/titoBouzout/SideBarEnhancements/issues/223>
 
 ## Change Log
+
+Update 2.151010
+
+-   add option "statusbar_modified_time_locale" to avoid broken locales on Windows
 
 Update 2.010905
 
