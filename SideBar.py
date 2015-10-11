@@ -5,8 +5,6 @@ import os, shutil
 import threading, time
 import re
 
-import locale
-
 from .edit.Edit import Edit as Edit
 from .hurry.filesize import size as hurry_size
 
@@ -1891,7 +1889,6 @@ class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
 	def on_activated(self, v):
 		if v.file_name() and s.get('statusbar_modified_time', False):
 			try:
-				locale.setlocale(locale.LC_TIME, s.get('statusbar_modified_time_locale', 'C'))
 				self.show(v, os.path.getmtime(v.file_name()))
 			except:
 				pass
@@ -1904,7 +1901,10 @@ class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
 				pass
 
 	def show(self, v, mtime):
-		v.set_status('statusbar_modified_time',  time.strftime(s.get('statusbar_modified_time_format', '%A %b %d %H:%M:%S %Y'), time.localtime(mtime)));
+		modified_time = time.strftime(s.get('statusbar_modified_time_format', '%A %b %d %H:%M:%S %Y'), time.localtime(mtime))
+		if s.get('statusbar_modified_time_locale', '') != '':
+			modified_time = modified_time.decode(s.get('statusbar_modified_time_locale', ''))
+		v.set_status('statusbar_modified_time', modified_time);
 
 class SideBarDefaultNewFolder(sublime_plugin.EventListener):
 	def on_new(self, view):
