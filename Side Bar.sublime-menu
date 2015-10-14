@@ -235,6 +235,14 @@
 		}
 	},
 	{
+		"caption": "Copy Path (Windows)",
+		"id": "side-bar-clip-copy-path-windows",
+		"command": "side_bar_copy_path_absolute_from_project_encoded_windows",
+		"args": {
+			"paths": []
+		}
+	},
+	{
 		"caption": "Copy Dir Path",
 		"id": "side-bar-clip-copy-dir-path",
 		"command": "side_bar_copy_dir_path",

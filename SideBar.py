@@ -854,6 +854,25 @@ class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowComm
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_copy_path', False)
 
+class SideBarCopyPathAbsoluteFromProjectEncodedWindowsCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		items = []
+		for item in SideBarSelection(paths).getSelectedItems():
+			items.append(item.pathAbsoluteFromProjectEncoded())
+
+		if len(items) > 0:
+			sublime.set_clipboard(("\n".join(items)).replace('/', '\\'));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
+
+	def is_enabled(self, paths = []):
+		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+
+	def is_visible(self, paths =[]):
+		return not s.get('disabled_menuitem_copy_path_windows', True)
+
 class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []

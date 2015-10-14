@@ -23,6 +23,7 @@
 	"disabled_menuitem_find_in_project": false,
 	"disabled_menuitem_copy_name": false,
 	"disabled_menuitem_copy_path": false,
+	"disabled_menuitem_copy_path_windows": true,
 	"disabled_menuitem_copy_dir_path": true,
 	"disabled_menuitem_paste_in_parent": false,
 	"disabled_menuitem_empty": true,
