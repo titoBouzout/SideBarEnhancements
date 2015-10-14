@@ -1597,14 +1597,22 @@ class SideBarProjectItemExcludeFromIndexCommand(sublime_plugin.WindowCommand):
 class SideBarDonateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		sublime.message_dialog('SideBarEnhancements: Thanks for your support ^_^')
-		browser = s.get("default_browser", "")
+		browser = s.get('default_browser', '')
 		SideBarOpenInBrowserThread('','','').try_open("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&item_number=SideBarEnhancements&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted", browser)
+
+class SideBarOpenBrowsersCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		browsers = s.get('open_all_browsers', [])
+		if browsers:
+			window =  Window()
+			for browser in browsers:
+				window.run_command("side_bar_open_in_browser", {'paths':paths, 'type':'testing', 'browser':browser})
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = False, browser = ""):
 
 		if not browser:
-			browser = s.get("default_browser", "")
+			browser = s.get('default_browser', '')
 
 		if type == False or type == 'testing':
 			type = 'url_testing'
@@ -1778,23 +1786,6 @@ class SideBarOpenInBrowserThread(threading.Thread):
 					,'firefox.exe'
 				])
 				commands = ['-new-tab', url]
-		elif browser == 'aurora':
-			if sublime.platform() == 'osx':
-				items.extend(['open'])
-				commands = ['-a', '/Applications/FirefoxAurora.app', url]
-			else:
-				if s.get('portable_browser', '') != '':
-					items.extend([s.get('portable_browser', '')])
-				items.extend([
-					'/usr/bin/aurora'
-
-					,'%PROGRAMFILES%\\Aurora\\firefox.exe'
-					,'%PROGRAMFILES(X86)%\\Aurora\\firefox.exe'
-
-					,'firefox'
-					,'firefox.exe'
-				])
-				commands = ['-new-tab', url]
 		elif browser == 'opera':
 			if sublime.platform() == 'osx':
 				items.extend(['open'])
@@ -1810,6 +1801,9 @@ class SideBarOpenInBrowserThread(threading.Thread):
 					,'%PROGRAMFILES%\\Opera\\opera.exe'
 					,'%PROGRAMFILES(X86)%\\Opera\\opera.exe'
 
+					,'%PROGRAMFILES%\\Opera\\launcher.exe'
+					,'%PROGRAMFILES(X86)%\\Opera\\launcher.exe'
+
 					,'%PROGRAMFILES%\\Opera Next\\opera.exe'
 					,'%PROGRAMFILES(X86)%\\Opera Next\\opera.exe'
 
@@ -1820,6 +1814,17 @@ class SideBarOpenInBrowserThread(threading.Thread):
 					,'opera.exe'
 				])
 				commands = ['-newtab', url]
+		elif browser == 'ie':
+			if s.get('portable_browser', '') != '':
+				items.extend([s.get('portable_browser', '')])
+			items.extend([
+				'%PROGRAMFILES%\\Internet Explorer\\iexplore.exe'
+				,'%PROGRAMFILES(X86)%\\Internet Explorer\\iexplore.exe'
+
+				,'iexplore'
+				,'iexplore.exe'
+			])
+			commands = ['-newtab', url]
 		elif browser == 'safari':
 			if sublime.platform() == 'osx':
 				items.extend(['open'])

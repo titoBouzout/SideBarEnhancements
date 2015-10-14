@@ -51,10 +51,97 @@
 	{
 		"caption": "Open In Browser",
 		"id": "side-bar-open-in-browser",
-		"command": "side_bar_open_in_browser",
-		"args": {
-			"paths": []
-		}
+		"children": [
+			{
+				"caption": "Default",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": []
+				}
+			},
+			{
+				"caption": "-"
+			},
+			{
+				"caption": "Firefox",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "firefox"
+				}
+			},
+			{
+				"caption": "-"
+			},
+			{
+				"caption": "Chromium",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "chromium"
+				}
+			},
+			{
+				"caption": "Chrome",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "chrome"
+				}
+			},
+			{
+				"caption": "Canary",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "canary"
+				}
+			},
+			{
+				"caption": "-"
+			},
+			{
+				"caption": "Opera",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "opera"
+				}
+			},
+			{
+				"caption": "Safari",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "safari"
+				}
+			},
+			{
+				"caption": "-"
+			},
+			{
+				"caption": "Internet Explorer",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "ie"
+				}
+			},
+			{
+				"caption": "-"
+			},
+			{
+				"caption": "Open In All Browsers",
+				"command": "side_bar_open_browsers"
+			}
+		]
 	},
 	{
 		"caption": "Open In New Window",

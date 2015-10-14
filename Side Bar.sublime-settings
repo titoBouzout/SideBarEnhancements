@@ -30,7 +30,8 @@
 	"disabled_menuitem_empty": true,
 
 	//if installed in a default location maybe this works.
-	"default_browser": "", //one of this list: firefox, aurora, chrome, canary, chromium, opera, safari
+	"default_browser": "", //one of this list: firefox, chrome, canary, chromium, opera, safari, ie
+	"open_all_browsers": ["firefox", "chrome", "opera", "safari", "ie"], //one of this list: firefox, chrome, canary, chromium, opera, safari, ie
 
 	"portable_browser": "", // for example:  C:/Program Files (x86)/Nightly/firefox.exe
 
