@@ -1765,6 +1765,9 @@ class SideBarOpenInBrowserThread(threading.Thread):
 				items.extend([
 					'/usr/bin/firefox'
 
+					,'%PROGRAMFILES%\\Firefox Developer Edition\\firefox.exe'
+					,'%PROGRAMFILES(X86)%\\Firefox Developer Edition\\firefox.exe'
+
 					,'%PROGRAMFILES%\\Nightly\\firefox.exe'
 					,'%PROGRAMFILES(X86)%\\Nightly\\firefox.exe'
 
