@@ -218,6 +218,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
 -   Tyler Thrailkill
 -   Yaroslav Admin
 -   Aleksandar Urosevic
+-   MauriceZ
 
 ## TODO
 
