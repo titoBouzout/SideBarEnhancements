@@ -1,5 +1,9 @@
 [
 	{
+		"caption": "aaaaa_side_bar",
+		"command": "aaaaa_side_bar"
+    },
+	{
 		"caption": "File: New File Relative to Current View",
 		"command": "side_bar_new_file"
     },
@@ -110,5 +114,9 @@
 	{
 		"caption": "Side Bar: Refresh",
 		"command": "refresh_folder_list"
-    }
+    },
+    {
+		"caption": "zzzzz_side_bar",
+		"command": "zzzzz_side_bar"
+    },
 ]

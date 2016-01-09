@@ -1,5 +1,13 @@
 [
 	{
+		"caption": "aaaaa_side_bar",
+		"id": "aaaaa_side_bar",
+		"command": "aaaaa_side_bar",
+		"args": {
+			"paths": []
+		}
+	},
+	{
 		"caption": "-",
 		"id": "side-bar-start-separator"
 	},
@@ -718,5 +726,13 @@
 	{
 		"caption": "-",
 		"id": "side-bar-end-separator"
-	}
+	},
+	{
+		"caption": "zzzzz_side_bar",
+		"id": "zzzzz_side_bar",
+		"command": "zzzzz_side_bar",
+		"args": {
+			"paths": []
+		}
+	},
 ]
