@@ -19,6 +19,8 @@ global Pref, s
 Pref = {}
 s = {}
 
+CACHED_SELECTION = []
+
 def escapeCMDWindows(string):
 	return string.replace('^', '^^')
 
@@ -66,12 +68,6 @@ class OpenWithListener(sublime_plugin.EventListener):
 					except:
 						pass
 
-class SideBarNewFile2Command(sublime_plugin.WindowCommand):
-	def run(self, paths = [], name = ""):
-		import functools
-		Window().run_command('hide_panel');
-		Window().show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
-
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
@@ -110,6 +106,17 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 						return
 			SideBarProject().refresh();
 
+	def is_visible(self, paths = []): # <- WORKS AS AN ONPOPUPSHOWING
+		global CACHED_SELECTION
+		CACHED_SELECTION = SideBarSelection(paths)
+		return True
+
+class SideBarNewFile2Command(sublime_plugin.WindowCommand):
+	def run(self, paths = [], name = ""):
+		import functools
+		Window().run_command('hide_panel');
+		Window().show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
+
 class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
@@ -147,7 +154,7 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 		SideBarProject().refresh();
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarEditCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -155,7 +162,7 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 			item.edit()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
+		return CACHED_SELECTION.hasFiles()
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_edit', False)
@@ -171,7 +178,7 @@ class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
 			window.set_view_index(view, 1, 0)
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
+		return CACHED_SELECTION.hasFiles()
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_edit', False) and not s.get('disabled_menuitem_edit_to_right', False)
@@ -182,7 +189,7 @@ class SideBarOpenCommand(sublime_plugin.WindowCommand):
 			item.open(s.get('use_powershell', True))
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_run', False)
@@ -294,9 +301,9 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
-			return SideBarSelection(paths).len() > 0
+			return CACHED_SELECTION.len() > 0
 		else:
-			return SideBarSelection(paths).hasFilesWithExtension(extensions)
+			return CACHED_SELECTION.hasFilesWithExtension(extensions)
 
 	def is_visible(self, paths = [], application = "", extensions = ""):
 		self.is_visible(self, paths = [], application = "", extensions = "", args=[])
@@ -304,9 +311,9 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		if extensions == '*':
 			extensions = '.*'
 		if extensions == '':
-			return SideBarSelection(paths).len() > 0
+			return CACHED_SELECTION.len() > 0
 		else:
-			has = SideBarSelection(paths).hasFilesWithExtension(extensions)
+			has = CACHED_SELECTION.hasFilesWithExtension(extensions)
 			return has or (not has and not s.get("hide_open_with_entries_when_there_are_no_applicable", False))
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
@@ -325,7 +332,7 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 		Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -337,7 +344,7 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 		Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def run(self):
@@ -372,11 +379,11 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
+		return CACHED_SELECTION.hasFiles()
 
 	def description(self, paths = []):
 		items = []
-		for item in SideBarSelection(paths).getSelectedFiles():
+		for item in CACHED_SELECTION.getSelectedFiles():
 			items.append('*'+item.extension())
 		items = list(set(items))
 		if len(items) > 1:
@@ -534,7 +541,7 @@ class SideBarCutCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item cut")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarCopyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -552,7 +559,7 @@ class SideBarCopyCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarPasteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], in_parent = 'False', test = 'True', replace = 'False'):
@@ -561,7 +568,7 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths = [], in_parent = False):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
-		return (s.get('cut', '') + s.get('copy', '')) != '' and len(SideBarSelection(paths).getSelectedDirectoriesOrDirnames()) == 1
+		return (s.get('cut', '') + s.get('copy', '')) != '' and len(CACHED_SELECTION.getSelectedDirectoriesOrDirnames()) == 1
 
 	def is_visible(self, paths = [], in_parent = False):
 		if in_parent == 'True':
@@ -698,7 +705,7 @@ class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_copy_name', False)
@@ -717,7 +724,7 @@ class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -733,7 +740,7 @@ class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarCopyDirPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -749,7 +756,7 @@ class SideBarCopyDirPathCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_copy_dir_path', False)
@@ -768,7 +775,7 @@ class SideBarCopyPathEncodedCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -784,7 +791,7 @@ class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -800,7 +807,7 @@ class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowComm
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -816,7 +823,7 @@ class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -832,7 +839,7 @@ class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -848,7 +855,7 @@ class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -864,7 +871,7 @@ class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowComm
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasItemsUnderProject()
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_copy_path', False)
@@ -883,7 +890,7 @@ class SideBarCopyPathAbsoluteFromProjectEncodedWindowsCommand(sublime_plugin.Win
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasItemsUnderProject()
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_copy_path_windows', True)
@@ -902,7 +909,7 @@ class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 
@@ -962,7 +969,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
 		return None, width, height
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasImages() and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.hasImages() and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyTagStyleCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -978,7 +985,7 @@ class SideBarCopyTagStyleCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFilesWithExtension('css') and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.hasFilesWithExtension('css') and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyTagScriptCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -994,7 +1001,7 @@ class SideBarCopyTagScriptCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFilesWithExtension('js') and SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.hasFilesWithExtension('js') and CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyProjectDirectoriesCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1026,7 +1033,7 @@ class SideBarCopyContentUtf8Command(sublime_plugin.WindowCommand):
 				sublime.status_message("Item content copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
+		return CACHED_SELECTION.hasFiles()
 
 class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1042,7 +1049,7 @@ class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
 				sublime.status_message("Item content copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasFiles()
+		return CACHED_SELECTION.hasFiles()
 
 class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1060,7 +1067,7 @@ class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item URL copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarCopyUrlDecodedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1083,7 +1090,7 @@ class SideBarCopyUrlDecodedCommand(sublime_plugin.WindowCommand):
 				sublime.status_message("Item URL copied")
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasItemsUnderProject()
+		return CACHED_SELECTION.hasItemsUnderProject()
 
 class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
@@ -1098,7 +1105,7 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 		SideBarDuplicateThread(old, new, key).start()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.len() == 1 and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarDuplicateThread(threading.Thread):
 	def __init__(self, old, new, key):
@@ -1147,7 +1154,7 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 		SideBarRenameThread(old, branch, leaf, key).start()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.len() == 1 and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarRenameThread(threading.Thread):
 	def __init__(self, old, branch, leaf, key):
@@ -1202,7 +1209,7 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 		SideBarMassRenameThread(paths, find, replace, key).start()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarMassRenameThread(threading.Thread):
 	def __init__(self, paths, find, replace, key):
@@ -1262,7 +1269,7 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
 		SideBarMoveThread(old, new, key).start()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() == 1 and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.len() == 1 and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarMoveThread(threading.Thread):
 	def __init__(self, old, new, key):
@@ -1430,7 +1437,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 						shutil.rmtree(path)
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
@@ -1474,7 +1481,7 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 				self.run(paths, 'True')
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_empty', True)
@@ -1513,7 +1520,7 @@ class SideBarRevealCommand(sublime_plugin.WindowCommand):
 			item.reveal()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -1537,14 +1544,14 @@ class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 			project.add(item.path())
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).hasDirectories() and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.hasDirectories() and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		Window().run_command('remove_folder', {"dirs":paths})
 
 	def is_enabled(self, paths =[]):
-		selection = SideBarSelection(paths)
+		selection = CACHED_SELECTION
 		project = SideBarProject()
 		return project.hasDirectories() and all([item.path() in project.getDirectories() or not item.exists() for item in selection.getSelectedItems()])
 
@@ -1558,38 +1565,38 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 				project.excludeFile(item.path(), item.pathRelativeFromProject())
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0 and SideBarSelection(paths).hasProjectDirectories() == False
+		return CACHED_SELECTION.len() > 0 and CACHED_SELECTION.hasProjectDirectories() == False
 
 class SideBarProjectItemExcludeFromIndexCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = 'item'):
 		Preferences = sublime.load_settings("Preferences.sublime-settings")
 		excluded = Preferences.get("index_exclude_patterns", [])
-		for item in self.items(paths, type):
+		for item in self.items(paths, type, SideBarSelection(paths)):
 			excluded.append(item)
 		excluded = list(set(excluded))
 		Preferences.set("index_exclude_patterns", excluded);
 		sublime.save_settings("Preferences.sublime-settings");
 
 	def is_visible(self, paths = [], type = 'item'):
-		return len(self.items(paths, type)) > 0
+		return len(self.items(paths, type, CACHED_SELECTION)) > 0
 
 	def description(self, paths = [], type = 'item'):
-		items = self.items(paths, type)
+		items = self.items(paths, type, CACHED_SELECTION)
 		return 'Exclude From the Index "'+(",".join(items))+'"'
 
-	def items(self, paths = [], type = 'item'):
+	def items(self, paths = [], type = 'item', object = None):
 		items = []
 		if type == 'item':
-			for item in SideBarSelection(paths).getSelectedItems():
+			for item in object.getSelectedItems():
 				if item.isDirectory():
 					items.append(item.path()+'*')
 				else:
 					items.append(item.path())
 		elif type == 'extension':
-			for item in SideBarSelection(paths).getSelectedFiles():
+			for item in object.getSelectedFiles():
 				items.append('*'+item.extension())
 		elif type == 'file':
-			for item in SideBarSelection(paths).getSelectedFiles():
+			for item in object.getSelectedFiles():
 				items.append(item.name())
 		items = list(set(items))
 		return items
@@ -1624,7 +1631,7 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 		SideBarOpenInBrowserThread(paths, type, browser).start()
 
 	def is_enabled(self, paths = []):
-		return SideBarSelection(paths).len() > 0
+		return CACHED_SELECTION.len() > 0
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_in_browser', False)
