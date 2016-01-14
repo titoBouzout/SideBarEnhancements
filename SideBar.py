@@ -1993,7 +1993,7 @@ class SideBarDonateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		sublime.message_dialog('SideBarEnhancements: Thanks for your support ^_^')
 		browser = s.get('default_browser', '')
-		SideBarOpenInBrowserThread('','','').try_open("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YNNRSS2UJ8P88&lc=UY&item_name=Support%20%20SideBarEnhancements%20Developer&item_number=SideBarEnhancements&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted", browser)
+		SideBarOpenInBrowserThread('','','').try_open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TS3PCN4BHH244", browser)
 
 class zzzzzSideBarCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
