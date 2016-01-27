@@ -1583,11 +1583,16 @@ class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
 class SideBarProjectItemExcludeFromIndexCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], type = 'item'):
 		Preferences = sublime.load_settings("Preferences.sublime-settings")
-		excluded = Preferences.get("index_exclude_patterns", [])
+		excluded = Preferences.get("binary_file_patterns", [])
 		for item in self.items(paths, type, SideBarSelection(paths)):
 			excluded.append(item)
+		for k, v in enumerate(excluded):
+			excluded[k] = excluded[k].replace('\\', '/')
+			excluded[k] = re.sub('([a-z])\:/', '/\\1/', excluded[k], 0, re.I)
+			excluded[k] = re.sub('/$', '/**', excluded[k])
 		excluded = list(set(excluded))
-		Preferences.set("index_exclude_patterns", excluded);
+		excluded = sorted(excluded)
+		Preferences.set("binary_file_patterns", excluded);
 		sublime.save_settings("Preferences.sublime-settings");
 
 	def is_visible(self, paths = [], type = 'item'):
@@ -1595,22 +1600,31 @@ class SideBarProjectItemExcludeFromIndexCommand(sublime_plugin.WindowCommand):
 
 	def description(self, paths = [], type = 'item'):
 		items = self.items(paths, type, CACHED_SELECTION(paths))
-		return 'Exclude From the Index "'+(",".join(items))+'"'
+		return 'Exclude From Index (mark as binary) "'+(",".join(items))+'"'
 
 	def items(self, paths = [], type = 'item', object = None):
 		items = []
 		if type == 'item':
 			for item in object.getSelectedItems():
 				if item.isDirectory():
-					items.append(item.path()+'*')
+					items.append(re.sub('([a-z])\:/', '/\\1/', (item.path().replace('\\', '/')+'/**'), 0, re.I))
 				else:
-					items.append(item.path())
+					items.append(re.sub('([a-z])\:/', '/\\1/', (item.path().replace('\\', '/')), 0, re.I))
+		elif type == 'relative':
+			for item in object.getSelectedItems():
+				if item.isDirectory():
+					items.append(item.pathRelativeFromProject().replace('\\', '/')+'/**')
+				else:
+					items.append(item.pathRelativeFromProject().replace('\\', '/'))
 		elif type == 'extension':
 			for item in object.getSelectedFiles():
 				items.append('*'+item.extension())
 		elif type == 'file':
 			for item in object.getSelectedFiles():
 				items.append(item.name())
+		elif type == 'directory':
+			for item in object.getSelectedDirectories():
+				items.append(item.name() +'/**')
 		items = list(set(items))
 		return items
 

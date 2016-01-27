@@ -662,7 +662,7 @@
 				}
 			},
 			{
-				"caption": "Exclude From Project",
+				"caption": "Hide From Sidebar (In theory exclude from project)",
 				"id": "side-bar-project-item-exclude",
 				"command": "side_bar_project_item_exclude",
 				"args": {
@@ -679,6 +679,22 @@
 				"args": {
 					"paths": [],
 					"type": "item"
+				}
+			},
+			{
+				"id": "side-bar-project-item-exclude-from-index-relative",
+				"command": "side_bar_project_item_exclude_from_index",
+				"args": {
+					"paths": [],
+					"type": "relative"
+				}
+			},
+			{
+				"id": "side-bar-project-item-exclude-from-index-directory",
+				"command": "side_bar_project_item_exclude_from_index",
+				"args": {
+					"paths": [],
+					"type": "directory"
 				}
 			},
 			{
