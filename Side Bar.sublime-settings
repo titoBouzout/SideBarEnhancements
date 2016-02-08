@@ -31,7 +31,7 @@
 
 	//if installed in a default location maybe this works.
 	"default_browser": "", //one of this list: firefox, chrome, canary, chromium, opera, safari, ie
-	"open_all_browsers": ["firefox", "chrome", "opera", "safari", "ie"], //any of this list: firefox, chrome, canary, chromium, opera, safari, ie
+	"open_all_browsers": ["firefox", "chrome", "opera", "safari", "ie", "edge"], //any of this list: firefox, chrome, canary, chromium, opera, safari, ie, edge
 
 	"portable_browser": "", // for example:  C:/Program Files (x86)/Nightly/firefox.exe
 

@@ -143,6 +143,15 @@
 				}
 			},
 			{
+				"caption": "Edge",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "edge"
+				}
+			},
+			{
 				"caption": "-"
 			},
 			{

@@ -1853,6 +1853,11 @@ class SideBarOpenInBrowserThread(threading.Thread):
 				,'iexplore.exe'
 			])
 			commands = ['-newtab', url]
+		elif browser == 'edge':
+			if s.get('portable_browser', '') != '':
+				items.extend([s.get('portable_browser', '')])
+			items.extend(['open'])
+			commands = ['-newtab', url]
 		elif browser == 'safari':
 			if sublime.platform() == 'osx':
 				items.extend(['open'])
@@ -1891,7 +1896,7 @@ class SideBarOpenInBrowserThread(threading.Thread):
 					pass
 		try:
 			if sublime.platform() == 'windows':
-				commands = ['cmd','/c','start', '', url]
+				commands = ['cmd','/c','start', 'microsoft-edge:' + url]
 				subprocess.Popen(commands)
 			elif sublime.platform() == 'linux':
 				commands = ['xdg-open', url]
