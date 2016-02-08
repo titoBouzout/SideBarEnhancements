@@ -1896,7 +1896,10 @@ class SideBarOpenInBrowserThread(threading.Thread):
 					pass
 		try:
 			if sublime.platform() == 'windows':
-				commands = ['cmd','/c','start', 'microsoft-edge:' + url]
+				if browser and browser == 'edge':
+					commands = ['cmd','/c','start', 'microsoft-edge:' + url]
+				else:
+					commands = ['cmd','/c','start', '', url]
 				subprocess.Popen(commands)
 			elif sublime.platform() == 'linux':
 				commands = ['xdg-open', url]
