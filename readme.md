@@ -1,7 +1,3 @@
-[Sublime Text 3+][] Package. **Install via** an updated version of [Package Control 2][]. Just **DON'T install manually**.
-
-
-
 # Sidebar Enhancements
 
 ### In other languages
@@ -11,7 +7,7 @@ Russian - <https://www.youtube.com/watch?v=8I0dJTd58kI&feature=youtu.be&a>
 
 ## Description
 
-# [Sublime Text 3+][] Package, It does NOT WORK with ST2, DOES NOT; Use Sublime Text 3 Please.
+### [Sublime Text 3+][] Package, It does NOT WORK with ST2, DOES NOT; Use Sublime Text 3 Please.
 
 Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. <http://www.sublimetext.com/>
 
@@ -31,15 +27,7 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 ## Installation
 
-To install SideBarEnhancements, Install Package Control 2 First. See: <https://sublime.wbond.net/installation>
-
-Then after restarting, with package control Install this Package.
-
-WARNING: Manual installation:
-
--   We don't have time to workaround, provide support and follow threads of all the possible problems that installing manually can cause.
--   Most users will clone this repo, with sublime opened, which will Install the version of the package for ST2 on ST3, if you do this with ST3 and opened, the installation is likely screwed up.
--   Install with package control please.
+Download or clone the contents of this repository to a folder named exactly as the package name into the Packages/ folder of ST.
 
 Troubleshooting Installation:
 
@@ -56,7 +44,7 @@ If you have problems with the installation, do this:
 -   Open ST, check if there is any entry about SideBarEnhancements in Package Control(in sections: "Remove Package" and just in case in "Enable Package")
 -   Repeat until you find there no entry about SideBarEnhancements
 -   Restart ST
--   Install it via Package Control.
+-   Install it.
 -   It works
 
 ## F12 key
@@ -402,7 +390,6 @@ You should have received a copy of the GNU General Public License along with thi
 [Donate to support this project.][]
 
   [Sublime Text 3+]: http://www.sublimetext.com/
-  [Package Control 2]: https://sublime.wbond.net/installation
   []: http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png
   [desktop]: http://pypi.python.org/pypi/desktop
   [Send2Trash]: http://pypi.python.org/pypi/Send2Trash
