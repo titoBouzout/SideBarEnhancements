@@ -257,11 +257,7 @@ class SideBarProject:
 		self.setProjectJson(data);
 
 	def refresh(self):
-		try:
-			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 200);
-			sublime.set_timeout(lambda:sublime.active_window().run_command('refresh_folder_list'), 1300);
-		except:
-			pass
+		sublime.active_window().run_command('refresh_folder_list')
 
 class SideBarItem:
 
