@@ -646,7 +646,7 @@ class SideBarItem:
             for view in window.views():
                 if view.file_name():
                     views.append(view)
-            views.reverse();
+            views.reverse()
             for view in views:
                 if old == view.file_name():
                     active_view = self._moveMoveView(window, view, location, active_view)
@@ -667,7 +667,7 @@ class SideBarItem:
             for view in window.views():
                 if view.file_name():
                     views.append(view)
-            views.reverse();
+            views.reverse()
             for view in views:
                 if path == view.file_name() or view.file_name().find(path+'\\') == 0 or view.file_name().find(path+'/') == 0:
                     if view.window():
