@@ -1,0 +1,43 @@
+[
+    {
+        "caption": "Preferences",
+        "mnemonic": "n",
+        "id": "preferences",
+        "children":
+        [
+            {
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children":
+                [
+                    {
+                        "caption": "Side Bar",
+                        "children":
+                        [
+                            {
+                                "command": "edit_settings",
+                                "args":
+                                {
+                                    "base_file": "${packages}/SideBarEnhancements/settings/Side Bar.sublime-settings",
+                                    "default": "{\n\t$0\n}\n"
+                                },
+                                "caption": "Settings"
+                            },
+                            { "caption": "-" },
+                            {
+                                "command": "edit_settings",
+                                "args":
+                                {
+                                    "base_file": "${packages}/SideBarEnhancements/input-maps/Default ($platform).sublime-keymap",
+                                    "default": "[\n\t$0\n]\n"
+                                },
+                                "caption": "Key Bindings"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
