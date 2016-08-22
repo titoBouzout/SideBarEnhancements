@@ -395,4 +395,4 @@ You should have received a copy of the GNU General Public License along with thi
   [Send2Trash]: http://pypi.python.org/pypi/Send2Trash
   [bfg-pages]: http://code.google.com/p/bfg-pages/
   [tito.bouzout@gmail.com]: tito.bouzout@gmail.com
-  [Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TS3PCN4BHH244
+  [Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW

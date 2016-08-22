@@ -2013,9 +2013,9 @@ class SideBarAutoCloseEmptyGroupsCommand(sublime_plugin.EventListener):
 
 class SideBarDonateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		sublime.message_dialog('SideBarEnhancements: Thanks for your support ^_^')
+		sublime.message_dialog('Sidebar Enhancements: Thanks for your support ^.^')
 		browser = s.get('default_browser', '')
-		SideBarOpenInBrowserThread('','','').try_open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TS3PCN4BHH244", browser)
+		SideBarOpenInBrowserThread('','','').try_open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW", browser)
 
 class zzzzzSideBarCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):

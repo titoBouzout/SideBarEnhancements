@@ -742,7 +742,7 @@
 		"id": "side-bar-donate-separator"
 	},
 	{
-		"caption": "Donate",
+		"caption": "Give 20$",
 		"command": "side_bar_donate",
 		"args": {
 			"paths": []
