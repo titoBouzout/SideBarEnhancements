@@ -1,5 +1,19 @@
 # Sidebar Enhancements
 
+I decided to stop using package control to distribute my packages. However if you still wish to use it to install this package, you may do the following:
+
+1. Main menu bar - Preferences - Package Control
+2. Add repository
+3. Then paste https://github.com/titoBouzout/SideBarEnhancements/tree/st3
+
+Now you should see it to install. In case that does not work or if you prefer to install it manually:
+
+1. Download the package as a zip
+2. Main menu bar - Preferences - Browse Packages 
+3. Create a folder named "SideBarEnhancements", then extract the repository there. 
+
+Good luck, take care!
+
 ### In other languages
 
 Japanese - <http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1>
