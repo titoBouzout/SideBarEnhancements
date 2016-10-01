@@ -2017,6 +2017,9 @@ class SideBarDonateCommand(sublime_plugin.WindowCommand):
 		browser = s.get('default_browser', '')
 		SideBarOpenInBrowserThread('','','').try_open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW", browser)
 
+	def is_visible(self, paths =[]):
+		return not (s.get('i_donated_to_sidebar_enhancements_developer', False) == 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW')
+
 class zzzzzSideBarCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		pass
