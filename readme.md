@@ -1,18 +1,25 @@
-# Sidebar Enhancements
 
-I decided to stop using package control to distribute my packages. However if you still wish to use it to install this package, you may do the following:
+# Note:
+
+I decided to stop using package control to distribute my packages. Theres a requirement to add semantic versioning that stopped me from adding a bunch of tiny packages. The requirement is for new packages, not for old ones like this one and many others. However, I dont care if a package has 100k users or 2. I want my packages to be treated the same, and semantic versioning does not provide any value to me and is nonsense that just added friction to distribute my own stuff. Here there are no dependencies and my version number is a date. That you have in the commit. I dont want to add zillions of tags. 1.0.2 says nothing, 2016.10.02 says something. If you agree or not agree. I don't really care.  Nobody has my permission to distribute my packages on package control and I hope you don't overwrite my stuff, I gave up to package control not to my packages.
+
+However if you still wish to use Package Control to install this package, you may do the following:
 
 1. Main menu bar - Preferences - Package Control
 2. Add repository
 3. Then paste https://github.com/titoBouzout/SideBarEnhancements/tree/st3
 
-Now you should see it to install. In case that does not work or if you prefer to install it manually:
+Now you should see it to install. That may or may not work, and maybe breaks, IDK.
+
+In any case install it manually:
 
 1. Download the package as a zip
-2. Main menu bar - Preferences - Browse Packages 
-3. Create a folder named "SideBarEnhancements", then extract the repository there. 
+2. Main menu bar - Preferences - Browse Packages
+3. Create a folder named "SideBarEnhancements", then extract the repository there.
 
 Good luck, take care!
+
+# Sidebar Enhancements
 
 ### In other languages
 
