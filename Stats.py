@@ -24,7 +24,7 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
-class AdamTestPlugin(sublime_plugin.EventListener, threading.Thread):
+class SideBarEnhancementsStats(sublime_plugin.EventListener, threading.Thread):
     def __init__(self):
         super(AdamTestPlugin, self).__init__()
 
@@ -122,7 +122,7 @@ class AdamTestPlugin(sublime_plugin.EventListener, threading.Thread):
         # Implements run from threading.Thread.
         min_counter = 0
         while True:
-            time.sleep(5)
+            time.sleep(60)
             self.state_lock.acquire()
             try:
                 if self.should_stop:
@@ -132,7 +132,7 @@ class AdamTestPlugin(sublime_plugin.EventListener, threading.Thread):
             self.every_minute()
 
             min_counter += 1
-            if min_counter == 5:
+            if min_counter == 60:
                 min_counter = 0
                 self.every_hour()
 
@@ -140,7 +140,6 @@ class AdamTestPlugin(sublime_plugin.EventListener, threading.Thread):
         json_body = json.dumps(data)
         if sys.version_info[0] >= 3:
             json_body = bytes(json_body, "utf-8")
-        # print(json_body)
         try:
             # strictly speaking we should use url-encoding, or set the content encoding header, but for
             #   simplicity (e.g. python 2 & 3 compatibility), not doing either.
