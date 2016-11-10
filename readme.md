@@ -26,6 +26,16 @@ Allows to display "file modified date" and "file size" on statusbar.
 
 ![][]
 
+### Data collection
+
+This code sends basic, anonymous statistics. We use this to understand the popularity
+of different operating systems, builds of Sublime, Package Control plugin popularity,
+and programming language popularity.  We use these statistics to target and prioritize
+various features.  If you would like to opt out of these statistics, create a file in
+your home directory called `.SideBarEnhancements.optout`.  You can do this by running
+the following command:   touch ~/.SideBarEnhancements.optout
+
+
 ## Installation
 
 Download or clone the contents of this repository to a folder named exactly as the package name into the Packages/ folder of ST.
