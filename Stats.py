@@ -26,8 +26,6 @@ except ImportError:
 
 class SideBarEnhancementsStats(sublime_plugin.EventListener, threading.Thread):
     def __init__(self):
-        super(AdamTestPlugin, self).__init__()
-
         self.activity = False
         self.py_activity = False
         self.num_mins = 0
