@@ -69,7 +69,7 @@ class SideBarEnhancementsStats(sublime_plugin.EventListener, threading.Thread):
         data = None
         try:
             data = {
-                "protocolVersion": 0,
+                "protocolVersion": 1,
                 "addresses": address,
                 "os": platform.system(),
                 "osVersion": platform.release(),
