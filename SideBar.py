@@ -41,7 +41,7 @@ def plugin_loaded():
 	s.clear_on_change('reload')
 	s.add_on_change('reload', lambda:Pref.load())
 
-def Window(window):
+def Window(window = None):
 	return window if window else sublime.active_window()
 
 def expandVars(path):
