@@ -93,22 +93,23 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 		Window(self.window).show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
 	def on_done(self, paths, relative_to_project, name):
+		_paths = paths
 		if relative_to_project or s.get('new_files_relative_to_project_root', False):
-			paths = SideBarProject().getDirectories()
-			if paths:
-				paths = [SideBarItem(paths[0], False)]
-			if not paths:
-				paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+			_paths = SideBarProject().getDirectories()
+			if _paths:
+				_paths = [SideBarItem(_paths[0], False)]
+			if not _paths:
+				_paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
 		else:
-			paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
-		if not paths:
-			paths = SideBarProject().getDirectories()
-			if paths:
-				paths = [SideBarItem(paths[0], False)]
-		if not paths:
+			_paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
+		if not _paths:
+			_paths = SideBarProject().getDirectories()
+			if _paths:
+				_paths = [SideBarItem(_paths[0], False)]
+		if not _paths:
 			Window(self.window).new_file()
 		else:
-			for item in paths:
+			for item in _paths:
 				item = SideBarItem(item.join(name), False)
 				if item.exists():
 					sublime.error_message("Unable to create file, file or folder exists.")
@@ -143,16 +144,17 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 		Window(self.window).show_input_panel("Folder Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
 	def on_done(self, paths, relative_to_project, name):
+		_paths = paths
 		if relative_to_project or s.get('new_folders_relative_to_project_root', False):
-			paths = SideBarProject().getDirectories()
-			if paths:
-				paths = [SideBarItem(paths[0], True)]
-			if not paths:
-				paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+			_paths = SideBarProject().getDirectories()
+			if _paths:
+				_paths = [SideBarItem(_paths[0], True)]
+			if not _paths:
+				_paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
 		else:
-			paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+			_paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
 
-		for item in paths:
+		for item in _paths:
 			item = SideBarItem(item.join(name), True)
 			if item.exists():
 				sublime.error_message("Unable to create folder, folder or file exists.")
@@ -1184,7 +1186,7 @@ class SideBarRenameThread(threading.Thread):
 		key = self.key
 		window_set_status(key, 'Renaming…')
 
-		Window(self.window).run_command('hide_panel');
+		Window().run_command('hide_panel');
 		leaf = leaf.strip();
 		new = os.path.join(branch, leaf)
 		item = SideBarItem(old, os.path.isdir(old))
@@ -1997,7 +1999,7 @@ class SideBarAutoCloseEmptyGroupsCommand(sublime_plugin.EventListener):
 			sublime.set_timeout(self.run, 250);
 
 	def run(self):
-		window = Window(self.window)
+		window = Window()
 		if window.num_groups() > 1:
 			to_close = []
 			for i in range(1, window.num_groups()):
