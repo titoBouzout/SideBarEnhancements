@@ -579,7 +579,7 @@ class SideBarCopyCommand(sublime_plugin.WindowCommand):
 class SideBarPasteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], in_parent = 'False', test = 'True', replace = 'False'):
 		key = 'paste-'+str(time.time())
-		SideBarPasteThread(paths, in_parent, test, replace, key).start()
+		SideBarPasteThread(self.window, paths, in_parent, test, replace, key).start()
 
 	def is_enabled(self, paths = [], in_parent = False):
 		s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
@@ -592,7 +592,8 @@ class SideBarPasteCommand(sublime_plugin.WindowCommand):
 			return True
 
 class SideBarPasteThread(threading.Thread):
-	def __init__(self, paths = [], in_parent = 'False', test = 'True', replace = 'False', key = ''):
+	def __init__(self, source_window, paths = [], in_parent = 'False', test = 'True', replace = 'False', key = ''):
+		self.source_window = source_window
 		self.paths = paths
 		self.in_parent = in_parent
 		self.test = test
@@ -601,7 +602,7 @@ class SideBarPasteThread(threading.Thread):
 		threading.Thread.__init__(self)
 
 	def run(self):
-		SideBarPasteCommand2(sublime_plugin.WindowCommand).run(self.paths, self.in_parent, self.test, self.replace, self.key)
+		SideBarPasteCommand2(self.source_window).run(self.paths, self.in_parent, self.test, self.replace, self.key)
 
 class SideBarPasteCommand2(sublime_plugin.WindowCommand):
 	def run(self, paths = [], in_parent = 'False', test = 'True', replace = 'False', key = ''):
@@ -670,7 +671,7 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
 			if test == 'True' and len(already_exists_paths):
 				self.confirm(paths, in_parent, already_exists_paths, key)
 			elif test == 'True' and not len(already_exists_paths):
-				SideBarPasteThread(paths, in_parent, 'False', 'False', key).start();
+				SideBarPasteThread(self.window, paths, in_parent, 'False', 'False', key).start();
 			elif test == 'False':
 				cut = s.set('cut', '')
 				SideBarProject().refresh();
@@ -702,9 +703,9 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
 		window_set_status(key, '')
 		if result != -1:
 			if result == 0:
-				SideBarPasteThread(paths, in_parent, 'False', 'True', key).start()
+				SideBarPasteThread(self.window, paths, in_parent, 'False', 'True', key).start()
 			else:
-				SideBarPasteThread(paths, in_parent, 'False', 'False', key).start()
+				SideBarPasteThread(self.window, paths, in_parent, 'False', 'False', key).start()
 
 class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
