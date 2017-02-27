@@ -89,8 +89,8 @@ class aaaaaSideBarCommand(sublime_plugin.WindowCommand):
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
+		Window().run_command('hide_panel');
+		Window().show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
 	def on_done(self, paths, relative_to_project, name):
 		_paths = paths
@@ -107,7 +107,7 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 			if _paths:
 				_paths = [SideBarItem(_paths[0], False)]
 		if not _paths:
-			Window(self.window).new_file()
+			Window().new_file()
 		else:
 			for item in _paths:
 				item = SideBarItem(item.join(name), False)
@@ -128,20 +128,20 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(Window()).on_done, paths, True), None, None)
+		Window().run_command('hide_panel');
+		Window().show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(Window()).on_done, paths, True), None, None)
 
 class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("Folder Name:", name, functools.partial(SideBarNewDirectoryCommand(Window()).on_done, paths, True), None, None)
+		Window().run_command('hide_panel');
+		Window().show_input_panel("Folder Name:", name, functools.partial(SideBarNewDirectoryCommand(Window()).on_done, paths, True), None, None)
 
 class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("Folder Name:", name, functools.partial(self.on_done, paths, False), None, None)
+		Window().run_command('hide_panel');
+		Window().show_input_panel("Folder Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
 	def on_done(self, paths, relative_to_project, name):
 		_paths = paths
@@ -185,7 +185,7 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 
-		window = Window(self.window)
+		window = Window()
 		window.run_command('set_layout', {"cols": [0.0, 0.5, 1.0], "rows": [0.0, 1.0], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]})
 		window.focus_group(1)
 		for item in SideBarSelection(paths).getSelectedFiles():
@@ -333,7 +333,7 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		window = Window(self.window)
+		window = Window()
 		views = []
 		for view in window.views():
 			if view.name() == 'Find Results':
@@ -343,8 +343,8 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
 			items.append(item.path())
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
+		Window().run_command('hide_panel');
+		Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 
 	def is_enabled(self, paths = []):
 		return CACHED_SELECTION(paths).len() > 0
@@ -355,21 +355,21 @@ class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
 		for item in SideBarSelection(paths).getSelectedItems():
 			items.append(item.dirname())
 		items = list(set(items))
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
+		Window().run_command('hide_panel');
+		Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 
 	def is_enabled(self, paths = []):
 		return CACHED_SELECTION(paths).len() > 0
 
 class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
 	def run(self):
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
+		Window().run_command('hide_panel');
+		Window().run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
 
 class SideBarFindInProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
+		Window().run_command('hide_panel');
+		Window().run_command("show_panel", {"panel": "find_in_files", "where":"<project>"})
 
 	def is_visible(self, paths = []):
 		return not s.get('disabled_menuitem_find_in_project', False)
@@ -381,8 +381,8 @@ class SideBarFindInProjectFolderCommand(sublime_plugin.WindowCommand):
 			items.append(SideBarProject().getDirectoryFromPath(item.path()))
 		items = list(set(items))
 		if items:
-			Window(self.window).run_command('hide_panel');
-			Window(self.window).run_command("show_panel", {"panel": "find_in_files", "where":",".join(items)})
+			Window().run_command('hide_panel');
+			Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items)})
 
 class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
@@ -390,8 +390,8 @@ class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
 		for item in SideBarSelection(paths).getSelectedItems():
 			items.append('*'+item.extension())
 		items = list(set(items))
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
+		Window().run_command('hide_panel');
+		Window().run_command("show_panel", {"panel": "find_in_files", "where":",".join(items) })
 
 	def is_enabled(self, paths = []):
 		return CACHED_SELECTION(paths).hasFiles()
@@ -417,7 +417,7 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
 			paths = [item.path() for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames()]
 		if paths == []:
 			return
-		view = Window(self.window).new_file()
+		view = Window().new_file()
 		view.settings().set('word_wrap', False)
 		view.set_name('Instant File Search')
 		view.set_syntax_file('Packages/SideBarEnhancements/SideBar Results.hidden-tmLanguage')
@@ -680,7 +680,7 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
 
 	def confirm(self, paths, in_parent, data, key):
 		import functools
-		window = Window(self.window)
+		window = Window()
 		window.show_input_panel("BUG!", '', '', None, None)
 		window.run_command('hide_panel');
 
@@ -1110,8 +1110,8 @@ class SideBarCopyUrlDecodedCommand(sublime_plugin.WindowCommand):
 class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		view = Window(self.window).show_input_panel("Duplicate As:", new or SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
+		Window().run_command('hide_panel');
+		view = Window().show_input_panel("Duplicate As:", new or SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 		view.sel().clear()
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
@@ -1159,8 +1159,8 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], newLeaf = False):
 		import functools
 		branch, leaf = os.path.split(SideBarSelection(paths).getSelectedItems()[0].path())
-		Window(self.window).run_command('hide_panel');
-		view = Window(self.window).show_input_panel("New Name:", newLeaf or leaf, functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path(), branch), None, None)
+		Window().run_command('hide_panel');
+		view = Window().show_input_panel("New Name:", newLeaf or leaf, functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path(), branch), None, None)
 		view.sel().clear()
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
@@ -1209,15 +1209,15 @@ class SideBarRenameThread(threading.Thread):
 class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("Find:", '', functools.partial(self.on_find, paths), None, None)
+		Window().run_command('hide_panel');
+		Window().show_input_panel("Find:", '', functools.partial(self.on_find, paths), None, None)
 
 	def on_find(self, paths, find):
 		if not find:
 			return
 		import functools
-		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("Replace:", '', functools.partial(self.on_replace, paths, find), None, None)
+		Window().run_command('hide_panel');
+		Window().show_input_panel("Replace:", '', functools.partial(self.on_replace, paths, find), None, None)
 
 	def on_replace(self, paths, find, replace):
 		key = 'mass-renaming-'+str(time.time())
@@ -1274,8 +1274,8 @@ class SideBarMassRenameThread(threading.Thread):
 class SideBarMoveCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], new = False):
 		import functools
-		Window(self.window).run_command('hide_panel');
-		view = Window(self.window).show_input_panel("New Location:", new or SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
+		Window().run_command('hide_panel');
+		view = Window().show_input_panel("New Location:", new or SideBarSelection(paths).getSelectedItems()[0].path(), functools.partial(self.on_done, SideBarSelection(paths).getSelectedItems()[0].path()), None, None)
 		view.sel().clear()
 		view.sel().add(sublime.Region(view.size()-len(SideBarSelection(paths).getSelectedItems()[0].name()), view.size()-len(SideBarSelection(paths).getSelectedItems()[0].extension())))
 
@@ -1368,7 +1368,7 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 
 	def confirm(self, paths, display_paths):
 		import functools
-		window = Window(self.window)
+		window = Window()
 		window.show_input_panel("BUG!", '', '', None, None)
 		window.run_command('hide_panel');
 
@@ -1469,7 +1469,7 @@ class SideBarEmptyCommand(sublime_plugin.WindowCommand):
 
 	def confirm(self, paths, display_paths):
 		import functools
-		window = Window(self.window)
+		window = Window()
 		window.show_input_panel("BUG!", '', '', None, None)
 		window.run_command('hide_panel');
 
@@ -1563,7 +1563,7 @@ class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
 
 class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
-		Window(self.window).run_command('remove_folder', {"dirs":paths})
+		Window().run_command('remove_folder', {"dirs":paths})
 
 	def is_enabled(self, paths =[]):
 		selection = CACHED_SELECTION(paths)
@@ -1634,7 +1634,7 @@ class SideBarOpenBrowsersCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		browsers = s.get('open_all_browsers', [])
 		if browsers:
-			window =  Window(self.window)
+			window =  Window()
 			for browser in browsers:
 				window.run_command("side_bar_open_in_browser", {'paths':paths, 'type':'testing', 'browser':browser})
 
