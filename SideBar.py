@@ -72,7 +72,7 @@ class OpenWithListener(sublime_plugin.EventListener):
 				for item in settings[0]['children']:
 					try:
 						if item['open_automatically'] and selection.hasFilesWithExtension(item['args']['extensions']):
-							SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand).run([view.file_name()], item['args']['application'], item['args']['extensions'])
+							SideBarFilesOpenWithCommand(Window()).run([view.file_name()], item['args']['application'], item['args']['extensions'])
 							view.window().run_command('close')
 							break
 					except:
@@ -129,13 +129,13 @@ class SideBarNewFile2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
 		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
+		Window(self.window).show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(Window()).on_done, paths, True), None, None)
 
 class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
 		Window(self.window).run_command('hide_panel');
-		Window(self.window).show_input_panel("Folder Name:", name, functools.partial(SideBarNewDirectoryCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
+		Window(self.window).show_input_panel("Folder Name:", name, functools.partial(SideBarNewDirectoryCommand(Window()).on_done, paths, True), None, None)
 
 class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
@@ -601,7 +601,7 @@ class SideBarPasteThread(threading.Thread):
 		threading.Thread.__init__(self)
 
 	def run(self):
-		SideBarPasteCommand2(sublime_plugin.WindowCommand).run(self.paths, self.in_parent, self.test, self.replace, self.key)
+		SideBarPasteCommand2(Window()).run(self.paths, self.in_parent, self.test, self.replace, self.key)
 
 class SideBarPasteCommand2(sublime_plugin.WindowCommand):
 	def run(self, paths = [], in_parent = 'False', test = 'True', replace = 'False', key = ''):
@@ -1142,12 +1142,12 @@ class SideBarDuplicateThread(threading.Thread):
 				if SideBarItem(new, os.path.isdir(new)).overwrite():
 					self.run()
 				else:
-					SideBarDuplicateCommand(sublime_plugin.WindowCommand).run([old], new)
+					SideBarDuplicateCommand(Window()).run([old], new)
 				return
 		except:
 			window_set_status(key, '')
 			sublime.error_message("Unable to copy:\n\n"+old+"\n\nto\n\n"+new)
-			SideBarDuplicateCommand(sublime_plugin.WindowCommand).run([old], new)
+			SideBarDuplicateCommand(Window()).run([old], new)
 			return
 		item = SideBarItem(new, os.path.isdir(new))
 		if item.isFile():
@@ -1196,11 +1196,11 @@ class SideBarRenameThread(threading.Thread):
 					self.run()
 				else:
 					window_set_status(key, '')
-					SideBarRenameCommand(sublime_plugin.WindowCommand).run([old], leaf)
+					SideBarRenameCommand(Window()).run([old], leaf)
 		except:
 			window_set_status(key, '')
 			sublime.error_message("Unable to rename:\n\n"+old+"\n\nto\n\n"+new)
-			SideBarRenameCommand(sublime_plugin.WindowCommand).run([old], leaf)
+			SideBarRenameCommand(Window()).run([old], leaf)
 			raise
 			return
 		SideBarProject().refresh();
@@ -1306,12 +1306,12 @@ class SideBarMoveThread(threading.Thread):
 					self.run()
 				else:
 					window_set_status(key, '')
-					SideBarMoveCommand(sublime_plugin.WindowCommand).run([old], new)
+					SideBarMoveCommand(Window()).run([old], new)
 				return
 		except:
 			window_set_status(key, '')
 			sublime.error_message("Unable to move:\n\n"+old+"\n\nto\n\n"+new)
-			SideBarMoveCommand(sublime_plugin.WindowCommand).run([old], new)
+			SideBarMoveCommand(Window()).run([old], new)
 			raise
 			return
 		SideBarProject().refresh();
@@ -1323,7 +1323,7 @@ class SideBarDeleteThread(threading.Thread):
 		threading.Thread.__init__(self)
 
 	def run(self):
-		SideBarDeleteCommand(sublime_plugin.WindowCommand)._delete_threaded(self.paths)
+		SideBarDeleteCommand(Window())._delete_threaded(self.paths)
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], confirmed = 'False'):
