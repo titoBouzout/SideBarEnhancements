@@ -197,6 +197,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
 # Contributors:
 
 (Thank you so much!)
+-   Aleksandar Urosevic
 -   bofm
 -   Dalibor Simacek
 -   Devin Rhode
@@ -205,8 +206,10 @@ Q: Can the package stop "show preview in a **right** click to a file".
 -   Jeremy Gailor
 -   Joao Antunes
 -   Leif Ringstad
+-   MauriceZ
 -   Nick Zaccardi
 -   Patrik Göthe
+-   Peder Langdal
 -   Randy Lai
 -   Raphael DDL Oliveira
 -   robwala
@@ -216,8 +219,6 @@ Q: Can the package stop "show preview in a **right** click to a file".
 -   Todd Wolfson
 -   Tyler Thrailkill
 -   Yaroslav Admin
--   Aleksandar Urosevic
--   MauriceZ
 
 ## TODO
 
