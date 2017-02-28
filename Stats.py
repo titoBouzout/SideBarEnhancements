@@ -3,7 +3,9 @@
 # and programming language popularity.  We use these statistics to target and prioritize
 # various features.  If you would like to opt out of these statistics, create a file in
 # your home directory called `.SideBarEnhancements.optout`.  You can do this by running
-# the following command:   touch ~/.SideBarEnhancements.optout
+# the following command: touch ~/.SideBarEnhancements.optout
+# Alternativley create a .SideBarEnhancements.optout file within your User directory
+# which can be found at Menu > Preferences > Browse Packages...
 
 
 import json
@@ -35,7 +37,7 @@ class SideBarEnhancementsStats(sublime_plugin.EventListener, threading.Thread):
         self.should_stop = False
         self.state_lock = threading.Lock()
 
-        if not os.path.isfile(os.path.join(os.path.expanduser('~'), '.SideBarEnhancements.optout')):
+        if not os.path.isfile(os.path.join(sublime.packages_path(), 'User', '.SideBarEnhancements.optout')) and not os.path.isfile(os.path.join(os.path.expanduser('~'), '.SideBarEnhancements.optout')):
             self.working = True
             sublime.set_timeout(self.start, 0)
         else:
