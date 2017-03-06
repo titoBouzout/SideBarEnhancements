@@ -72,7 +72,7 @@ class OpenWithListener(sublime_plugin.EventListener):
 				for item in settings[0]['children']:
 					try:
 						if item['open_automatically'] and selection.hasFilesWithExtension(item['args']['extensions']):
-							SideBarFilesOpenWithCommand(Window()).run([view.file_name()], item['args']['application'], item['args']['extensions'])
+							SideBarFilesOpenWithCommand(Window()).run([view.file_name()], item['args']['application'], item['args']['extensions'], item['args']['args'])
 							view.window().run_command('close')
 							break
 					except:
