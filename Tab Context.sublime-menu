@@ -1,0 +1,31 @@
+[
+    { "caption" : "-" },
+    {
+        "caption": "File: Reveal in Sidebar",
+        "command": "reveal_in_side_bar",
+    },
+    { "caption" : "-" },
+    {
+        "caption": "File: Rename",
+        "command": "side_bar_rename"
+    },
+    {
+        "caption": "File: Duplicate",
+        "command": "side_bar_duplicate"
+    },
+    { "caption" : "-" },
+    {
+        "caption": "File: Copy Name",
+        "command": "side_bar_copy_name"
+    },
+    {
+        "caption": "File: Copy Path",
+        "command": "side_bar_copy_path"
+    },
+    {
+        "caption": "File: Copy Path From Project",
+        "command": "side_bar_copy_path_absolute_from_project"
+    },
+]
+
+
