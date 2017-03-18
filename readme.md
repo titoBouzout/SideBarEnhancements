@@ -176,6 +176,13 @@ Q: Can the package stop "show preview in a **right** click to a file".
 
 -   No, ​I'm sorry, can't figure out how to prevent it.
 
+Q: Why are most of my options grayed out?  What do I do now?
+
+- For Mac OSX, Open `Application Support/Sublime Text 3/Installed Packages` in finder and remove the file `SideBarEnhancements.sublime-package`
+- For Windows, Open `AppData/Roaming/Sublime Text 3/Installed Packages` in explorer and remove the file `SideBarEnhancements.sublime-package`
+- Both of these options work just fine and the file will be recreated
+- After removing the files, Restart Sublime Text 3
+
 ## Using the External Libraries
 
 (check each license in project pages)
