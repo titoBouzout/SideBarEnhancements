@@ -763,6 +763,22 @@ class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return CACHED_SELECTION(paths).len() > 0
 
+class SideBarCopyPathQuotedCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		items = []
+		for item in SideBarSelection(paths).getSelectedItems():
+			items.append('"'+item.path()+'"')
+
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
+
+	def is_enabled(self, paths = []):
+		return CACHED_SELECTION(paths).len() > 0
+
 class SideBarCopyDirPathCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []

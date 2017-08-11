@@ -60,6 +60,10 @@
 		"command": "side_bar_copy_path"
     },
 	{
+		"caption": "File: Copy Path Quoted",
+		"command": "side_bar_copy_path_quoted"
+    },
+	{
 		"caption": "File: Copy Path (Windows)",
 		"command": "side_bar_copy_path_absolute_from_project_encoded_windows"
     },

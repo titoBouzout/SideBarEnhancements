@@ -438,6 +438,14 @@
 				}
 			},
 			{
+				"caption": "Path Quoted",
+				"id": "side-bar-clip-copy-path-quoted",
+				"command": "side_bar_copy_path_quoted",
+				"args": {
+					"paths": []
+				}
+			},
+			{
 				"caption": "-",
 				"id": "side-bar-clip-copy-path-separator"
 			},
