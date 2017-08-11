@@ -333,7 +333,7 @@
 	{
 		"caption": "Copy Path",
 		"id": "side-bar-clip-copy-path",
-		"command": "side_bar_copy_path_absolute_from_project_encoded",
+		"command": "side_bar_copy_path_relative_from_project_encoded",
 		"args": {
 			"paths": []
 		}
