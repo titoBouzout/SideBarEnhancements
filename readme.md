@@ -178,7 +178,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
 
 ## Source-code
 
-<https://github.com/titoBouzout/SideBarEnhancements>
+<https://github.com/SideBarEnhancements-org/SideBarEnhancements>
 
 ## Forum Thread
 
@@ -212,7 +212,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
 
 ## TODO
 
-<https://github.com/titoBouzout/SideBarEnhancements/issues/223>
+<https://github.com/SideBarEnhancements-org/SideBarEnhancements/issues/223>
 
 ## Change Log
 
@@ -250,11 +250,11 @@ Update 2.0.4
 Update 2.0.3
 
 -   copy image cant' copy image sizes
--   fix canary <https://github.com/titoBouzout/SideBarEnhancements/commit/0d23f3e10650ec8e3792cd7a7f0ceaec2ae84fcb>
+-   fix canary <https://github.com/SideBarEnhancements-org/SideBarEnhancements/commit/0d23f3e10650ec8e3792cd7a7f0ceaec2ae84fcb>
 -   Apply patch for ubuntu encrypted folder bug. <https://github.com/hsoft/send2trash/issues/1#issuecomment-31734060>
 -   open in default browser OSX
 -   Relative vs absolute in project folders
--   Allow mass rename of folders and files <https://github.com/titoBouzout/SideBarEnhancements/commit/dbdaaffa4a53411b1d39337f7ceee6ecef9b73cb>
+-   Allow mass rename of folders and files <https://github.com/SideBarEnhancements-org/SideBarEnhancements/commit/dbdaaffa4a53411b1d39337f7ceee6ecef9b73cb>
 -   correctly open folders in a new window on mac os x
 
 Update 2.0.2
@@ -392,7 +392,7 @@ You should have received a copy of the GNU General Public License along with thi
 [Donate to support this project.][]
 
   [Sublime Text 3+]: http://www.sublimetext.com/
-  []: http://dl.dropbox.com/u/43596449/tito/sublime/SideBar/screenshot.png
+  []: https://www.dropbox.com/s/ckz5n2ncn2pxkii/sidebar.png?dl=1
   [desktop]: http://pypi.python.org/pypi/desktop
   [Send2Trash]: http://pypi.python.org/pypi/Send2Trash
   [bfg-pages]: http://code.google.com/p/bfg-pages/
