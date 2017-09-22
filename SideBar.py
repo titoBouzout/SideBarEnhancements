@@ -897,7 +897,15 @@ class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
 		for item in SideBarSelection(paths).getSelectedItems():
-			items.append(item.pathAbsoluteFromProject())
+			if s.get('copy_path_absolute_from_project_includes_line_number', False) and item.views():
+				view = item.views()[0]
+				if view.sel():
+					line, col = view.rowcol(view.sel()[0].b)
+					items.append(item.pathAbsoluteFromProject()+':'+str(line+1))
+				else:
+					items.append(item.pathAbsoluteFromProject())
+			else:
+				items.append(item.pathAbsoluteFromProject())
 
 		if len(items) > 0:
 			sublime.set_clipboard("\n".join(items));

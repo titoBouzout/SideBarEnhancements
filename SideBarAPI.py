@@ -671,3 +671,12 @@ class SideBarItem:
 				except:
 					pass
 		return closed_items
+
+	def views(self):
+		path = self.path()
+		views = []
+		for window in sublime.windows():
+			for view in window.views():
+				if view.file_name() and path == view.file_name():
+					views.append(view)
+		return views
