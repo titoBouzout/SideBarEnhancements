@@ -299,8 +299,23 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 		else:
 			items = SideBarSelection(paths).getSelectedFilesWithExtension(extensions)
 		import subprocess
+
 		try:
 			for item in items:
+
+				# $PATH - The full path to the current file, e. g., C:\Files\Chapter1.txt.
+				# $PROJECT - The root directory of the current project.
+				# $DIRNAME - The directory of the current file, e. g., C:\Files.
+				# $NAME - The name portion of the current file, e. g., Chapter1.txt.
+				# $EXTENSION - The extension portion of the current file, e. g., txt.
+
+				for k in range(len(args)):
+					args[k] = args[k].replace('$PATH', item.path())
+					args[k] = args[k].replace('$PROJECT', item.pathProject())
+					args[k] = args[k].replace('$DIRNAME', item.dirname())
+					args[k] = args[k].replace('$NAME', item.name())
+					args[k] = args[k].replace('$EXTENSION', item.extension())
+
 				if sublime.platform() == 'osx':
 					subprocess.Popen(['open', '-a', application] + args + [item.name()], cwd=item.dirname())
 				elif sublime.platform() == 'windows':
