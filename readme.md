@@ -156,6 +156,14 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
         "open_automatically" : true // will close the view/tab and launch the application
     },
 
+### Vars on "args" param
+
+- $PATH - The full path to the current file, e. g., C:\Files\Chapter1.txt.
+- $PROJECT - The root directory of the current project.
+- $DIRNAME - The directory of the current file, e. g., C:\Files.
+- $NAME - The name portion of the current file, e. g., Chapter1.txt.
+- $EXTENSION - The extension portion of the current file, e. g., txt.
+
 ## FAQ
 
 Q: Why the menu is not shown on `Open Files`?
