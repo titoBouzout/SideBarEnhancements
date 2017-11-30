@@ -2031,12 +2031,28 @@ class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
 			modified_time = modified_time.decode(s.get('statusbar_modified_time_locale', ''))
 		v.set_status('statusbar_modified_time', modified_time);
 
+class DefaultDirectory():
+	pass
+DefaultDirectory = DefaultDirectory()
+DefaultDirectory.path = False
 class SideBarDefaultNewFolder(sublime_plugin.EventListener):
 	def on_new(self, view):
-		paths = SideBarProject().getDirectories()
-		if paths:
-			view.settings().set('default_dir', paths[0])
+		path = None
+		if not DefaultDirectory.path:
+			paths = SideBarProject().getDirectories()
+			if paths:
+				path = paths[0]
+		else:
+			path = DefaultDirectory.path
 
+		if path:
+			view.settings().set('default_dir', path)
+
+	def on_activated(self, view):
+		if view and view.file_name():
+			path = SideBarItem(view.file_name(), False).dirname()
+			if path:
+				DefaultDirectory.path = path
 
 class SideBarAutoCloseEmptyGroupsCommand(sublime_plugin.EventListener):
 	def on_close(self, view):
