@@ -347,6 +347,14 @@
 		}
 	},
 	{
+		"caption": "Copy Relative Path",
+		"id": "side-bar-clip-copy-relative-path",
+		"command": "side_bar_copy_relative_path",
+		"args": {
+			"paths": []
+		}
+	},
+	{
 		"caption": "Copy Dir Path",
 		"id": "side-bar-clip-copy-dir-path",
 		"command": "side_bar_copy_dir_path",
