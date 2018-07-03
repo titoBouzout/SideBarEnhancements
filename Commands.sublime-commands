@@ -59,6 +59,10 @@
 		"caption": "File: Copy Path",
 		"command": "side_bar_copy_path"
     },
+    {
+		"caption": "File: Copy Relative Path",
+		"command": "side_bar_copy_relative_path"
+    },
 	{
 		"caption": "File: Copy Path Quoted",
 		"command": "side_bar_copy_path_quoted"

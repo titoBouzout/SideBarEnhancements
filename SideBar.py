@@ -778,6 +778,32 @@ class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self, paths = []):
 		return CACHED_SELECTION(paths).len() > 0
 
+class SideBarCopyRelativePathCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		items = []
+		for item in SideBarSelection(paths).getSelectedItems():
+			items.append(item.path())
+
+		sublime.active_window().run_command("next_view_in_stack")
+		
+		originPath = sublime.active_window().active_view().file_name()
+
+		temp = []
+		for index in range(len(items)):
+			if(not os.path.samefile(items[index], originPath)):
+				temp.append(os.path.join(".", os.path.relpath(items[index], os.path.dirname(originPath))))
+		items = temp
+
+		if len(items) > 0:
+			sublime.set_clipboard("\n".join(items));
+			if len(items) > 1 :
+				sublime.status_message("Items copied")
+			else :
+				sublime.status_message("Item copied")
+
+	def is_enabled(self, paths = []):
+		return CACHED_SELECTION(paths).len() > 0
+
 class SideBarCopyPathQuotedCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):
 		items = []
