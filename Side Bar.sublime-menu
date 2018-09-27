@@ -181,7 +181,6 @@
 		"id": "side-bar-files-open-with",
 
 		"children": [
-
 			{
 				"caption": "-",
 				"id": "side-bar-files-open-with-edit-application-separator"
@@ -198,7 +197,6 @@
 				"caption": "-",
 				"id": "side-bar-files-open-with-edit-applications-separator"
 			}
-
 		]
 	},
 	{
@@ -299,7 +297,6 @@
 					"paths": []
 				}
 			}
-
 		]
 	},
 	{
@@ -742,7 +739,6 @@
 					"paths": []
 				}
 			}
-
 		]
 	},
 	{
@@ -767,5 +763,5 @@
 		"args": {
 			"paths": []
 		}
-	},
+	}
 ]
