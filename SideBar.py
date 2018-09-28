@@ -5,6 +5,7 @@ import sublime, sublime_plugin
 import os, shutil
 import threading, time
 import re
+import subprocess, platform
 
 from .edit.Edit import Edit
 from .hurry.filesize import size as hurry_size
@@ -19,6 +20,28 @@ from .SideBarAPI import SideBarItem, SideBarSelection, SideBarProject
 Pref = {}
 s = {}
 Cache = {}
+
+
+def cli(command):
+    info = subprocess.STARTUPINFO()
+    info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+    info.wShowWindow = 0
+    p = subprocess.Popen(
+        command,
+        startupinfo=info,
+        stdin=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        shell=platform.system() == "Windows" or os.name == "nt",
+    )
+    stdout, stderr = p.communicate()
+    try:
+        p.kill()
+    except:
+        pass
+
+    p = {"stderr": stderr, "stdout": stdout, "returncode": p.returncode}
+    return p
 
 
 def CACHED_SELECTION(paths=[]):
@@ -2519,6 +2542,29 @@ class SideBarStatusBarFileSize(sublime_plugin.EventListener):
 
     def show(self, v, size):
         v.set_status("statusbar_file_size", size)
+
+
+class SideBarSaveAsAdminCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        import tempfile
+
+        view = sublime.active_window().active_view()
+        path = os.path.dirname(__file__) + "/"
+        with (tempfile.NamedTemporaryFile(delete=False)) as f:
+            f.write(bytes(view.substr(sublime.Region(0, view.size())), "UTF-8"))
+            cli(
+                [
+                    escapeCMDWindows(path + "bin/elevate.exe"),
+                    escapeCMDWindows(path + "bin/elevate.bat"),
+                    escapeCMDWindows(f.name),
+                    escapeCMDWindows(view.file_name()),
+                ]
+            )
+            f.close()
+        view.run_command("revert")
+
+    def is_visible(self):
+        return platform.system() == "Windows" or os.name == "nt"
 
 
 class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
