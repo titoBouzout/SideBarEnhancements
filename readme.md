@@ -4,7 +4,10 @@
 ### In other languages
 
 Japanese - <http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1>
+
 Russian - <https://www.youtube.com/watch?v=8I0dJTd58kI&feature=youtu.be&a>
+
+Chinese - <https://github.com/52fisher/SideBarEnhancements>
 
 ## Description
 
@@ -64,26 +67,26 @@ F12 key allows you to open the current file in browser.
 
 <!-- -->
 
-    {
-        "S:/www/domain.tld":{
-            "url_testing":"http://testing",
-            "url_production":"http://domain.tld"
-        },
-        "C:/Users/luna/some/domain2.tld":{
-            "url_testing":"http://testing1",
-            "url_production":"http://productiontld2"
-        }
-    }
+	{
+		"S:/www/domain.tld":{
+			"url_testing":"http://testing",
+			"url_production":"http://domain.tld"
+		},
+		"C:/Users/luna/some/domain2.tld":{
+			"url_testing":"http://testing1",
+			"url_production":"http://productiontld2"
+		}
+	}
 
 ### With relative paths
 
 Imagine we have a project with the following structure
 
-    Project/ < - root project folder
-    Project/libs/
-    Project/public/ < - the folder we want to load as "http://localhost/"
-    Project/private/
-    Project/experimental/ < - other folder we may run as experimental/test in another url "http://experimental/"
+	Project/ < - root project folder
+	Project/libs/
+	Project/public/ < - the folder we want to load as "http://localhost/"
+	Project/private/
+	Project/experimental/ < - other folder we may run as experimental/test in another url "http://experimental/"
 
 Then we create configuration file:
 
@@ -91,20 +94,20 @@ Then we create configuration file:
 
 with content:
 
-    {
-        "public/":{
-            "url_testing":"http://localhost/",
-            "url_production":"http://domain.tld/"
-        },
-        "experimental/":{
-            "url_testing":"http://experimental/",
-            "url_production":"http://domain.tld/"
-        },
-        "":{
-            "url_testing":"http://the_url_for_the_project_root/",
-            "url_production":"http://the_url_for_the_project_root/"
-        }
-    }
+	{
+		"public/":{
+			"url_testing":"http://localhost/",
+			"url_production":"http://domain.tld/"
+		},
+		"experimental/":{
+			"url_testing":"http://experimental/",
+			"url_production":"http://domain.tld/"
+		},
+		"":{
+			"url_testing":"http://the_url_for_the_project_root/",
+			"url_production":"http://the_url_for_the_project_root/"
+		}
+	}
 
 ...
 
@@ -114,24 +117,24 @@ You can create config files `some/folder/.sublime/SideBarEnhancements.json` anyw
 
 On Sublime Text 3 `F12` key is bound to `"goto_definition"` command by default. This package was conflicting with that key, this no longers happens. You need to manually add the keys now: Go to `Preferences -> Package Settings -> Side Bar -> Key Bindings - User` and add any of the following:
 
-        [
-            { "keys": ["f12"],
-                "command": "side_bar_open_in_browser" ,
-                "args":{"paths":[], "type":"testing", "browser":""}
-            },
-            { "keys": ["alt+f12"],
-                "command": "side_bar_open_in_browser",
-                "args":{"paths":[], "type":"production", "browser":""}
-            },
-            {
-                "keys": ["ctrl+t"],
-                "command": "side_bar_new_file2"
-            },
-            {
-                "keys": ["f2"],
-                "command": "side_bar_rename"
-            },
-        ]
+		[
+			{ "keys": ["f12"],
+				"command": "side_bar_open_in_browser" ,
+				"args":{"paths":[], "type":"testing", "browser":""}
+			},
+			{ "keys": ["alt+f12"],
+				"command": "side_bar_open_in_browser",
+				"args":{"paths":[], "type":"production", "browser":""}
+			},
+			{
+				"keys": ["ctrl+t"],
+				"command": "side_bar_new_file2"
+			},
+			{
+				"keys": ["f2"],
+				"command": "side_bar_rename"
+			},
+		]
 
 ## Notes on configuring the `Open With` menu:
 
@@ -142,19 +145,19 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
 
 <!-- -->
 
-    //application 1
-    {
-        "caption": "Photoshop",
-        "id": "side-bar-files-open-with-photoshop",
-        "command": "side_bar_files_open_with",
-        "args": {
-            "paths": [],
-            "application": "Adobe Photoshop CS5.app", // OSX
-            "extensions":"psd|png|jpg|jpeg",  //any file with these extensions
-            "args":[]
-        }
-        "open_automatically" : true // will close the view/tab and launch the application
-    },
+	//application 1
+	{
+		"caption": "Photoshop",
+		"id": "side-bar-files-open-with-photoshop",
+		"command": "side_bar_files_open_with",
+		"args": {
+			"paths": [],
+			"application": "Adobe Photoshop CS5.app", // OSX
+			"extensions":"psd|png|jpg|jpeg",  //any file with these extensions
+			"args":[]
+		}
+		"open_automatically" : true // will close the view/tab and launch the application
+	},
 
 ### Vars on "args" param
 
