@@ -136,7 +136,24 @@ On Sublime Text 3 `F12` key is bound to `"goto_definition"` command by default. 
 			},
 		]
 
+## Keybinding for Find in paths:
+
+You may wish to add a key for opening "find in paths.."
+
+	[
+		{
+			"keys": ["f10"],
+			"id": "side-bar-find-files",
+			"command": "side_bar_find_files_path_containing",
+			"args": {
+				"paths": []
+			}
+		}
+	]
+
+
 ## Notes on configuring the `Open With` menu:
+
 
 Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (note the extra subfolder levels). To open it, right-click on any file in an open project and select `Open With > Edit Applications...`
 
@@ -240,6 +257,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/gpl.html>
 
 ## Helpful!? Support, Many thanks ^_^
+
 
 [Donate to support this project.][]
 
