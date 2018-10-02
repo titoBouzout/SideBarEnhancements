@@ -356,6 +356,18 @@
 		"id": "side-bar-clip-copy-as",
 		"children": [
 			{
+				"caption": "Relative Path To Last Selected View",
+				"id": "side-bar-clip-copy-path-relative-to-last-selected-view",
+				"command": "side_bar_copy_path_relative_to_last_selected_view",
+				"args": {
+					"paths": []
+				}
+			},
+			{
+				"caption": "-",
+				"id": "side-bar-clip-copy-path-relative-to-last-selected-view-separator"
+			},
+			{
 				"caption": "Relative Path From View Encoded",
 				"id": "side-bar-clip-copy-path-relative-from-view-encoded",
 				"command": "side_bar_copy_path_relative_from_view_encoded",
