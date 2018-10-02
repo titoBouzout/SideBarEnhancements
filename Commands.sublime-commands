@@ -72,11 +72,15 @@
 		"command": "side_bar_copy_path_encoded"
 	},
 	{
-		"caption": "File: Copy Path From Project",
+		"caption": "File: Copy Path Absolute To Project",
 		"command": "side_bar_copy_path_absolute_from_project"
 	},
 	{
-		"caption": "File: Copy Path From Project Encoded",
+		"caption": "File: Copy Relative Path To Project",
+		"command": "side_bar_copy_path_relative_from_project"
+	},
+	{
+		"caption": "File: Copy Path Absolute To Project Encoded",
 		"command": "side_bar_copy_path_absolute_from_project_encoded"
 	},
 	{
