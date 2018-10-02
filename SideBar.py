@@ -1163,7 +1163,9 @@ class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand
     def run(self, paths=[]):
         items = []
         for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.pathRelativeFromViewEncoded())
+            path = item.pathRelativeFromViewEncoded()
+            if path:
+                items.append(path)
 
         if len(items) > 0:
             sublime.set_clipboard("\n".join(items))

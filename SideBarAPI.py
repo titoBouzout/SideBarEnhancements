@@ -409,10 +409,13 @@ class SideBarItem:
         return urllib.parse.quote(self.pathRelativeFromProject())
 
     def pathRelativeFromView(self):
-        return os.path.relpath(
-            self.path(),
-            os.path.dirname(sublime.active_window().active_view().file_name()),
-        ).replace("\\", "/")
+        path = sublime.active_window().active_view().file_name()
+        if path:
+            return os.path.relpath(self.path(), os.path.dirname(path)).replace(
+                "\\", "/"
+            )
+        else:
+            return None
 
     def pathRelativeFromViewEncoded(self):
         import urllib.request, urllib.parse, urllib.error
