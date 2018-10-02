@@ -350,60 +350,60 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
             item.create()
             item.write(
                 """[
-	{"id": "side-bar-files-open-with",
-		"children":
-		[
+    {"id": "side-bar-files-open-with",
+        "children":
+        [
 
-			//application 1
-			{
-				"caption": "Photoshop",
-				"id": "side-bar-files-open-with-photoshop",
+            //application 1
+            {
+                "caption": "Photoshop",
+                "id": "side-bar-files-open-with-photoshop",
 
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "Adobe Photoshop CS5.app", // OSX
-									"extensions":"psd|png|jpg|jpeg",  //any file with these extensions
-									"args":[]
-								},
-				"open_automatically" : false // will close the view/tab and launch the application
-			},
+                "command": "side_bar_files_open_with",
+                "args": {
+                                    "paths": [],
+                                    "application": "Adobe Photoshop CS5.app", // OSX
+                                    "extensions":"psd|png|jpg|jpeg",  //any file with these extensions
+                                    "args":[]
+                                },
+                "open_automatically" : false // will close the view/tab and launch the application
+            },
 
-			//separator
-			{"caption":"-"},
+            //separator
+            {"caption":"-"},
 
-			//application 2
-			{
-				"caption": "SeaMonkey",
-				"id": "side-bar-files-open-with-seamonkey",
+            //application 2
+            {
+                "caption": "SeaMonkey",
+                "id": "side-bar-files-open-with-seamonkey",
 
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
-									"extensions":"", //open all even folders
-									"args":[]
-								},
-				"open_automatically" : false // will close the view/tab and launch the application
-			},
-			//application n
-			{
-				"caption": "Chrome",
-				"id": "side-bar-files-open-with-chrome",
+                "command": "side_bar_files_open_with",
+                "args": {
+                                    "paths": [],
+                                    "application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
+                                    "extensions":"", //open all even folders
+                                    "args":[]
+                                },
+                "open_automatically" : false // will close the view/tab and launch the application
+            },
+            //application n
+            {
+                "caption": "Chrome",
+                "id": "side-bar-files-open-with-chrome",
 
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
-									"extensions":".*", //any file with extension
-									"args":[]
-						},
-				"open_automatically" : false // will close the view/tab and launch the application
-			},
+                "command": "side_bar_files_open_with",
+                "args": {
+                                    "paths": [],
+                                    "application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
+                                    "extensions":".*", //any file with extension
+                                    "args":[]
+                        },
+                "open_automatically" : false // will close the view/tab and launch the application
+            },
 
-			{"caption":"-"}
-		]
-	}
+            {"caption":"-"}
+        ]
+    }
 ]"""
             )
         item.edit()
@@ -607,6 +607,7 @@ Object.sidebar_instant_search_id = 0
 
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
+
         if paths == [] and SideBarProject().getDirectories():
             paths = SideBarProject().getDirectories()
         else:
@@ -1359,7 +1360,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
         import imghdr
 
         """Determine the image type of fhandle and return its size.
-		from draco"""
+        from draco"""
         fhandle = open(fname, "rb")
         head = fhandle.read(24)
         if len(head) != 24:
