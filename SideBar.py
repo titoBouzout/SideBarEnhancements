@@ -1178,35 +1178,51 @@ class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand
         return CACHED_SELECTION(paths).len() > 0
 
 
+view_locations_stack = []
+
+
+class view_locations_stack_listener(sublime_plugin.EventListener):
+    def on_activated(self, v):
+        global view_locations_stack
+        if (
+            v
+            and v.file_name()
+            and (not view_locations_stack or view_locations_stack[-1] != v.file_name())
+        ):
+            view_locations_stack.append(v.file_name())
+            view_locations_stack = view_locations_stack[-5:]
+
+
 class SideBarCopyPathRelativeToLastSelectedViewCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.path())
+        try:
+            origin = view_locations_stack[-2]
 
-        sublime.active_window().run_command("next_view_in_stack")
+            items = []
+            for item in SideBarSelection(paths).getSelectedItems():
+                items.append(item.path())
 
-        origin = sublime.active_window().active_view().file_name()
-
-        temp = []
-        for index in range(len(items)):
-            if not os.path.samefile(items[index], origin):
-                temp.append(
-                    os.path.join(
-                        ".", os.path.relpath(items[index], os.path.dirname(origin))
+            temp = []
+            for index in range(len(items)):
+                if not os.path.samefile(items[index], origin):
+                    temp.append(
+                        os.path.join(
+                            ".", os.path.relpath(items[index], os.path.dirname(origin))
+                        )
                     )
-                )
-        items = temp
+            items = temp
 
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
+            if len(items) > 0:
+                sublime.set_clipboard("\n".join(items))
+                if len(items) > 1:
+                    sublime.status_message("Items copied")
+                else:
+                    sublime.status_message("Item copied")
+        except:
+            pass
 
     def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
+        return CACHED_SELECTION(paths).len() > 0 and len(view_locations_stack) > 1
 
 
 class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
