@@ -1,0 +1,4 @@
+[
+	{ "caption": "-", "id": "locate_in_sidebar_separator" },
+	{ "command": "reveal_in_side_bar", "caption": "Locate", "id": "locate_in_sidebar" }
+]
