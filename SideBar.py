@@ -305,7 +305,7 @@ class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
 class SideBarOpenCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         for item in SideBarSelection(paths).getSelectedItems():
-            item.open(s.get("use_powershell", True))
+            item.open(s.get("use_powershell", True), s.get("use_command", ""))
 
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).len() > 0

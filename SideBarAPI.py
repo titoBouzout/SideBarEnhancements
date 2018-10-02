@@ -504,7 +504,7 @@ class SideBarItem:
             .strip()
         )
 
-    def open(self, use_powershell=True):
+    def open(self, use_powershell=True, command=""):
         if self.isDirectory():
             import subprocess
 
@@ -517,7 +517,11 @@ class SideBarItem:
                     cwd=self.forCwdSystemPath(),
                 )
             elif sublime.platform() == "windows":
-                if use_powershell:
+                if command:
+                    subprocess.Popen(
+                        [command, "."], cwd=self.forCwdSystemPath(), shell=True
+                    )
+                elif use_powershell:
                     try:
                         subprocess.Popen(
                             ["start", "powershell"],
