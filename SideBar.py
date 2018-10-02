@@ -710,20 +710,16 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
                 position = sel[0].begin()
                 if position > 16 + len(searchTerm):
                     position = 16 + len(searchTerm)
-                if sublime.platform() == "osx":
-                    view.run_command(
-                        "side_bar_enhancements_write_to_view",
-                        {
-                            "content": match_result,
-                            "position": position,
-                            "searchTerm": searchTerm,
-                        },
-                    )
-                else:
-                    with Edit(view) as edit:
-                        edit.replace(sublime.Region(0, view.size()), match_result)
-                    sel.clear()
-                    sel.add(sublime.Region(position, position))
+
+                view.run_command(
+                    "side_bar_enhancements_write_to_view",
+                    {
+                        "content": match_result,
+                        "position": position,
+                        "searchTerm": searchTerm,
+                    },
+                )
+
                 view.set_name(searchTerm + " - IFS")
                 if Object.sidebar_instant_search_id == searchTerm:
                     view.erase_regions("sidebar_search_instant_highlight")
