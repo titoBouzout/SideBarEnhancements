@@ -808,9 +808,8 @@ class SideBarItem:
                         )
                     if len(window.views()) == 1:
                         window.new_file()
-                    window.focus_view(view)
-                    window.run_command("revert")
-                    window.run_command("close")
+                    view.run_command("revert")
+                    view.close()
 
                     # try to repaint
             try:

@@ -126,7 +126,7 @@ class OpenWithListener(sublime_plugin.EventListener):
                                 item["args"]["extensions"],
                                 item["args"]["args"],
                             )
-                            view.window().run_command("close")
+                            view.close()
                             break
                     except:
                         pass
