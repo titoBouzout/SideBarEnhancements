@@ -31,7 +31,26 @@
 		"caption": "-",
 		"id": "side-bar-new-separator"
 	},
-
+	{
+		"caption": "Save Views",
+		"id": "side-bar-folder-save",
+		"command": "side_bar_folder_save",
+		"args": {
+			"paths": []
+		}
+	},
+	{
+		"caption": "Close Views",
+		"id": "side-bar-folder-close",
+		"command": "side_bar_folder_close",
+		"args": {
+			"paths": []
+		}
+	},
+	{
+		"caption": "-",
+		"id": "side-bar-save-close-separator"
+	},
 	{
 		"caption": "Edit",
 		"id": "side-bar-edit",

@@ -826,8 +826,17 @@ class SideBarItem:
     def views(self):
         path = self.path()
         views = []
-        for window in sublime.windows():
-            for view in window.views():
-                if view.file_name() and path == view.file_name():
-                    views.append(view)
+        if self.isDirectory():
+            for window in sublime.windows():
+                for view in window.views():
+                    if view.file_name() and (
+                        view.file_name().find(path + "\\") == 0
+                        or view.file_name().find(path + "/") == 0
+                    ):
+                        views.append(view)
+        else:
+            for window in sublime.windows():
+                for view in window.views():
+                    if view.file_name() and path == view.file_name():
+                        views.append(view)
         return views

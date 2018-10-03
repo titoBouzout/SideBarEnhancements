@@ -264,6 +264,49 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
         return CACHED_SELECTION(paths).len() > 0
 
 
+class SideBarFolderSaveCommand(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+        views = []
+        for item in SideBarSelection(paths).getSelectedDirectories():
+            views = views + item.views()
+        for view in views:
+            view.run_command("save")
+
+    def is_enabled(self, paths=[]):
+        _views = []
+        has_dirty_view = False
+        for item in SideBarSelection(paths).getSelectedDirectories():
+            views = item.views()
+            _views = _views + views
+            for view in views:
+                if view.is_dirty():
+                    has_dirty_view = True
+        return (
+            CACHED_SELECTION(paths).hasDirectories()
+            and len(views) > 0
+            and has_dirty_view
+        )
+
+    def is_visible(self, paths=[]):
+        return not s.get("disabled_menuitem_folder_save", False)
+
+
+class SideBarFolderCloseCommand(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+        for item in SideBarSelection(paths).getSelectedDirectories():
+            for view in item.views():
+                view.close()
+
+    def is_enabled(self, paths=[]):
+        views = []
+        for item in SideBarSelection(paths).getSelectedDirectories():
+            views = views + item.views()
+        return CACHED_SELECTION(paths).hasDirectories() and len(views) > 0
+
+    def is_visible(self, paths=[]):
+        return not s.get("disabled_menuitem_folder_close", False)
+
+
 class SideBarEditCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         for item in SideBarSelection(paths).getSelectedFiles():
@@ -350,60 +393,60 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
             item.create()
             item.write(
                 """[
-    {"id": "side-bar-files-open-with",
-        "children":
-        [
+	{"id": "side-bar-files-open-with",
+		"children":
+		[
 
-            //application 1
-            {
-                "caption": "Photoshop",
-                "id": "side-bar-files-open-with-photoshop",
+			//application 1
+			{
+				"caption": "Photoshop",
+				"id": "side-bar-files-open-with-photoshop",
 
-                "command": "side_bar_files_open_with",
-                "args": {
-                                    "paths": [],
-                                    "application": "Adobe Photoshop CS5.app", // OSX
-                                    "extensions":"psd|png|jpg|jpeg",  //any file with these extensions
-                                    "args":[]
-                                },
-                "open_automatically" : false // will close the view/tab and launch the application
-            },
+				"command": "side_bar_files_open_with",
+				"args": {
+									"paths": [],
+									"application": "Adobe Photoshop CS5.app", // OSX
+									"extensions":"psd|png|jpg|jpeg",  //any file with these extensions
+									"args":[]
+								},
+				"open_automatically" : false // will close the view/tab and launch the application
+			},
 
-            //separator
-            {"caption":"-"},
+			//separator
+			{"caption":"-"},
 
-            //application 2
-            {
-                "caption": "SeaMonkey",
-                "id": "side-bar-files-open-with-seamonkey",
+			//application 2
+			{
+				"caption": "SeaMonkey",
+				"id": "side-bar-files-open-with-seamonkey",
 
-                "command": "side_bar_files_open_with",
-                "args": {
-                                    "paths": [],
-                                    "application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
-                                    "extensions":"", //open all even folders
-                                    "args":[]
-                                },
-                "open_automatically" : false // will close the view/tab and launch the application
-            },
-            //application n
-            {
-                "caption": "Chrome",
-                "id": "side-bar-files-open-with-chrome",
+				"command": "side_bar_files_open_with",
+				"args": {
+									"paths": [],
+									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
+									"extensions":"", //open all even folders
+									"args":[]
+								},
+				"open_automatically" : false // will close the view/tab and launch the application
+			},
+			//application n
+			{
+				"caption": "Chrome",
+				"id": "side-bar-files-open-with-chrome",
 
-                "command": "side_bar_files_open_with",
-                "args": {
-                                    "paths": [],
-                                    "application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
-                                    "extensions":".*", //any file with extension
-                                    "args":[]
-                        },
-                "open_automatically" : false // will close the view/tab and launch the application
-            },
+				"command": "side_bar_files_open_with",
+				"args": {
+									"paths": [],
+									"application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
+									"extensions":".*", //any file with extension
+									"args":[]
+						},
+				"open_automatically" : false // will close the view/tab and launch the application
+			},
 
-            {"caption":"-"}
-        ]
-    }
+			{"caption":"-"}
+		]
+	}
 ]"""
             )
         item.edit()
@@ -1360,7 +1403,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
         import imghdr
 
         """Determine the image type of fhandle and return its size.
-        from draco"""
+		from draco"""
         fhandle = open(fname, "rb")
         head = fhandle.read(24)
         if len(head) != 24:
