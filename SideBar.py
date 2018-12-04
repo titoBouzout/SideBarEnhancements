@@ -264,7 +264,7 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
         return CACHED_SELECTION(paths).len() > 0
 
 
-class SideBarFolderSaveCommand(sublime_plugin.WindowCommand):
+class SideBarFolderSaveViewsCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         views = []
         for item in SideBarSelection(paths).getSelectedDirectories():
@@ -291,7 +291,7 @@ class SideBarFolderSaveCommand(sublime_plugin.WindowCommand):
         return not s.get("disabled_menuitem_folder_save", False)
 
 
-class SideBarFolderCloseCommand(sublime_plugin.WindowCommand):
+class SideBarFolderCloseViewsCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         for item in SideBarSelection(paths).getSelectedDirectories():
             for view in item.views():
@@ -301,6 +301,33 @@ class SideBarFolderCloseCommand(sublime_plugin.WindowCommand):
         views = []
         for item in SideBarSelection(paths).getSelectedDirectories():
             views = views + item.views()
+        return CACHED_SELECTION(paths).hasDirectories() and len(views) > 0
+
+    def is_visible(self, paths=[]):
+        return not s.get("disabled_menuitem_folder_close", False)
+
+
+class SideBarFolderCloseOtherViewsCommand(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+
+        to_close = self.others_views(paths)
+        for view in to_close:
+            view.close()
+
+    def others_views(self, paths=[]):
+        window = Window()
+        opened = []
+        selected = []
+        for view in window.views():
+            opened.append(view)
+        for item in SideBarSelection(paths).getSelectedDirectories():
+            for view in item.views():
+                selected.append(view)
+
+        return [view for view in opened if view not in selected]
+
+    def is_enabled(self, paths=[]):
+        views = self.others_views(paths)
         return CACHED_SELECTION(paths).hasDirectories() and len(views) > 0
 
     def is_visible(self, paths=[]):

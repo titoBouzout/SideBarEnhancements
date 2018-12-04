@@ -21,17 +21,23 @@
 	{"caption": "-", "id": "side-bar-new-separator"},
 	{
 		"caption": "Save Views",
-		"id": "side-bar-folder-save",
-		"command": "side_bar_folder_save",
+		"id": "side-bar-folder-save-views",
+		"command": "side_bar_folder_save_views",
 		"args": {"paths": []}
 	},
 	{
 		"caption": "Close Views",
-		"id": "side-bar-folder-close",
-		"command": "side_bar_folder_close",
+		"id": "side-bar-folder-close-views",
+		"command": "side_bar_folder_close_views",
 		"args": {"paths": []}
 	},
-	{"caption": "-", "id": "side-bar-save-close-separator"},
+	{
+		"caption": "Close Other Views",
+		"id": "side-bar-folder-close-other-views",
+		"command": "side_bar_folder_close_other_views",
+		"args": {"paths": []}
+	},
+	{"caption": "-", "id": "side-bar-save-close-views-separator"},
 	{
 		"caption": "Edit",
 		"id": "side-bar-edit",
