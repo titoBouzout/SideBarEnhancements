@@ -178,11 +178,12 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
 
 ### Vars on "args" param
 
-- $PATH - The full path to the current file, e. g., C:\Files\Chapter1.txt.
+- $PATH - The full path to the current file, "C:\Files\Chapter1.txt"
 - $PROJECT - The root directory of the current project.
-- $DIRNAME - The directory of the current file, e. g., C:\Files.
-- $NAME - The name portion of the current file, e. g., Chapter1.txt.
-- $EXTENSION - The extension portion of the current file, e. g., txt.
+- $DIRNAME - The directory of the current file, "C:\Files"
+- $NAME - The name portion of the current file, "Chapter1.txt"
+- $NAME_NO_EXTENSION - The name portion of the current file without the extension, "Chapter1"
+- $EXTENSION - The extension portion of the current file, "txt"
 
 ## FAQ
 

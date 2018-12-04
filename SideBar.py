@@ -486,6 +486,10 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
                         "$DIRNAME",
                         item.path() if item.isDirectory() else item.dirname(),
                     )
+                    args[k] = args[k].replace(
+                        "$NAME_NO_EXTENSION",
+                        item.name().replace("." + item.extension(), ""),
+                    )
                     args[k] = args[k].replace("$NAME", item.name())
                     args[k] = args[k].replace("$EXTENSION", item.extension())
 
