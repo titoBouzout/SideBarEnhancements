@@ -42,8 +42,6 @@
 	"use_powershell": true,
 	"use_command": "",
 
-	"auto_close_empty_groups": false,
-
 	"copy_path_absolute_from_project_includes_line_number": false,
 
 	// if you donated set this value to "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW"
