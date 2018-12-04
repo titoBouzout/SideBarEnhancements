@@ -2463,6 +2463,23 @@ class SideBarOpenInBrowserThread(threading.Thread):
                     ]
                 )
                 commands = ["-new-tab", url]
+        elif browser == "firefox-developer-edition":
+            if sublime.platform() == "osx":
+                items.extend(["open"])
+                commands = ["-a", "/Applications/Firefox.app", url]
+            else:
+                if s.get("portable_browser", "") != "":
+                    items.extend([s.get("portable_browser", "")])
+                items.extend(
+                    [
+                        "%PROGRAMFILES%\\Firefox Developer Edition\\firefox.exe",
+                        "%PROGRAMFILES(X86)%\\Firefox Developer Edition\\firefox.exe",
+                        "/usr/bin/firefox",
+                        "firefox",
+                        "firefox.exe",
+                    ]
+                )
+                commands = ["-new-tab", url]
         elif browser == "firefox":
             if sublime.platform() == "osx":
                 items.extend(["open"])
@@ -2473,8 +2490,6 @@ class SideBarOpenInBrowserThread(threading.Thread):
                 items.extend(
                     [
                         "/usr/bin/firefox",
-                        "%PROGRAMFILES%\\Firefox Developer Edition\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Firefox Developer Edition\\firefox.exe",
                         "%PROGRAMFILES%\\Nightly\\firefox.exe",
                         "%PROGRAMFILES(X86)%\\Nightly\\firefox.exe",
                         "%PROGRAMFILES%\\Mozilla Firefox\\firefox.exe",

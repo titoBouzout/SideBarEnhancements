@@ -70,6 +70,15 @@
 					"browser": "firefox"
 				}
 			},
+			{
+				"caption": "Firefox Developer Edition",
+				"command": "side_bar_open_in_browser",
+				"args": {
+					"paths": [],
+					"type": "testing",
+					"browser": "firefox-developer-edition"
+				}
+			},
 			{"caption": "-"
 			},
 			{
