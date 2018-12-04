@@ -11,31 +11,25 @@ Chinese - <https://github.com/52fisher/SideBarEnhancements>
 
 ## Description
 
-### [Sublime Text 3+][] Package, It does NOT WORK with ST2, DOES NOT; Use Sublime Text 3 Please.
-
 Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. <http://www.sublimetext.com/>
 
 Notably provides delete as "move to trash", open with.. and a clipboard.
 
 Close, move, open and restore buffers affected by a rename/move command. (even on folders)
 
-Provides the basics: new file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh....
+New file/folder, edit, open/run, reveal, find in selected/parent/project, cut, copy, paste, paste in parent, rename, move, delete, refresh....
 
-The not so basic: copy paths as URIs, URLs, content as UTF8, content as <data:uri> base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate
+Copy paths as URIs, URLs, content as UTF8, content as <data:uri> base64 ( nice for embedding into CSS! ), copy as tags img/a/script/style, duplicate
 
 Preference to control if a buffer should be closed when affected by a deletion operation.
 
-Allows to display "file modified date" and "file size" on statusbar.
-
-![][]
+Allows to display "file modified date" and "file size" on statusbar (may be a bit buggy).
 
 ## Installation
 
 Download or clone the contents of this repository to a folder named exactly as the package name into the Packages/ folder of ST.
 
 Troubleshooting Installation:
-
-If you have problems with the installation, do this:
 
 -   First please note this package only adds a context menu to the "Folders" section and not to the "Open Files" section.
 -   Open the package folder. Main menu -\> Preferences -\> Browse Packages.
@@ -62,6 +56,7 @@ F12 key allows you to open the current file in browser.
 `url_production` allows you to set the url of your production server, opened via ALT+F12
 
 ### With absolute paths
+
 -   Right click any file on sidebar and select: "Project -\> Edit Projects Preview URLs"
 -   Edit this file, and add your paths and URLs with the following structure:
 
@@ -154,11 +149,11 @@ You may wish to add a key for opening "find in paths.."
 
 ## Notes on configuring the `Open With` menu:
 
-
 Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (note the extra subfolder levels). To open it, right-click on any file in an open project and select `Open With > Edit Applications...`
 
 -   On OSX, the 'application' property simply takes the *name* of an application, to which the file at hand's full path will be passed as if with `open ...`, e.g.: "application": "Google Chrome"
 -   On OSX, invoking *shell* commands is NOT supported.
+-	You should change Caption and id of the menu item to be unique.
 
 <!-- -->
 
@@ -185,16 +180,6 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
 - $NAME_NO_EXTENSION - The name portion of the current file without the extension, "Chapter1"
 - $EXTENSION - The extension portion of the current file, "txt"
 
-## FAQ
-
-Q: Why the menu is not shown on `Open Files`?
-
--   It should be mentioned that the package's context menu is only available for files and folders **in a project (section** `Folders` **in the side bar)**, and *not* on the open files listed at the top of the side bar, due to a limitation of ST.
-
-Q: Can the package stop "show preview in a **right** click to a file".
-
--   No, ​I'm sorry, can't figure out how to prevent it.
-
 ## Using the External Libraries
 
 (check each license in project pages)
@@ -216,28 +201,7 @@ Q: Can the package stop "show preview in a **right** click to a file".
 # Contributors:
 
 (Thank you so much!)
--   Aleksandar Urosevic
--   bofm
--   Dalibor Simacek
--   Devin Rhode
--   Eric Eldredge
--   Hewei Liu
--   Jeremy Gailor
--   Joao Antunes
--   Leif Ringstad
--   MauriceZ
--   Nick Zaccardi
--   Patrik Göthe
--   Peder Langdal
--   Randy Lai
--   Raphael DDL Oliveira
--   robwala
--   Stephen Horne
--   Sven Axelsson
--   Till Theis
--   Todd Wolfson
--   Tyler Thrailkill
--   Yaroslav Admin
+Aleksandar Urosevic, bofm, Dalibor Simacek, Devin Rhode, Eric Eldredge, Hewei Liu, Jeremy Gailor, Joao Antunes, Leif Ringstad, MauriceZ, Nick Zaccardi, Patrik Göthe, Peder Langdal, Randy Lai, Raphael DDL Oliveira, robwala, Stephen Horne, Sven Axelsson, Till Theis, Todd Wolfson, Tyler Thrailkill, Yaroslav Admin
 
 ## TODO
 
