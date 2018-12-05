@@ -293,9 +293,20 @@ class SideBarFolderSaveViewsCommand(sublime_plugin.WindowCommand):
 
 class SideBarFolderCloseViewsCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
+
+        collapsed = False
         for item in SideBarSelection(paths).getSelectedDirectories():
             for view in item.views():
+                if not collapsed:
+                    Window().focus_view(view)
+                    self.collapse_sidebar_folder()
+                    collapsed = True
                 view.close()
+
+    def collapse_sidebar_folder(self):
+        # Window().run_command("reveal_in_side_bar") the tree animation breaks the functionality
+        Window().run_command("focus_side_bar")
+        Window().run_command("move", {"by": "characters", "forward": False})
 
     def is_enabled(self, paths=[]):
         views = []
