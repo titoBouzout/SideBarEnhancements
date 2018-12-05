@@ -31,10 +31,10 @@
 	"disabled_menuitem_folder_save": false,
 	"disabled_menuitem_folder_close": false,
 
-	//if installed in a default location maybe this works.
-	//one of this list: firefox, firefox-developer-edition, chrome, canary, chromium, opera, safari, ie
+	//one of this list: firefox, firefox-developer-edition, chrome, canary, chromium, opera, safari, ie, edge
 	"default_browser": "",
-	//any of this list: firefox, chrome, canary, chromium, opera, safari, ie, edge
+
+	//any of this list: firefox, firefox-developer-edition, chrome, canary, chromium, opera, safari, ie, edge
 	"open_all_browsers": [
 		"firefox",
 		"firefox-developer-edition",
@@ -45,7 +45,7 @@
 		"edge"
 	],
 
-	"portable_browser": "", // for example:  C:/Program Files (x86)/Nightly/firefox.exe
+	"portable_browser": "", // (complete path to executable) for example:  C:/Program Files (x86)/Nightly/firefox.exe
 
 	"disable_send_to_trash": false,
 
