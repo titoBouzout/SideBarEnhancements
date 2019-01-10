@@ -1445,7 +1445,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
         import imghdr
 
         """Determine the image type of fhandle and return its size.
-		from draco"""
+        from draco"""
         fhandle = open(fname, "rb")
         head = fhandle.read(24)
         if len(head) != 24:
