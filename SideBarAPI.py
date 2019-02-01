@@ -360,9 +360,7 @@ class SideBarItem:
                         base = expandVars(key)
                     else:
                         base = os.path.normpath(
-                            expandVars(
-                                os.path.dirname(os.path.dirname(filename)) + "/" + key
-                            )
+                            expandVars(key)
                         )
                     base = (
                         base.replace("\\", "/")
