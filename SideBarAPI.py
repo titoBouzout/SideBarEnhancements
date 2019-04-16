@@ -354,21 +354,19 @@ class SideBarItem:
                     data, strict=False, object_pairs_hook=collections.OrderedDict
                 )
                 for key in list(data.keys()):
-                    # 	print('-------------------------------------------------------')
-                    # 	print(key);
+                    #   print('-------------------------------------------------------')
+                    #   print(key);
                     if filename == filenames[len(filenames) - 1]:
                         base = expandVars(key)
                     else:
-                        base = os.path.normpath(
-                            expandVars(key)
-                        )
+                        base = os.path.normpath(expandVars(key))
                     base = (
                         base.replace("\\", "/")
                         .replace("\\", "/")
                         .replace("//", "/")
                         .replace("//", "/")
                     )
-                    # 	print(base)
+                    #   print(base)
                     current = (
                         self.path()
                         .replace("\\", "/")
@@ -376,11 +374,11 @@ class SideBarItem:
                         .replace("//", "/")
                         .replace("//", "/")
                     )
-                    # 	print(current)
+                    #   print(current)
                     url_path = re.sub(
-                        re.compile("^.?*" + re.escape(base), re.IGNORECASE), "", current
+                        re.compile("^.*" + re.escape(base), re.IGNORECASE), "", current
                     )
-                    # 	print(url_path)
+                    #   print(url_path)
                     if url_path != current:
                         url = data[key][type]
                         if url:
