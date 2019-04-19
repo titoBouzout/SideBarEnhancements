@@ -376,7 +376,7 @@ class SideBarItem:
                     )
                     #   print(current)
                     url_path = re.sub(
-                        re.compile("^.*" + re.escape(base), re.IGNORECASE), "", current
+                        re.compile("^" + re.escape(base), re.IGNORECASE), "", current
                     )
                     #   print(url_path)
                     if url_path != current:
