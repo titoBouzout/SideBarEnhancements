@@ -431,60 +431,60 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
             item.create()
             item.write(
                 """[
-	{"id": "side-bar-files-open-with",
-		"children":
-		[
+    {"id": "side-bar-files-open-with",
+        "children":
+        [
 
-			//application 1
-			{
-				"caption": "Photoshop",
-				"id": "side-bar-files-open-with-photoshop",
+            //application 1
+            {
+                "caption": "Photoshop",
+                "id": "side-bar-files-open-with-photoshop",
 
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "Adobe Photoshop CS5.app", // OSX
-									"extensions":"psd|png|jpg|jpeg",  //any file with these extensions
-									"args":[]
-								},
-				"open_automatically" : false // will close the view/tab and launch the application
-			},
+                "command": "side_bar_files_open_with",
+                "args": {
+                                    "paths": [],
+                                    "application": "Adobe Photoshop CS5.app", // OSX
+                                    "extensions":"psd|png|jpg|jpeg",  //any file with these extensions
+                                    "args":[]
+                                },
+                "open_automatically" : false // will close the view/tab and launch the application
+            },
 
-			//separator
-			{"caption":"-"},
+            //separator
+            {"caption":"-"},
 
-			//application 2
-			{
-				"caption": "SeaMonkey",
-				"id": "side-bar-files-open-with-seamonkey",
+            //application 2
+            {
+                "caption": "SeaMonkey",
+                "id": "side-bar-files-open-with-seamonkey",
 
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
-									"extensions":"", //open all even folders
-									"args":[]
-								},
-				"open_automatically" : false // will close the view/tab and launch the application
-			},
-			//application n
-			{
-				"caption": "Chrome",
-				"id": "side-bar-files-open-with-chrome",
+                "command": "side_bar_files_open_with",
+                "args": {
+                                    "paths": [],
+                                    "application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
+                                    "extensions":"", //open all even folders
+                                    "args":[]
+                                },
+                "open_automatically" : false // will close the view/tab and launch the application
+            },
+            //application n
+            {
+                "caption": "Chrome",
+                "id": "side-bar-files-open-with-chrome",
 
-				"command": "side_bar_files_open_with",
-				"args": {
-									"paths": [],
-									"application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
-									"extensions":".*", //any file with extension
-									"args":[]
-						},
-				"open_automatically" : false // will close the view/tab and launch the application
-			},
+                "command": "side_bar_files_open_with",
+                "args": {
+                                    "paths": [],
+                                    "application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
+                                    "extensions":".*", //any file with extension
+                                    "args":[]
+                        },
+                "open_automatically" : false // will close the view/tab and launch the application
+            },
 
-			{"caption":"-"}
-		]
-	}
+            {"caption":"-"}
+        ]
+    }
 ]"""
             )
         item.edit()
@@ -594,13 +594,14 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-        window = Window()
-        views = []
-        for view in window.views():
-            if view.name() == "Find Results":
-                views.append(view)
-        for view in views:
-            view.close()
+        if s.get("keep_only_one_tab_with_search_results", False):
+            window = Window()
+            views = []
+            for view in window.views():
+                if view.name() == "Find Results":
+                    views.append(view)
+            for view in views:
+                view.close()
         items = []
         for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
             items.append(item.path())
