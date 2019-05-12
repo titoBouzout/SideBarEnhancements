@@ -594,12 +594,40 @@ class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-        if s.get("keep_only_one_tab_with_search_results", False):
+        if s.get("find_and_replace_discards_previous_search", False):
             window = Window()
             views = []
             for view in window.views():
                 if view.name() == "Find Results":
                     views.append(view)
+            for view in views:
+                view.close()
+
+        if s.get("find_and_replace_opens_in_new_view", True):
+            window = Window()
+            views = []
+            for view in window.views():
+                if view.name() == "Find Results":
+
+                    Window().focus_view(view)
+
+                    content = view.substr(sublime.Region(0, view.size()))
+
+                    _view = Window().new_file()
+                    with Edit(_view) as edit:
+                        edit.replace(sublime.Region(0, _view.size()), content)
+                    # the space at the end of the name prevents it from being reused by Sublime Text
+                    # it looks like instead of keeping an internal refrence they just look at the view name -__-
+                    _view.set_name("Find Results ")
+                    _view.set_syntax_file(
+                        "Packages/Default/Find Results.hidden-tmLanguage"
+                    )
+                    _view.sel().clear()
+                    for sel in view.sel():
+                        _view.sel().add(sel)
+                    _view.set_scratch(True)
+                    views.append(view)
+
             for view in views:
                 view.close()
         items = []
