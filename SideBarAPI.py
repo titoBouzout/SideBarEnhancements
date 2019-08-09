@@ -359,7 +359,11 @@ class SideBarItem:
                     if filename == filenames[len(filenames) - 1]:
                         base = expandVars(key)
                     else:
-                        base = os.path.normpath(expandVars(key))
+                        base = os.path.normpath(
+                            expandVars(
+                                os.path.dirname(os.path.dirname(filename)) + "/" + key
+                            )
+                        )
                     base = (
                         base.replace("\\", "/")
                         .replace("\\", "/")
