@@ -1432,7 +1432,7 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
             return
         if imghdr.what(fname) == "png":
             check = struct.unpack(">i", head[4:8])[0]
-            if check != 0x0d0a1a0a:
+            if check != 0x0D0A1A0A:
                 return
             width, height = struct.unpack(">ii", head[16:24])
         elif imghdr.what(fname) == "gif":
@@ -1442,10 +1442,10 @@ class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
                 fhandle.seek(0)  # Read 0xff next
                 size = 2
                 ftype = 0
-                while not 0xc0 <= ftype <= 0xcf:
+                while not 0xC0 <= ftype <= 0xCF:
                     fhandle.seek(size, 1)
                     byte = fhandle.read(1)
-                    while ord(byte) == 0xff:
+                    while ord(byte) == 0xFF:
                         byte = fhandle.read(1)
                     ftype = ord(byte)
                     size = struct.unpack(">H", fhandle.read(2))[0] - 2
@@ -2693,7 +2693,9 @@ class SideBarSaveAsAdminCommand(sublime_plugin.WindowCommand):
                 ]
             )
             f.close()
+        view.set_scratch(True)
         view.run_command("revert")
+        view.set_scratch(False)
 
     def is_visible(self):
         return platform.system() == "Windows" or os.name == "nt"
