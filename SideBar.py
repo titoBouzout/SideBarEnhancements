@@ -2636,11 +2636,12 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
             executable_path = app_path + "Contents/SharedSupport/bin/subl"
 
         items.append(executable_path)
+        items.append("-n")
 
         for item in SideBarSelection(paths).getSelectedItems():
             items.append(item.forCwdSystemPath())
             items.append(item.path())
-        subprocess.Popen(items, cwd=items[1])
+        subprocess.Popen(items, cwd=items[2])
 
     def is_visible(self, paths=[]):
         return not s.get("disabled_menuitem_open_in_new_window", False)
