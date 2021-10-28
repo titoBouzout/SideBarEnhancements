@@ -169,16 +169,20 @@ class SideBarSelection:
                     if item.path() not in _directories_or_dirnames:
                         _directories_or_dirnames.append(item.path())
                         self._directories_or_dirnames.append(item)
-                    _items_without_containing_child_items = self._itemsWithoutContainingChildItems(
-                        _items_without_containing_child_items, item.path()
+                    _items_without_containing_child_items = (
+                        self._itemsWithoutContainingChildItems(
+                            _items_without_containing_child_items, item.path()
+                        )
                     )
                 else:
                     item = SideBarItem(path, False)
                     if item.path() not in _files:
                         _files.append(item.path())
                         self._files.append(item)
-                    _items_without_containing_child_items = self._itemsWithoutContainingChildItems(
-                        _items_without_containing_child_items, item.path()
+                    _items_without_containing_child_items = (
+                        self._itemsWithoutContainingChildItems(
+                            _items_without_containing_child_items, item.path()
+                        )
                     )
                     item = SideBarItem(os.path.dirname(path), True)
                     if item.path() not in _directories_or_dirnames:
@@ -723,7 +727,7 @@ class SideBarItem:
             if location.exists():
                 self.moveRecursive(self.path(), location.path())
             else:
-                os.rename(self.path(), location.path())
+                shutil.move(self.path(), location.path())
             self._moveMoveViews(self.path(), location.path())
         return True
 
@@ -735,7 +739,7 @@ class SideBarItem:
                 pass
             if os.path.exists(_to):
                 os.remove(_to)
-            os.rename(_from, _to)
+            shutil.move(_from, _to)
         else:
             try:
                 self._makedirs(_to)
@@ -804,7 +808,7 @@ class SideBarItem:
                         )
                     if len(window.views()) == 1:
                         window.new_file()
-                    view.run_command("revert")
+                    view.set_scratch(True)
                     view.close()
 
                     # try to repaint
