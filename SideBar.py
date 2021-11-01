@@ -1952,7 +1952,13 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
                     ):
                         item.closeViews()
                     if sublime.platform() == "windows":
-                        self.remove("\\\\?\\" + item.path())
+                        try:
+                            # this is for deleting "large path names"
+                            self.remove("\\\\?\\" + item.path())
+                        except:
+                            # this is for deleting network paths
+                            self.remove(item.path())
+
                     else:
                         self.remove(item.path())
                 SideBarProject().refresh()
