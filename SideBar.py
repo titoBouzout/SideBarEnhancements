@@ -111,13 +111,14 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
         import functools
 
         Window().run_command("hide_panel")
-        Window().show_input_panel(
+        view = Window().show_input_panel(
             "File Name:",
             name,
             functools.partial(self.on_done, paths, False),
             None,
             None,
         )
+        Window().focus_view(view)
 
     def on_done(self, paths, relative_to_project, name):
         _paths = paths
@@ -162,13 +163,14 @@ class SideBarNewFile2Command(sublime_plugin.WindowCommand):
         import functools
 
         Window().run_command("hide_panel")
-        Window().show_input_panel(
+        view = Window().show_input_panel(
             "File Name:",
             name,
             functools.partial(SideBarNewFileCommand(Window()).on_done, paths, True),
             None,
             None,
         )
+        Window().focus_view(view)
 
 
 class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
@@ -176,7 +178,7 @@ class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
         import functools
 
         Window().run_command("hide_panel")
-        Window().show_input_panel(
+        view = Window().show_input_panel(
             "Folder Name:",
             name,
             functools.partial(
@@ -185,6 +187,7 @@ class SideBarNewDirectory2Command(sublime_plugin.WindowCommand):
             None,
             None,
         )
+        Window().focus_view(view)
 
 
 class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
@@ -192,13 +195,14 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
         import functools
 
         Window().run_command("hide_panel")
-        Window().show_input_panel(
+        view = Window().show_input_panel(
             "Folder Name:",
             name,
             functools.partial(self.on_done, paths, False),
             None,
             None,
         )
+        Window().focus_view(view)
 
     def on_done(self, paths, relative_to_project, name):
         _paths = paths
@@ -456,9 +460,6 @@ class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
 
 
 class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[], application="", extensions=""):
-        self.run(self, paths, application, extensions, args=[])
-
     def run(self, paths=[], application="", extensions="", args=[]):
         application_dir, application_name = os.path.split(application)
 
@@ -1625,6 +1626,8 @@ class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
             None,
             None,
         )
+        Window().focus_view(view)
+
         view.sel().clear()
         view.sel().add(
             sublime.Region(
@@ -1698,6 +1701,8 @@ class SideBarRenameCommand(sublime_plugin.WindowCommand):
             None,
             None,
         )
+        Window().focus_view(view)
+
         view.sel().clear()
         view.sel().add(
             sublime.Region(
@@ -1759,9 +1764,10 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
         import functools
 
         Window().run_command("hide_panel")
-        Window().show_input_panel(
+        view = Window().show_input_panel(
             "Find:", "", functools.partial(self.on_find, paths), None, None
         )
+        Window().focus_view(view)
 
     def on_find(self, paths, find):
         if not find:
@@ -1769,9 +1775,10 @@ class SideBarMassRenameCommand(sublime_plugin.WindowCommand):
         import functools
 
         Window().run_command("hide_panel")
-        Window().show_input_panel(
+        view = Window().show_input_panel(
             "Replace:", "", functools.partial(self.on_replace, paths, find), None, None
         )
+        Window().focus_view(view)
 
     def on_replace(self, paths, find, replace):
         key = "mass-renaming-" + str(time.time())
@@ -1846,6 +1853,8 @@ class SideBarMoveCommand(sublime_plugin.WindowCommand):
             None,
             None,
         )
+        Window().focus_view(view)
+
         view.sel().clear()
         view.sel().add(
             sublime.Region(
