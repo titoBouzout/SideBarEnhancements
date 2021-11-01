@@ -563,10 +563,12 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
                     Window().focus_view(view)
 
                     content = view.substr(sublime.Region(0, view.size()))
-
                     _view = Window().new_file()
-                    with Edit(_view) as edit:
-                        edit.replace(sublime.Region(0, _view.size()), content)
+
+                    _view.settings().set("auto_indent", False)
+                    _view.run_command("insert", {"characters": content})
+                    _view.settings().erase("auto_indent")
+
                     # the space at the end of the name prevents it from being reused by Sublime Text
                     # it looks like instead of keeping an internal refrence they just look at the view name -__-
                     _view.set_name("Find Results ")
@@ -581,6 +583,8 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 
             for view in views:
                 view.close()
+
+        # fill form
         items = []
         for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
             items.append(item.path())
