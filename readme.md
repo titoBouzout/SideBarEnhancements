@@ -194,14 +194,15 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
 
 # Contributors:
 
-(Thank you so much!)
+Thank you so much!
+
 Aleksandar Urosevic, bofm, Dalibor Simacek, Devin Rhode, Eric Eldredge, Hewei Liu, Jeremy Gailor, Joao Antunes, Leif Ringstad, MauriceZ, Nick Zaccardi, Patrik Göthe, Peder Langdal, Randy Lai, Raphael DDL Oliveira, robwala, Stephen Horne, Sven Axelsson, Till Theis, Todd Wolfson, Tyler Thrailkill, Yaroslav Admin
 
 ## License
 
 "None are so hopelessly enslaved as those who falsely believe they are free." Johann Wolfgang von Goethe
 
-Copyright (C) 2014 Tito Bouzout [tito.bouzout@gmail.com][]
+Copyright (C) 2014-2022 Tito Bouzout
 
 This license apply to all the files inside this program unless noted different for some files or portions of code inside these files.
 
@@ -211,15 +212,6 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/gpl.html>
 
-## Helpful!? Support, Many thanks ^\_^
+## Helpful!? Donate to support this project
 
-[Donate to support this project.][]
-
-[sublime text 3+]: http://www.sublimetext.com/
-
-[]: https://www.dropbox.com/s/ckz5n2ncn2pxkii/sidebar.png?dl=1
-[desktop]: http://pypi.python.org/pypi/desktop
-[Send2Trash]: http://pypi.python.org/pypi/Send2Trash
-[bfg-pages]: http://code.google.com/p/bfg-pages/
-[tito.bouzout@gmail.com]: tito.bouzout@gmail.com
-[Donate to support this project.]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW
