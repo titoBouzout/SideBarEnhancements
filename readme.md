@@ -1,13 +1,5 @@
 # Sidebar Enhancements
 
-### In other languages
-
-Japanese - <http://taamemo.blogspot.jp/2012/10/sublime-text-2-sidebarenhancements.html?m=1>
-
-Russian - <https://www.youtube.com/watch?v=8I0dJTd58kI&feature=youtu.be&a>
-
-Chinese - <https://github.com/52fisher/SideBarEnhancements>
-
 ## Description
 
 Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text. <http://www.sublimetext.com/>
@@ -23,6 +15,11 @@ Copy paths as URIs, URLs, content as UTF8, content as <data:uri> base64 ( nice f
 Preference to control if a buffer should be closed when affected by a deletion operation.
 
 Allows to display "file modified date" and "file size" on statusbar (may be a bit buggy).
+
+To get rid of the stock ST menuitems create two empty files on "Preferences -> Browse Packages"
+
+- `Default/Side Bar Mount Point.sublime-menu`
+- `Default/Side Bar.sublime-menu`
 
 ## Installation
 
@@ -189,7 +186,7 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
 
 ## Source-code
 
-<https://github.com/SideBarEnhancements-org/SideBarEnhancements>
+<https://github.com/SideBarEnhancements/SideBarEnhancements>
 
 ## Forum Thread
 
@@ -202,7 +199,7 @@ Aleksandar Urosevic, bofm, Dalibor Simacek, Devin Rhode, Eric Eldredge, Hewei Li
 
 ## TODO
 
-<https://github.com/SideBarEnhancements-org/SideBarEnhancements/issues/223>
+<https://github.com/SideBarEnhancements/SideBarEnhancements/issues/223>
 
 ## License
 
