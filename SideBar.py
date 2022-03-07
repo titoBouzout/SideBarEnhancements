@@ -2214,7 +2214,7 @@ class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
         for item in SideBarSelection(paths).getSelectedDirectories():
             project.add(item.path())
 
-    def is_enabled(self, paths=[]):
+    def is_visible(self, paths=[]):
         return (
             CACHED_SELECTION(paths).hasDirectories()
             and CACHED_SELECTION(paths).hasProjectDirectories() is False
@@ -2225,7 +2225,7 @@ class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         Window().run_command("remove_folder", {"dirs": paths})
 
-    def is_enabled(self, paths=[]):
+    def is_visible(self, paths=[]):
         selection = CACHED_SELECTION(paths)
         project = SideBarProject()
         return project.hasDirectories() and all(

@@ -585,6 +585,12 @@
 		"command": "side_bar_project_item_add",
 		"args": { "paths": [] }
 	},
+	{
+		"caption": "Unpromote",
+		"command": "side_bar_project_item_remove_folder",
+		"args": { "paths": [] }
+	},
+
 	{ "caption": "-", "id": "side-bar-donate-separator" },
 	{
 		"caption": "Give 20",
