@@ -197,10 +197,6 @@ Definitions file: `User/SideBarEnhancements/Open With/Side Bar.sublime-menu` (no
 (Thank you so much!)
 Aleksandar Urosevic, bofm, Dalibor Simacek, Devin Rhode, Eric Eldredge, Hewei Liu, Jeremy Gailor, Joao Antunes, Leif Ringstad, MauriceZ, Nick Zaccardi, Patrik Göthe, Peder Langdal, Randy Lai, Raphael DDL Oliveira, robwala, Stephen Horne, Sven Axelsson, Till Theis, Todd Wolfson, Tyler Thrailkill, Yaroslav Admin
 
-## TODO
-
-<https://github.com/SideBarEnhancements/SideBarEnhancements/issues/223>
-
 ## License
 
 "None are so hopelessly enslaved as those who falsely believe they are free." Johann Wolfgang von Goethe
