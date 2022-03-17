@@ -518,8 +518,10 @@ class SideBarItem:
                 )
             elif sublime.platform() == "windows":
                 if command:
+                    command = [command] + ["."]
+                    flat_command = [item for sublist in command for item in sublist]
                     subprocess.Popen(
-                        [command, "."], cwd=self.forCwdSystemPath(), shell=True
+                        flat_command, cwd=self.forCwdSystemPath(), shell=True
                     )
                 elif use_powershell:
                     try:
