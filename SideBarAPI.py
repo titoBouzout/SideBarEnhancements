@@ -27,7 +27,6 @@ BINARY = re.compile(
 
 class SideBarSelection:
     def __init__(self, paths=[]):
-
         if not paths or len(paths) < 1:
             try:
                 path = sublime.active_window().active_view().file_name()
@@ -320,7 +319,6 @@ class SideBarItem:
         return False
 
     def url(self, type):
-
         filenames = []
 
         # scans a la htaccess
@@ -532,13 +530,25 @@ class SideBarItem:
                         )
                     except:
                         subprocess.Popen(
-                            ["start", "cmd", "."],
+                            [
+                                "start",
+                                "%AppData%/../Local/Microsoft/WindowsApps/wt.exe",
+                                "-d",
+                                ".",
+                            ],
                             cwd=self.forCwdSystemPath(),
                             shell=True,
                         )
                 else:
                     subprocess.Popen(
-                        ["start", "cmd", "."], cwd=self.forCwdSystemPath(), shell=True
+                        [
+                            "start",
+                            "%AppData%/../Local/Microsoft/WindowsApps/wt.exe",
+                            "-d",
+                            ".",
+                        ],
+                        cwd=self.forCwdSystemPath(),
+                        shell=True,
                     )
             elif sublime.platform() == "linux":
                 subprocess.Popen(["gnome-terminal", "."], cwd=self.forCwdSystemPath())
@@ -551,7 +561,10 @@ class SideBarItem:
                 import subprocess
 
                 subprocess.Popen(
-                    ["start", "", escapeCMDWindows(self.path())],
+                    [
+                        "start",
+                        escapeCMDWindows(self.path()),
+                    ],
                     cwd=self.dirname(),
                     shell=True,
                 )
@@ -690,7 +703,6 @@ class SideBarItem:
         return True
 
     def copyRecursive(self, _from, _to):
-
         if os.path.isfile(_from) or os.path.islink(_from):
             try:
                 self._makedirs(os.path.dirname(_to))
