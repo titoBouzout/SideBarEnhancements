@@ -74,13 +74,14 @@ def trash_move(src, dst, topdir=None):
 
     check_create(filespath)
     check_create(infopath)
+    f = open(op.join(infopath, destname + INFO_SUFFIX), 'w')
+    f.write(info_for(src, topdir))
+    f.close()
+
     try:
         os.rename(src, op.join(filespath, destname))
     except:
         shutil.move(src, op.join(filespath, destname))
-    f = open(op.join(infopath, destname + INFO_SUFFIX), 'w')
-    f.write(info_for(src, topdir))
-    f.close()
 
 def find_mount_point(path):
     # Even if something's wrong, "/" is a mount point, so the loop will exit.
