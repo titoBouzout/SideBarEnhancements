@@ -262,7 +262,6 @@ class SideBarFolderSaveViewsCommand(sublime_plugin.WindowCommand):
 
 class SideBarFolderCloseViewsCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-
         collapsed = False
         for item in SideBarSelection(paths).getSelectedDirectories():
             for view in item.views():
@@ -289,7 +288,6 @@ class SideBarFolderCloseViewsCommand(sublime_plugin.WindowCommand):
 
 class SideBarFolderCloseOtherViewsCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-
         to_close = self.others_views(paths)
         for view in to_close:
             view.close()
@@ -328,7 +326,6 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 
 class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-
         window = Window()
         window.run_command(
             "set_layout",
@@ -595,7 +592,6 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
             views = []
             for view in window.views():
                 if view.name() == "Find Results":
-
                     Window().focus_view(view)
 
                     content = view.substr(sublime.Region(0, view.size()))
@@ -712,7 +708,6 @@ Object.sidebar_instant_search_id = 0
 
 class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-
         if paths == [] and SideBarProject().getDirectories():
             paths = SideBarProject().getDirectories()
         else:
@@ -1953,7 +1948,6 @@ class SideBarDeleteThread(threading.Thread):
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[], confirmed="False"):
-
         if confirmed == "False" and s.get("confirm_before_deleting", True):
             if sublime.platform() == "osx":
                 if sublime.ok_cancel_dialog("Delete the selected items?"):
@@ -2116,7 +2110,6 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 
 class SideBarEmptyCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[], confirmed="False"):
-
         if confirmed == "False" and s.get("confirm_before_deleting", True):
             if sublime.platform() == "osx":
                 if sublime.ok_cancel_dialog("empty the content of the folder?"):
@@ -2368,7 +2361,6 @@ class SideBarOpenBrowsersCommand(sublime_plugin.WindowCommand):
 
 class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[], type=False, browser=""):
-
         if not browser:
             browser = s.get("default_browser", "")
 
@@ -2738,7 +2730,7 @@ class SideBarSaveAsAdminCommand(sublime_plugin.WindowCommand):
 
         view = sublime.active_window().active_view()
         path = os.path.dirname(__file__) + "/"
-        with (tempfile.NamedTemporaryFile(delete=False)) as f:
+        with tempfile.NamedTemporaryFile(delete=False) as f:
             f.write(bytes(view.substr(sublime.Region(0, view.size())), "UTF-8"))
             cli(
                 [

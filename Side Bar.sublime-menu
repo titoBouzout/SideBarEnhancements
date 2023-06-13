@@ -174,14 +174,20 @@
 		"id": "side-bar-files-open-with",
 
 		"children": [
-			{ "caption": "-", "id": "side-bar-files-open-with-edit-application-separator" },
+			{
+				"caption": "-",
+				"id": "side-bar-files-open-with-edit-application-separator"
+			},
 			{
 				"caption": "Edit Applications…",
 				"id": "side-bar-files-open-with-edit-applications",
 				"command": "side_bar_files_open_with_edit_applications",
 				"args": { "paths": [] }
 			},
-			{ "caption": "-", "id": "side-bar-files-open-with-edit-applications-separator" }
+			{
+				"caption": "-",
+				"id": "side-bar-files-open-with-edit-applications-separator"
+			}
 		]
 	},
 	{
@@ -301,7 +307,10 @@
 				"command": "side_bar_copy_path_relative_to_last_selected_view",
 				"args": { "paths": [] }
 			},
-			{ "caption": "-", "id": "side-bar-clip-copy-path-relative-to-last-selected-view-separator" },
+			{
+				"caption": "-",
+				"id": "side-bar-clip-copy-path-relative-to-last-selected-view-separator"
+			},
 			{
 				"caption": "Relative Path From View Encoded",
 				"id": "side-bar-clip-copy-path-relative-from-view-encoded",
@@ -314,7 +323,10 @@
 				"command": "side_bar_copy_path_relative_from_view",
 				"args": { "paths": [] }
 			},
-			{ "caption": "-", "id": "side-bar-clip-copy-path-relative-from-view-separator" },
+			{
+				"caption": "-",
+				"id": "side-bar-clip-copy-path-relative-from-view-separator"
+			},
 
 			{
 				"caption": "Relative Path From Project Encoded",
@@ -328,7 +340,10 @@
 				"command": "side_bar_copy_path_relative_from_project",
 				"args": { "paths": [] }
 			},
-			{ "caption": "-", "id": "side-bar-clip-copy-path-relative-from-project-separator" },
+			{
+				"caption": "-",
+				"id": "side-bar-clip-copy-path-relative-from-project-separator"
+			},
 
 			{
 				"caption": "Absolute Path From Project Encoded",
@@ -342,7 +357,10 @@
 				"command": "side_bar_copy_path_absolute_from_project",
 				"args": { "paths": [] }
 			},
-			{ "caption": "-", "id": "side-bar-clip-copy-path-absolute-from-project-separator" },
+			{
+				"caption": "-",
+				"id": "side-bar-clip-copy-path-absolute-from-project-separator"
+			},
 
 			{
 				"caption": "Path as URI",
@@ -417,7 +435,10 @@
 				"command": "side_bar_copy_project_directories",
 				"args": { "paths": [] }
 			},
-			{ "caption": "-", "id": "side-bar-clip-copy-project-directories-separator" },
+			{
+				"caption": "-",
+				"id": "side-bar-clip-copy-project-directories-separator"
+			},
 			{
 				"caption": "Content as UTF-8",
 				"id": "side-bar-clip-copy-content-utf8",
