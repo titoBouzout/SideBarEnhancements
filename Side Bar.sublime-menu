@@ -20,25 +20,6 @@
 	},
 	{ "caption": "-", "id": "side-bar-new-separator" },
 	{
-		"caption": "Save Views",
-		"id": "side-bar-folder-save-views",
-		"command": "side_bar_folder_save_views",
-		"args": { "paths": [] }
-	},
-	{
-		"caption": "Close Views",
-		"id": "side-bar-folder-close-views",
-		"command": "side_bar_folder_close_views",
-		"args": { "paths": [] }
-	},
-	{
-		"caption": "Close Other Views",
-		"id": "side-bar-folder-close-other-views",
-		"command": "side_bar_folder_close_other_views",
-		"args": { "paths": [] }
-	},
-	{ "caption": "-", "id": "side-bar-save-close-views-separator" },
-	{
 		"caption": "Edit",
 		"id": "side-bar-edit",
 		"command": "side_bar_edit",
@@ -50,112 +31,12 @@
 		"command": "side_bar_edit_to_right",
 		"args": { "paths": [] }
 	},
+	{ "caption": "-" },
 	{
 		"caption": "Open / Run",
 		"id": "side-bar-open",
 		"command": "side_bar_open",
 		"args": { "paths": [] }
-	},
-	{
-		"caption": "Open In Browser",
-		"id": "side-bar-open-in-browser",
-		"children": [
-			{
-				"caption": "Default",
-				"command": "side_bar_open_in_browser",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-" },
-			{
-				"caption": "Firefox",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "firefox"
-				}
-			},
-			{
-				"caption": "Firefox Developer Edition",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "firefox-developer-edition"
-				}
-			},
-			{ "caption": "-" },
-			{
-				"caption": "Chromium",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "chromium"
-				}
-			},
-			{
-				"caption": "Chrome",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "chrome"
-				}
-			},
-			{
-				"caption": "Canary",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "canary"
-				}
-			},
-			{ "caption": "-" },
-			{
-				"caption": "Opera",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "opera"
-				}
-			},
-			{
-				"caption": "Safari",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "safari"
-				}
-			},
-			{ "caption": "-" },
-			{
-				"caption": "Internet Explorer",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "ie"
-				}
-			},
-			{
-				"caption": "Edge",
-				"command": "side_bar_open_in_browser",
-				"args": {
-					"paths": [],
-					"type": "testing",
-					"browser": "edge"
-				}
-			},
-			{ "caption": "-" },
-			{
-				"caption": "Open In All Browsers",
-				"command": "side_bar_open_browsers"
-			}
-		]
 	},
 	{
 		"caption": "Open In New Window",
@@ -165,40 +46,11 @@
 	},
 	{
 		"caption": "Open With Finder",
-		"id": "side-bar-open-with-finde",
+		"id": "side-bar-open-with-finder",
 		"command": "side_bar_open_with_finder",
 		"args": { "paths": [] }
 	},
-	{
-		"caption": "Open With",
-		"id": "side-bar-files-open-with",
-
-		"children": [
-			{
-				"caption": "-",
-				"id": "side-bar-files-open-with-edit-application-separator"
-			},
-			{
-				"caption": "Edit Applications…",
-				"id": "side-bar-files-open-with-edit-applications",
-				"command": "side_bar_files_open_with_edit_applications",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "-",
-				"id": "side-bar-files-open-with-edit-applications-separator"
-			}
-		]
-	},
-	{
-		"caption": "Reveal",
-		"id": "side-bar-reveal",
-		"command": "side_bar_reveal",
-		"args": { "paths": [] }
-	},
-
 	{ "caption": "-", "id": "side-bar-edit-open-separator" },
-
 	{
 		"caption": "Find & Replace…",
 		"id": "side-bar-find-selected",
@@ -210,55 +62,6 @@
 		"id": "side-bar-find-files",
 		"command": "side_bar_find_files_path_containing",
 		"args": { "paths": [] }
-	},
-	{
-		"caption": "Find Advanced",
-		"id": "side-bar-find-advanced",
-		"children": [
-			{
-				"caption": "In Parent Folder…",
-				"id": "side-bar-find-parent",
-				"command": "side_bar_find_in_parent",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-find-parent-separator" },
-			{
-				"caption": "In Project…",
-				"id": "side-bar-find-in-project",
-				"command": "side_bar_find_in_project",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "In Project Folder…",
-				"id": "side-bar-find-project-folder",
-				"command": "side_bar_find_in_project_folder",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "In Project Folders…",
-				"id": "side-bar-find-project-folders",
-				"command": "side_bar_find_in_project_folders"
-			},
-			{ "caption": "-", "id": "side-bar-find-project-separator" },
-			{
-				"id": "side-bar-find-in-files-with-extension",
-				"command": "side_bar_find_in_files_with_extension",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "In Paths Containing…",
-				"id": "side-bar-find-files-path-containing",
-				"command": "side_bar_find_files_path_containing",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-mass-rename-separator" },
-			{
-				"caption": "Mass Rename Selection…",
-				"id": "side-bar-mass-rename",
-				"command": "side_bar_mass_rename",
-				"args": { "paths": [] }
-			}
-		]
 	},
 	{ "caption": "-", "id": "side-bar-find-separator" },
 	{
@@ -273,6 +76,7 @@
 		"command": "side_bar_copy",
 		"args": { "paths": [] }
 	},
+	{ "caption": "-" },
 	{
 		"caption": "Copy Name",
 		"id": "side-bar-clip-copy-name",
@@ -286,191 +90,17 @@
 		"args": { "paths": [] }
 	},
 	{
-		"caption": "Copy Path (Windows)",
-		"id": "side-bar-clip-copy-path-windows",
-		"command": "side_bar_copy_path_absolute_from_project_encoded_windows",
+		"caption": "Copy as Data URI",
+		"id": "side-bar-clip-copy-content-base-64",
+		"command": "side_bar_copy_content_base64",
 		"args": { "paths": [] }
 	},
-	{
-		"caption": "Copy Dir Path",
-		"id": "side-bar-clip-copy-dir-path",
-		"command": "side_bar_copy_dir_path",
-		"args": { "paths": [] }
-	},
-	{
-		"caption": "Copy as Text",
-		"id": "side-bar-clip-copy-as",
-		"children": [
-			{
-				"caption": "Relative Path To Last Selected View",
-				"id": "side-bar-clip-copy-path-relative-to-last-selected-view",
-				"command": "side_bar_copy_path_relative_to_last_selected_view",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "-",
-				"id": "side-bar-clip-copy-path-relative-to-last-selected-view-separator"
-			},
-			{
-				"caption": "Relative Path From View Encoded",
-				"id": "side-bar-clip-copy-path-relative-from-view-encoded",
-				"command": "side_bar_copy_path_relative_from_view_encoded",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Relative Path From View",
-				"id": "side-bar-clip-copy-path-relative-from-view",
-				"command": "side_bar_copy_path_relative_from_view",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "-",
-				"id": "side-bar-clip-copy-path-relative-from-view-separator"
-			},
-
-			{
-				"caption": "Relative Path From Project Encoded",
-				"id": "side-bar-clip-copy-path-relative-from-project-encoded",
-				"command": "side_bar_copy_path_relative_from_project_encoded",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Relative Path From Project",
-				"id": "side-bar-clip-copy-path-relative-from-project",
-				"command": "side_bar_copy_path_relative_from_project",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "-",
-				"id": "side-bar-clip-copy-path-relative-from-project-separator"
-			},
-
-			{
-				"caption": "Absolute Path From Project Encoded",
-				"id": "side-bar-clip-copy-path-absolute-from-project-encoded",
-				"command": "side_bar_copy_path_absolute_from_project_encoded",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Absolute Path From Project",
-				"id": "side-bar-clip-copy-path-absolute-from-project",
-				"command": "side_bar_copy_path_absolute_from_project",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "-",
-				"id": "side-bar-clip-copy-path-absolute-from-project-separator"
-			},
-
-			{
-				"caption": "Path as URI",
-				"id": "side-bar-clip-copy-path-encoded",
-				"command": "side_bar_copy_path_encoded",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Path",
-				"id": "side-bar-clip-copy-path",
-				"command": "side_bar_copy_path",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Path Quoted",
-				"id": "side-bar-clip-copy-path-quoted",
-				"command": "side_bar_copy_path_quoted",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-clip-copy-path-separator" },
-
-			{
-				"caption": "Name Encoded",
-				"id": "side-bar-clip-copy-name-encoded",
-				"command": "side_bar_copy_name_encoded",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-clip-copy-name-encoded-separator" },
-
-			{
-				"caption": "URL",
-				"id": "side-bar-clip-copy-url",
-				"command": "side_bar_copy_url",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "URL Decoded",
-				"id": "side-bar-clip-copy-url-decoded",
-				"command": "side_bar_copy_url_decoded",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-clip-copy-url-separator" },
-
-			{
-				"caption": "Tag a",
-				"id": "side-bar-clip-copy-tag-a",
-				"command": "side_bar_copy_tag_ahref",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Tag img",
-				"id": "side-bar-clip-copy-tag-img",
-				"command": "side_bar_copy_tag_img",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Tag script",
-				"id": "side-bar-clip-copy-tag-script",
-				"command": "side_bar_copy_tag_script",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Tag style",
-				"id": "side-bar-clip-copy-tag-style",
-				"command": "side_bar_copy_tag_style",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-clip-copy-tag-separator" },
-			{
-				"caption": "Project Folders",
-				"id": "side-bar-clip-copy-project-directories",
-				"command": "side_bar_copy_project_directories",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "-",
-				"id": "side-bar-clip-copy-project-directories-separator"
-			},
-			{
-				"caption": "Content as UTF-8",
-				"id": "side-bar-clip-copy-content-utf8",
-				"command": "side_bar_copy_content_utf8",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Content as Data URI",
-				"id": "side-bar-clip-copy-content-base-64",
-				"command": "side_bar_copy_content_base64",
-				"args": { "paths": [] }
-			}
-		]
-	},
-
+	{ "caption": "-" },
 	{
 		"caption": "Paste",
 		"id": "side-bar-clip-paste",
 		"command": "side_bar_paste",
-		"args": {
-			"paths": [],
-			"in_parent": "False"
-		}
-	},
-	{
-		"caption": "Paste in Parent",
-		"id": "side-bar-clip-paste-in-parent",
-		"command": "side_bar_paste",
-		"args": {
-			"paths": [],
-			"in_parent": "True"
-		}
+		"args": { "paths": [] }
 	},
 	{ "caption": "-", "id": "side-bar-clip-separator" },
 	{
@@ -487,10 +117,17 @@
 		"command": "side_bar_rename",
 		"args": { "paths": [] }
 	},
+
 	{
 		"caption": "Move…",
 		"id": "side-bar-move",
 		"command": "side_bar_move",
+		"args": { "paths": [] }
+	},
+	{
+		"caption": "Mass Rename…",
+		"id": "side-bar-mass-rename",
+		"command": "side_bar_mass_rename",
 		"args": { "paths": [] }
 	},
 	{ "caption": "-", "id": "side-bar-rename-move-separator" },
@@ -501,105 +138,21 @@
 		"command": "side_bar_delete",
 		"args": { "paths": [] }
 	},
-	{
-		"caption": "Empty",
-		"id": "side-bar-empty",
-		"command": "side_bar_empty",
-		"args": { "paths": [] }
-	},
 	{ "caption": "-", "id": "side-bar-delete-separator" },
 	{
 		"caption": "Refresh",
 		"id": "side-bar-refresh",
 		"command": "refresh_folder_list"
 	},
-	{ "caption": "-", "id": "side-bar-refresh-separator" },
+	{ "caption": "-", "id": "side-bar-reveal-separator" },
 
 	{
-		"caption": "Project",
-		"id": "side-bar-project",
-		"children": [
-			{
-				"caption": "Edit Project",
-				"id": "side-bar-project-open-file",
-				"command": "side_bar_project_open_file",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Edit Preview URLs",
-				"id": "side-bar-preview-edit-urls",
-				"command": "side_bar_preview_edit_urls",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-project-open-file-separator" },
-			{
-				"command": "prompt_add_folder",
-				"caption": "Add Folder to Project…",
-				"mnemonic": "d"
-			},
-			{ "caption": "-", "id": "side-bar-promote-as-project-folder-separator" },
-			{
-				"caption": "Promote as Project Folder",
-				"id": "side-bar-project-item-add",
-				"command": "side_bar_project_item_add",
-				"args": { "paths": [] }
-			},
-			{
-				"caption": "Hide From Sidebar (In theory exclude from project)",
-				"id": "side-bar-project-item-exclude",
-				"command": "side_bar_project_item_exclude",
-				"args": { "paths": [] }
-			},
-			{ "caption": "-", "id": "side-bar-project-item-separator" },
-			{
-				"id": "side-bar-project-item-exclude-from-index-item",
-				"command": "side_bar_project_item_exclude_from_index",
-				"args": {
-					"paths": [],
-					"type": "item"
-				}
-			},
-			{
-				"id": "side-bar-project-item-exclude-from-index-relative",
-				"command": "side_bar_project_item_exclude_from_index",
-				"args": {
-					"paths": [],
-					"type": "relative"
-				}
-			},
-			{
-				"id": "side-bar-project-item-exclude-from-index-directory",
-				"command": "side_bar_project_item_exclude_from_index",
-				"args": {
-					"paths": [],
-					"type": "directory"
-				}
-			},
-			{
-				"id": "side-bar-project-item-exclude-from-index-file",
-				"command": "side_bar_project_item_exclude_from_index",
-				"args": {
-					"paths": [],
-					"type": "file"
-				}
-			},
-			{
-				"id": "side-bar-project-item-exclude-from-index-extension",
-				"command": "side_bar_project_item_exclude_from_index",
-				"args": {
-					"paths": [],
-					"type": "extension"
-				}
-			},
-			{ "caption": "-", "id": "side-bar-project-item-separator" },
-			{
-				"caption": "Remove Folder from Project",
-				"id": "side-bar-project-item-remove-folder",
-				"command": "side_bar_project_item_remove_folder",
-				"args": { "paths": [] }
-			}
-		]
+		"caption": "Reveal",
+		"id": "side-bar-reveal",
+		"command": "side_bar_reveal",
+		"args": { "paths": [] }
 	},
+	{ "caption": "-", "id": "side-bar-refresh-separator" },
 	{
 		"caption": "Promote",
 		"id": "side-bar-project-item-add",
@@ -611,7 +164,6 @@
 		"command": "side_bar_project_item_remove_folder",
 		"args": { "paths": [] }
 	},
-
 	{ "caption": "-", "id": "side-bar-donate-separator" },
 	{
 		"caption": "Give 20",

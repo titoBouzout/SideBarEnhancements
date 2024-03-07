@@ -1,11 +1,15 @@
 # coding=utf8
 
-import sublime, sublime_plugin
+import sublime
+import sublime_plugin
 
-import os, shutil
-import threading, time
+import os
+import shutil
+import threading
+import time
 import re
-import subprocess, platform
+import subprocess
+import platform
 
 from .edit.Edit import Edit
 from .hurry.filesize import size as hurry_size
@@ -122,14 +126,7 @@ class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, paths, relative_to_project, name):
         _paths = paths
-        if relative_to_project or s.get("new_files_relative_to_project_root", False):
-            _paths = SideBarProject().getDirectories()
-            if _paths:
-                _paths = [SideBarItem(_paths[0], False)]
-            if not _paths:
-                _paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
-        else:
-            _paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
+        _paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
         if not _paths:
             _paths = SideBarProject().getDirectories()
             if _paths:
@@ -206,14 +203,7 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, paths, relative_to_project, name):
         _paths = paths
-        if relative_to_project or s.get("new_folders_relative_to_project_root", False):
-            _paths = SideBarProject().getDirectories()
-            if _paths:
-                _paths = [SideBarItem(_paths[0], True)]
-            if not _paths:
-                _paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
-        else:
-            _paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
+        _paths = SideBarSelection(_paths).getSelectedDirectoriesOrDirnames()
 
         for item in _paths:
             item = SideBarItem(item.join(name), True)
@@ -233,85 +223,6 @@ class SideBarNewDirectoryCommand(sublime_plugin.WindowCommand):
         return CACHED_SELECTION(paths).len() > 0
 
 
-class SideBarFolderSaveViewsCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        views = []
-        for item in SideBarSelection(paths).getSelectedDirectories():
-            views = views + item.views()
-        for view in views:
-            view.run_command("save")
-
-    def is_enabled(self, paths=[]):
-        _views = []
-        has_dirty_view = False
-        for item in SideBarSelection(paths).getSelectedDirectories():
-            views = item.views()
-            _views = _views + views
-            for view in views:
-                if view.is_dirty():
-                    has_dirty_view = True
-        return (
-            CACHED_SELECTION(paths).hasDirectories()
-            and len(views) > 0
-            and has_dirty_view
-        )
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_folder_save", False)
-
-
-class SideBarFolderCloseViewsCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        collapsed = False
-        for item in SideBarSelection(paths).getSelectedDirectories():
-            for view in item.views():
-                if not collapsed:
-                    Window().focus_view(view)
-                    self.collapse_sidebar_folder()
-                    collapsed = True
-                view.close()
-
-    def collapse_sidebar_folder(self):
-        # Window().run_command("reveal_in_side_bar") the tree animation breaks the functionality
-        Window().run_command("focus_side_bar")
-        Window().run_command("move", {"by": "characters", "forward": False})
-
-    def is_enabled(self, paths=[]):
-        views = []
-        for item in SideBarSelection(paths).getSelectedDirectories():
-            views = views + item.views()
-        return CACHED_SELECTION(paths).hasDirectories() and len(views) > 0
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_folder_close", False)
-
-
-class SideBarFolderCloseOtherViewsCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        to_close = self.others_views(paths)
-        for view in to_close:
-            view.close()
-
-    def others_views(self, paths=[]):
-        window = Window()
-        opened = []
-        selected = []
-        for view in window.views():
-            opened.append(view)
-        for item in SideBarSelection(paths).getSelectedDirectories():
-            for view in item.views():
-                selected.append(view)
-
-        return [view for view in opened if view not in selected]
-
-    def is_enabled(self, paths=[]):
-        views = self.others_views(paths)
-        return CACHED_SELECTION(paths).hasDirectories() and len(views) > 0
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_folder_close", False)
-
-
 class SideBarEditCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         for item in SideBarSelection(paths).getSelectedFiles():
@@ -319,9 +230,6 @@ class SideBarEditCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).hasFiles()
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_edit", False)
 
 
 class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
@@ -343,11 +251,6 @@ class SideBarEditToRightCommand(sublime_plugin.WindowCommand):
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).hasFiles()
 
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_edit", False) and not s.get(
-            "disabled_menuitem_edit_to_right", False
-        )
-
 
 class SideBarOpenCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
@@ -357,264 +260,42 @@ class SideBarOpenCommand(sublime_plugin.WindowCommand):
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).len() > 0
 
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_open_run", False)
-
-
-class SideBarFilesOpenWithEditApplicationsCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        platform = ""
-        if sublime.platform() == "osx":
-            platform = "OSX"
-        elif sublime.platform() == "windows":
-            platform = "Windows"
-        else:
-            platform = "Linux"
-
-        item = SideBarItem(
-            os.path.join(
-                sublime.packages_path(),
-                "User",
-                "SideBarEnhancements",
-                "Open With",
-                "Side Bar.sublime-menu",
-            ),
-            False,
-        )
-        if not item.exists() and False:
-            item = SideBarItem(
-                os.path.join(
-                    sublime.packages_path(),
-                    "User",
-                    "SideBarEnhancements",
-                    "Open With",
-                    "Side Bar (" + platform + ").sublime-menu",
-                ),
-                False,
-            )
-
-        if not item.exists():
-            item.create()
-            item.write(
-                """[
-    {"id": "side-bar-files-open-with",
-        "children":
-        [
-
-            //application 1
-            {
-                "caption": "Photoshop",
-                "id": "side-bar-files-open-with-photoshop",
-
-                "command": "side_bar_files_open_with",
-                "args": {
-                                    "paths": [],
-                                    "application": "Adobe Photoshop CS5.app", // OSX
-                                    "extensions":"psd|png|jpg|jpeg",  //any file with these extensions
-                                    "args":[],
-                                    "multiple":true
-                                }
-            },
-
-            //separator
-            {"caption":"-"},
-
-            //application 2
-            {
-                "caption": "SeaMonkey",
-                "id": "side-bar-files-open-with-seamonkey",
-
-                "command": "side_bar_files_open_with",
-                "args": {
-                                    "paths": [],
-                                    "application": "C:\\\\Archivos de programa\\\\SeaMonkey\\\\seamonkey.exe", // WINNT
-                                    "extensions":"", //open all even folders
-                                    "args":[],
-                                    "multiple":true
-                                }
-            },
-            //application n
-            {
-                "caption": "Chrome",
-                "id": "side-bar-files-open-with-chrome",
-
-                "command": "side_bar_files_open_with",
-                "args": {
-                                    "paths": [],
-                                    "application": "C:\\\\Documents and Settings\\\\tito\\\\local\\\\Datos de programa\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
-                                    "extensions":".*", //any file with extension
-                                    "args":[],
-                                    "multiple":true
-                        }
-            },
-
-            {"caption":"-"}
-        ]
-    }
-]"""
-            )
-        item.edit()
-
-    def is_enabled(self, paths=[]):
-        return True
-
-
-class SideBarFilesOpenWithCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[], application="", extensions="", args=[], multiple=False):
-        application_dir, application_name = os.path.split(application)
-
-        if extensions == "*":
-            extensions = ".*"
-        if extensions == "":
-            items = SideBarSelection(paths).getSelectedItems()
-        else:
-            items = SideBarSelection(paths).getSelectedFilesWithExtension(extensions)
-        import subprocess
-
-        if not multiple:
-            for item in items:
-                # $PATH - The full path to the current file, e. g., C:\Files\Chapter1.txt.
-                # $PROJECT - The root directory of the current project.
-                # $DIRNAME - The directory of the current file, e. g., C:\Files.
-                # $NAME - The name portion of the current file, e. g., Chapter1.txt.
-                # $EXTENSION - The extension portion of the current file, e. g., txt.
-
-                for k in range(len(args)):
-                    args[k] = args[k].replace("$PATH", item.path())
-                    args[k] = args[k].replace("$PROJECT", item.pathProject())
-                    args[k] = args[k].replace(
-                        "$DIRNAME",
-                        item.path() if item.isDirectory() else item.dirname(),
-                    )
-                    args[k] = args[k].replace(
-                        "$NAME_NO_EXTENSION",
-                        item.name().replace("." + item.extension(), ""),
-                    )
-                    args[k] = args[k].replace("$NAME", item.name())
-                    args[k] = args[k].replace("$EXTENSION", item.extension())
-
-                if sublime.platform() == "osx":
-                    subprocess.Popen(
-                        ["open", "-a", application] + args + [item.name()],
-                        cwd=item.dirname(),
-                    )
-                elif sublime.platform() == "windows":
-                    try:
-                        subprocess.Popen(
-                            [application_name] + args + [escapeCMDWindows(item.path())],
-                            cwd=expandVars(application_dir),
-                            shell=True,
-                        )
-                    except:
-                        subprocess.Popen(
-                            [application_name] + args + [escapeCMDWindows(item.path())],
-                            shell=True,
-                        )
-                else:
-                    subprocess.Popen(
-                        [application_name] + args + [(item.name())],
-                        cwd=item.dirname(),
-                    )
-        else:
-            # $PATH - The full path to the current file, e. g., C:\Files\Chapter1.txt.
-            # $PROJECT - The root directory of the current project.
-            # $DIRNAME - The directory of the current file, e. g., C:\Files.
-            # $NAME - The name portion of the current file, e. g., Chapter1.txt.
-            # $EXTENSION - The extension portion of the current file, e. g., txt.
-            for k in range(len(items)):
-                if sublime.platform() == "windows":
-                    items[k] = escapeCMDWindows(items[k].path())
-                else:
-                    items[k] = items[k].path()
-
-            if sublime.platform() == "osx":
-                subprocess.Popen(["open", "-a", application] + args + items)
-            elif sublime.platform() == "windows":
-                try:
-                    subprocess.Popen(
-                        [application_name] + args + items,
-                        cwd=expandVars(application_dir),
-                        shell=True,
-                    )
-                except:
-                    subprocess.Popen(
-                        [application_name] + args + items,
-                        shell=True,
-                    )
-            else:
-                subprocess.Popen(
-                    [application_name] + args + items,
-                    cwd=item.dirname(),
-                )
-
-    def is_enabled(self, paths=[], application="", extensions=""):
-        self.is_enabled(self, paths, application, extensions, args=[])
-
-    def is_enabled(self, paths=[], application="", extensions="", args=[]):
-        if extensions == "*":
-            extensions = ".*"
-        if extensions == "":
-            return CACHED_SELECTION(paths).len() > 0
-        else:
-            return CACHED_SELECTION(paths).hasFilesWithExtension(extensions)
-
-    def is_visible(self, paths=[], application="", extensions=""):
-        self.is_visible(self, paths, application, extensions, args=[])
-
-    def is_visible(self, paths=[], application="", extensions="", args=[]):
-        if extensions == "*":
-            extensions = ".*"
-        if extensions == "":
-            return CACHED_SELECTION(paths).len() > 0
-        else:
-            has = CACHED_SELECTION(paths).hasFilesWithExtension(extensions)
-            return has or (
-                not has
-                and not s.get(
-                    "hide_open_with_entries_when_there_are_no_applicable", False
-                )
-            )
-
 
 class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
-        if s.get("find_and_replace_discards_previous_search", False):
-            window = Window()
-            views = []
-            for view in window.views():
-                if view.name() == "Find Results":
-                    views.append(view)
-            for view in views:
-                view.close()
+        window = Window()
+        views = []
+        for view in window.views():
+            if view.name() == "Find Results":
+                views.append(view)
+        for view in views:
+            view.close()
 
-        if s.get("find_and_replace_opens_in_new_view", True):
-            window = Window()
-            views = []
-            for view in window.views():
-                if view.name() == "Find Results":
-                    Window().focus_view(view)
+        window = Window()
+        views = []
+        for view in window.views():
+            if view.name() == "Find Results":
+                Window().focus_view(view)
 
-                    content = view.substr(sublime.Region(0, view.size()))
-                    _view = Window().new_file()
+                content = view.substr(sublime.Region(0, view.size()))
+                _view = Window().new_file()
 
-                    _view.settings().set("auto_indent", False)
-                    _view.run_command("insert", {"characters": content})
-                    _view.settings().erase("auto_indent")
+                _view.settings().set("auto_indent", False)
+                _view.run_command("insert", {"characters": content})
+                _view.settings().erase("auto_indent")
 
-                    # the space at the end of the name prevents it from being reused by Sublime Text
-                    # it looks like instead of keeping an internal refrence they just look at the view name -__-
-                    _view.set_name("Find Results ")
-                    _view.set_syntax_file(
-                        "Packages/Default/Find Results.hidden-tmLanguage"
-                    )
-                    _view.sel().clear()
-                    for sel in view.sel():
-                        _view.sel().add(sel)
-                    _view.set_scratch(True)
-                    views.append(view)
+                # the space at the end of the name prevents it from being reused by Sublime Text
+                # it looks like instead of keeping an internal refrence they just look at the view name -__-
+                _view.set_name("Find Results ")
+                _view.set_syntax_file("Packages/Default/Find Results.hidden-tmLanguage")
+                _view.sel().clear()
+                for sel in view.sel():
+                    _view.sel().add(sel)
+                _view.set_scratch(True)
+                views.append(view)
 
-            for view in views:
-                view.close()
+        for view in views:
+            view.close()
 
         # fill form
         items = []
@@ -627,80 +308,6 @@ class SideBarFindInSelectedCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarFindInParentCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.dirname())
-        items = list(set(items))
-        Window().run_command("hide_panel")
-        Window().run_command(
-            "show_panel", {"panel": "find_in_files", "where": ",".join(items)}
-        )
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarFindInProjectFoldersCommand(sublime_plugin.WindowCommand):
-    def run(self):
-        Window().run_command("hide_panel")
-        Window().run_command(
-            "show_panel", {"panel": "find_in_files", "where": "<project>"}
-        )
-
-
-class SideBarFindInProjectCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        Window().run_command("hide_panel")
-        Window().run_command(
-            "show_panel", {"panel": "find_in_files", "where": "<project>"}
-        )
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_find_in_project", False)
-
-
-class SideBarFindInProjectFolderCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-            items.append(SideBarProject().getDirectoryFromPath(item.path()))
-        items = list(set(items))
-        if items:
-            Window().run_command("hide_panel")
-            Window().run_command(
-                "show_panel", {"panel": "find_in_files", "where": ",".join(items)}
-            )
-
-
-class SideBarFindInFilesWithExtensionCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append("*" + item.extension())
-        items = list(set(items))
-        Window().run_command("hide_panel")
-        Window().run_command(
-            "show_panel", {"panel": "find_in_files", "where": ",".join(items)}
-        )
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).hasFiles()
-
-    def description(self, paths=[]):
-        items = []
-        for item in CACHED_SELECTION(paths).getSelectedFiles():
-            items.append("*" + item.extension())
-        items = list(set(items))
-        if len(items) > 1:
-            return "In Files With Extensions " + (",".join(items)) + "…"
-        elif len(items) > 0:
-            return "In Files With Extension " + (",".join(items)) + "…"
-        else:
-            return "In Files With Extension…"
 
 
 Object.sidebar_instant_search_id = 0
@@ -729,15 +336,13 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
         view.sel().add(sublime.Region(16, 16))
         view.settings().set("sidebar_instant_search_paths", paths)
 
-    def is_enabled(self, paths=[]):
-        return True
-
 
 class SideBarFindFilesPathContainingViewListener(sublime_plugin.EventListener):
     def on_modified(self, view):
         view.settings().has(
             "sidebar_instant_search_paths"
-        )  # for some reason the first call in some conditions returns true, but not the next one WTH
+        )  # for some reason the first call in some conditions returns true
+        # but not the next one WTH xD
         if view.settings().has("sidebar_instant_search_paths"):
             searchTerm = (
                 view.substr(view.line(0)).replace("Type to search:", "").strip()
@@ -932,29 +537,20 @@ class SideBarCopyCommand(sublime_plugin.WindowCommand):
 
 
 class SideBarPasteCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[], in_parent="False", test="True", replace="False"):
+    def run(self, paths=[], test="True", replace="False"):
         key = "paste-" + str(time.time())
-        SideBarPasteThread(paths, in_parent, test, replace, key).start()
+        SideBarPasteThread(paths, test, replace, key).start()
 
-    def is_enabled(self, paths=[], in_parent=False):
+    def is_enabled(self, paths=[]):
         s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
         return (s.get("cut", "") + s.get("copy", "")) != "" and len(
             CACHED_SELECTION(paths).getSelectedDirectoriesOrDirnames()
         ) == 1
 
-    def is_visible(self, paths=[], in_parent=False):
-        if in_parent == "True":
-            return not s.get("disabled_menuitem_paste_in_parent", False)
-        else:
-            return True
-
 
 class SideBarPasteThread(threading.Thread):
-    def __init__(
-        self, paths=[], in_parent="False", test="True", replace="False", key=""
-    ):
+    def __init__(self, paths=[], test="True", replace="False", key=""):
         self.paths = paths
-        self.in_parent = in_parent
         self.test = test
         self.replace = replace
         self.key = key
@@ -962,12 +558,12 @@ class SideBarPasteThread(threading.Thread):
 
     def run(self):
         SideBarPasteCommand2(Window()).run(
-            self.paths, self.in_parent, self.test, self.replace, self.key
+            self.paths, self.test, self.replace, self.key
         )
 
 
 class SideBarPasteCommand2(sublime_plugin.WindowCommand):
-    def run(self, paths=[], in_parent="False", test="True", replace="False", key=""):
+    def run(self, paths=[], test="True", replace="False", key=""):
         window_set_status(key, "Pasting…")
 
         s = sublime.load_settings("SideBarEnhancements/Clipboard.sublime-settings")
@@ -978,14 +574,7 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
         already_exists_paths = []
 
         if SideBarSelection(paths).len() > 0:
-            if in_parent == "False":
-                location = SideBarSelection(paths).getSelectedItems()[0].path()
-            else:
-                location = (
-                    SideBarSelection(paths)
-                    .getSelectedDirectoriesOrDirnames()[0]
-                    .dirname()
-                )
+            location = SideBarSelection(paths).getSelectedItems()[0].path()
 
             if os.path.isdir(location) is False:
                 location = SideBarItem(os.path.dirname(location), True)
@@ -1049,9 +638,9 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
                                 return
 
             if test == "True" and len(already_exists_paths):
-                self.confirm(paths, in_parent, already_exists_paths, key)
+                self.confirm(paths, already_exists_paths, key)
             elif test == "True" and not len(already_exists_paths):
-                SideBarPasteThread(paths, in_parent, "False", "False", key).start()
+                SideBarPasteThread(paths, "False", "False", key).start()
             elif test == "False":
                 cut = s.set("cut", "")
                 SideBarProject().refresh()
@@ -1059,11 +648,11 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
         else:
             window_set_status(key, "")
 
-    def confirm(self, paths, in_parent, data, key):
+    def confirm(self, paths, data, key):
         import functools
 
         window = Window()
-        window.show_input_panel("BUG!", "", "", None, None)
+        window.show_input_panel("BUG! xD", "", "", None, None)
         window.run_command("hide_panel")
 
         yes = []
@@ -1076,19 +665,17 @@ class SideBarPasteCommand2(sublime_plugin.WindowCommand):
         no.append("Continue without replacing")
 
         while len(no) != len(yes):
-            no.append("ST3 BUG")
+            no.append("ST3 BUG xD")
 
-        window.show_quick_panel(
-            [yes, no], functools.partial(self.on_done, paths, in_parent, key)
-        )
+        window.show_quick_panel([yes, no], functools.partial(self.on_done, paths, key))
 
-    def on_done(self, paths, in_parent, key, result):
+    def on_done(self, paths, key, result):
         window_set_status(key, "")
         if result != -1:
             if result == 0:
-                SideBarPasteThread(paths, in_parent, "False", "True", key).start()
+                SideBarPasteThread(paths, "False", "True", key).start()
             else:
-                SideBarPasteThread(paths, in_parent, "False", "False", key).start()
+                SideBarPasteThread(paths, "False", "False", key).start()
 
 
 class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
@@ -1107,9 +694,6 @@ class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).len() > 0
 
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_copy_name", False)
-
 
 class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
@@ -1126,97 +710,6 @@ class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarCopyPathCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.path())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarCopyPathQuotedCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append('"' + item.path() + '"')
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarCopyDirPathCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-            items.append(item.path())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_copy_dir_path", False)
-
-
-class SideBarCopyPathEncodedCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.uri())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarCopyPathRelativeFromProjectCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.pathRelativeFromProject())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).len() > 0
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
 
 
 class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowCommand):
@@ -1239,349 +732,6 @@ class SideBarCopyPathRelativeFromProjectEncodedCommand(sublime_plugin.WindowComm
         )
 
 
-class SideBarCopyPathRelativeFromViewCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.pathRelativeFromView())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarCopyPathRelativeFromViewEncodedCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            path = item.pathRelativeFromViewEncoded()
-            if path:
-                items.append(path)
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-
-view_locations_stack = []
-
-
-class view_locations_stack_listener(sublime_plugin.EventListener):
-    def on_activated(self, v):
-        global view_locations_stack
-        if (
-            v
-            and v.file_name()
-            and (not view_locations_stack or view_locations_stack[-1] != v.file_name())
-        ):
-            view_locations_stack.append(v.file_name())
-            view_locations_stack = view_locations_stack[-5:]
-
-
-class SideBarCopyPathRelativeToLastSelectedViewCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        try:
-            origin = view_locations_stack[-2]
-
-            items = []
-            for item in SideBarSelection(paths).getSelectedItems():
-                items.append(item.path())
-
-            temp = []
-            for index in range(len(items)):
-                if not os.path.samefile(items[index], origin):
-                    temp.append(
-                        os.path.join(
-                            ".", os.path.relpath(items[index], os.path.dirname(origin))
-                        )
-                    )
-            items = temp
-
-            if len(items) > 0:
-                sublime.set_clipboard("\n".join(items))
-                if len(items) > 1:
-                    sublime.status_message("Items copied")
-                else:
-                    sublime.status_message("Item copied")
-        except:
-            pass
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0 and len(view_locations_stack) > 1
-
-
-class SideBarCopyPathAbsoluteFromProjectCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            if (
-                s.get("copy_path_absolute_from_project_includes_line_number", False)
-                and item.views()
-            ):
-                view = item.views()[0]
-                if view.sel():
-                    line, col = view.rowcol(view.sel()[0].b)
-                    items.append(item.pathAbsoluteFromProject() + ":" + str(line + 1))
-                else:
-                    items.append(item.pathAbsoluteFromProject())
-            else:
-                items.append(item.pathAbsoluteFromProject())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).len() > 0
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-
-class SideBarCopyPathAbsoluteFromProjectEncodedCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.pathAbsoluteFromProjectEncoded())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).len() > 0
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_copy_path", False)
-
-
-class SideBarCopyPathAbsoluteFromProjectEncodedWindowsCommand(
-    sublime_plugin.WindowCommand
-):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(item.pathAbsoluteFromProjectEncoded())
-
-        if len(items) > 0:
-            sublime.set_clipboard(("\n".join(items)).replace("/", "\\"))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).len() > 0
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_copy_path_windows", True)
-
-
-class SideBarCopyTagAhrefCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedItems():
-            items.append(
-                '<a href="'
-                + item.pathAbsoluteFromProjectEncoded()
-                + '">'
-                + item.namePretty()
-                + "</a>"
-            )
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).len() > 0
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-
-class SideBarCopyTagImgCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedImages():
-            try:
-                image_type, width, height = self.getImageInfo(item.path())
-                items.append(
-                    '<img src="'
-                    + item.pathAbsoluteFromProjectEncoded()
-                    + '" width="'
-                    + str(width)
-                    + '" height="'
-                    + str(height)
-                    + '">'
-                )
-            except:
-                items.append(
-                    '<img src="' + item.pathAbsoluteFromProjectEncoded() + '">'
-                )
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-                # http://stackoverflow.com/questions/8032642/how-to-obtain-image-size-using-standard-python-class-without-using-external-lib
-
-    def getImageInfo(self, fname):
-        import struct
-        import imghdr
-
-        """Determine the image type of fhandle and return its size.
-        from draco"""
-        fhandle = open(fname, "rb")
-        head = fhandle.read(24)
-        if len(head) != 24:
-            return
-        if imghdr.what(fname) == "png":
-            check = struct.unpack(">i", head[4:8])[0]
-            if check != 0x0D0A1A0A:
-                return
-            width, height = struct.unpack(">ii", head[16:24])
-        elif imghdr.what(fname) == "gif":
-            width, height = struct.unpack("<HH", head[6:10])
-        elif imghdr.what(fname) == "jpeg":
-            try:
-                fhandle.seek(0)  # Read 0xff next
-                size = 2
-                ftype = 0
-                while not 0xC0 <= ftype <= 0xCF:
-                    fhandle.seek(size, 1)
-                    byte = fhandle.read(1)
-                    while ord(byte) == 0xFF:
-                        byte = fhandle.read(1)
-                    ftype = ord(byte)
-                    size = struct.unpack(">H", fhandle.read(2))[0] - 2
-                    # We are at a SOFn block
-                fhandle.seek(1, 1)  # Skip `precision' byte.
-                height, width = struct.unpack(">HH", fhandle.read(4))
-            except Exception:  # IGNORE:W0703
-                return
-        else:
-            return
-        return None, width, height
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).hasImages()
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-
-class SideBarCopyTagStyleCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedFilesWithExtension("css"):
-            items.append(
-                '<link rel="stylesheet" type="text/css" href="'
-                + item.pathAbsoluteFromProjectEncoded()
-                + '"/>'
-            )
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).hasFilesWithExtension("css")
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-
-class SideBarCopyTagScriptCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedFilesWithExtension("js"):
-            items.append(
-                '<script type="text/javascript" src="'
-                + item.pathAbsoluteFromProjectEncoded()
-                + '"></script>'
-            )
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).hasFilesWithExtension("js")
-            and CACHED_SELECTION(paths).hasItemsUnderProject()
-        )
-
-
-class SideBarCopyProjectDirectoriesCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for directory in SideBarProject().getDirectories():
-            items.append(directory)
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items copied")
-            else:
-                sublime.status_message("Item copied")
-
-    def is_enabled(self, paths=[]):
-        return True
-
-
-class SideBarCopyContentUtf8Command(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-        for item in SideBarSelection(paths).getSelectedFiles():
-            items.append(item.contentUTF8())
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items content copied")
-            else:
-                sublime.status_message("Item content copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).hasFiles()
-
-
 class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         items = []
@@ -1597,49 +747,6 @@ class SideBarCopyContentBase64Command(sublime_plugin.WindowCommand):
 
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).hasFiles()
-
-
-class SideBarCopyUrlCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-
-        for item in SideBarSelection(paths).getSelectedItems():
-            if item.isUnderCurrentProject():
-                items.append(item.url("url_production"))
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items URL copied")
-            else:
-                sublime.status_message("Item URL copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).hasItemsUnderProject()
-
-
-class SideBarCopyUrlDecodedCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        items = []
-
-        for item in SideBarSelection(paths).getSelectedItems():
-            if item.isUnderCurrentProject():
-                txt = item.url("url_production")
-                try:
-                    txt = urlunquote(txt.encode("utf8")).decode("utf8")
-                except TypeError:
-                    txt = urlunquote(txt)
-                items.append(txt)
-
-        if len(items) > 0:
-            sublime.set_clipboard("\n".join(items))
-            if len(items) > 1:
-                sublime.status_message("Items URL copied")
-            else:
-                sublime.status_message("Item URL copied")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).hasItemsUnderProject()
 
 
 class SideBarDuplicateCommand(sublime_plugin.WindowCommand):
@@ -1948,7 +1055,7 @@ class SideBarDeleteThread(threading.Thread):
 
 class SideBarDeleteCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[], confirmed="False"):
-        if confirmed == "False" and s.get("confirm_before_deleting", True):
+        if confirmed == "False":
             if sublime.platform() == "osx":
                 if sublime.ok_cancel_dialog("Delete the selected items?"):
                     self.run(paths, "True")
@@ -1973,26 +1080,15 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
             from .send2trash import send2trash
 
             for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-                if s.get("close_affected_buffers_when_deleting_even_if_dirty", False):
-                    item.closeViews()
-                if s.get("disable_send_to_trash", False):
-                    if sublime.platform() == "windows":
-                        self.remove("\\\\?\\" + item.path())
-                    else:
-                        self.remove(item.path())
-                else:
-                    send2trash(item.path())
+                item.closeViews()
+                send2trash(item.path())
             SideBarProject().refresh()
         except:
-            should_confirm = s.get("confirm_before_permanently_deleting", True)
-            if not should_confirm or sublime.ok_cancel_dialog(
+            if sublime.ok_cancel_dialog(
                 "There is no trash bin, permanently delete?", "Yes, Permanent Deletion"
             ):
                 for item in SideBarSelection(paths).getSelectedItemsWithoutChildItems():
-                    if s.get(
-                        "close_affected_buffers_when_deleting_even_if_dirty", False
-                    ):
-                        item.closeViews()
+                    item.closeViews()
                     if sublime.platform() == "windows":
                         try:
                             # this is for deleting "large path names"
@@ -2043,9 +1139,8 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
                 self.run(paths, "True")
 
     def on_done(self, old, new):
-        if s.get("close_affected_buffers_when_deleting_even_if_dirty", False):
-            item = SideBarItem(new, os.path.isdir(new))
-            item.closeViews()
+        item = SideBarItem(new, os.path.isdir(new))
+        item.closeViews()
         if sublime.platform() == "windows":
             self.remove("\\\\?\\" + new)
         else:
@@ -2108,100 +1203,6 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
         )
 
 
-class SideBarEmptyCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[], confirmed="False"):
-        if confirmed == "False" and s.get("confirm_before_deleting", True):
-            if sublime.platform() == "osx":
-                if sublime.ok_cancel_dialog("empty the content of the folder?"):
-                    self.run(paths, "True")
-            else:
-                self.confirm(
-                    [
-                        item.path()
-                        for item in SideBarSelection(
-                            paths
-                        ).getSelectedDirectoriesOrDirnames()
-                    ],
-                    [
-                        item.pathWithoutProject()
-                        for item in SideBarSelection(
-                            paths
-                        ).getSelectedDirectoriesOrDirnames()
-                    ],
-                )
-        else:
-            key = "move-" + str(time.time())
-            SideBarEmptyThread(paths, key).start()
-
-    def confirm(self, paths, display_paths):
-        import functools
-
-        window = Window()
-        window.show_input_panel("BUG!", "", "", None, None)
-        window.run_command("hide_panel")
-
-        yes = []
-        yes.append("Yes, empty the selected items.")
-        for item in display_paths:
-            yes.append(item)
-
-        no = []
-        no.append("No")
-        no.append("Cancel the operation.")
-
-        while len(no) != len(yes):
-            no.append("")
-
-        if sublime.platform() == "osx":
-            sublime.set_timeout(
-                lambda: window.show_quick_panel(
-                    [yes, no], functools.partial(self.on_confirm, paths)
-                ),
-                200,
-            )
-        else:
-            window.show_quick_panel(
-                [yes, no], functools.partial(self.on_confirm, paths)
-            )
-
-    def on_confirm(self, paths, result):
-        if result != -1:
-            if result == 0:
-                self.run(paths, "True")
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_empty", True)
-
-
-class SideBarEmptyThread(threading.Thread):
-    def __init__(self, paths, key):
-        self.paths = paths
-        self.key = key
-        threading.Thread.__init__(self)
-
-    def run(self):
-        paths = self.paths
-        key = self.key
-        window_set_status(key, "Emptying…")
-        try:
-            from .send2trash import send2trash
-
-            for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
-                for content in os.listdir(item.path()):
-                    file = os.path.join(item.path(), content)
-                    if not SideBarSelection().isNone(file):
-                        send2trash(file)
-                if s.get("close_affected_buffers_when_deleting_even_if_dirty", False):
-                    item.closeViews()
-        except:
-            pass
-        SideBarProject().refresh()
-        window_set_status(key, "")
-
-
 class SideBarRevealCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         if len(paths) > 1:
@@ -2213,40 +1214,6 @@ class SideBarRevealCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self, paths=[]):
         return CACHED_SELECTION(paths).len() > 0
-
-
-class SideBarProjectOpenFileCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        project = SideBarProject()
-        if project.hasOpenedProject():
-            SideBarItem(project.getProjectFile(), False).edit()
-
-    def is_enabled(self, paths=[]):
-        return SideBarProject().hasOpenedProject()
-
-
-class SideBarPreviewEditUrlsCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        item = SideBarItem(
-            os.path.dirname(sublime.packages_path())
-            + "/Settings/SideBarEnhancements.json",
-            False,
-        )
-        item.dirnameCreate()
-        item.edit()
-
-
-class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        project = SideBarProject()
-        for item in SideBarSelection(paths).getSelectedDirectories():
-            project.add(item.path())
-
-    def is_visible(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).hasDirectories()
-            and CACHED_SELECTION(paths).hasProjectDirectories() is False
-        )
 
 
 class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
@@ -2261,412 +1228,6 @@ class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
                 item.path() in project.getDirectories() or not item.exists()
                 for item in selection.getSelectedItems()
             ]
-        )
-
-
-class SideBarProjectItemExcludeCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        project = SideBarProject()
-        for item in SideBarSelection(paths).getSelectedItems():
-            if item.isDirectory():
-                project.excludeDirectory(item.path(), item.pathRelativeFromProject())
-            else:
-                project.excludeFile(item.path(), item.pathRelativeFromProject())
-
-    def is_enabled(self, paths=[]):
-        return (
-            CACHED_SELECTION(paths).len() > 0
-            and CACHED_SELECTION(paths).hasProjectDirectories() is False
-        )
-
-
-class SideBarProjectItemExcludeFromIndexCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[], type="item"):
-        Preferences = sublime.load_settings("Preferences.sublime-settings")
-        excluded = Preferences.get("binary_file_patterns", [])
-        for item in self.items(paths, type, SideBarSelection(paths)):
-            excluded.append(item)
-        for k, v in enumerate(excluded):
-            excluded[k] = excluded[k].replace("\\", "/")
-            excluded[k] = re.sub("([a-z])\:/", "/\\1/", excluded[k], 0, re.I)
-            excluded[k] = re.sub("/$", "/**", excluded[k])
-        excluded = list(set(excluded))
-        excluded = sorted(excluded)
-        Preferences.set("binary_file_patterns", excluded)
-        sublime.save_settings("Preferences.sublime-settings")
-
-    def is_visible(self, paths=[], type="item"):
-        return len(self.items(paths, type, CACHED_SELECTION(paths))) > 0
-
-    def description(self, paths=[], type="item"):
-        items = self.items(paths, type, CACHED_SELECTION(paths))
-        return 'Exclude From Index (mark as binary) "' + (",".join(items)) + '"'
-
-    def items(self, paths=[], type="item", object=None):
-        items = []
-        if type == "item":
-            for item in object.getSelectedItems():
-                if item.isDirectory():
-                    items.append(
-                        re.sub(
-                            "([a-z])\:/",
-                            "/\\1/",
-                            (item.path().replace("\\", "/") + "/**"),
-                            0,
-                            re.I,
-                        )
-                    )
-                else:
-                    items.append(
-                        re.sub(
-                            "([a-z])\:/",
-                            "/\\1/",
-                            (item.path().replace("\\", "/")),
-                            0,
-                            re.I,
-                        )
-                    )
-        elif type == "relative":
-            for item in object.getSelectedItems():
-                if item.isDirectory():
-                    items.append(
-                        item.pathRelativeFromProject().replace("\\", "/") + "/**"
-                    )
-                else:
-                    items.append(item.pathRelativeFromProject().replace("\\", "/"))
-        elif type == "extension":
-            for item in object.getSelectedFiles():
-                items.append("*" + item.extension())
-        elif type == "file":
-            for item in object.getSelectedFiles():
-                items.append(item.name())
-        elif type == "directory":
-            for item in object.getSelectedDirectories():
-                items.append(item.name() + "/**")
-        items = list(set(items))
-        return items
-
-
-class SideBarOpenBrowsersCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        browsers = s.get("open_all_browsers", [])
-        if browsers:
-            window = Window()
-            for browser in browsers:
-                window.run_command(
-                    "side_bar_open_in_browser",
-                    {"paths": paths, "type": "testing", "browser": browser},
-                )
-
-
-class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[], type=False, browser=""):
-        if not browser:
-            browser = s.get("default_browser", "")
-
-        if type == False or type == "testing":
-            type = "url_testing"
-        elif type == "production":
-            type = "url_production"
-        else:
-            type = "url_testing"
-
-        SideBarOpenInBrowserThread(paths, type, browser).start()
-
-    def is_enabled(self, paths=[]):
-        return CACHED_SELECTION(paths).len() > 0
-
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_open_in_browser", False)
-
-
-class SideBarOpenInBrowserThread(threading.Thread):
-    def __init__(self, paths, type, browser):
-        self.paths = paths
-        self.type = type
-        self.browser = browser
-        threading.Thread.__init__(self)
-
-    def run(self):
-        paths = self.paths
-        type = self.type
-        browser = self.browser
-
-        for item in SideBarSelection(paths).getSelectedItems():
-            url = item.url(type) or item.uri()
-            self.try_open(url, browser)
-
-    def try_open(self, url, browser):
-        import subprocess
-
-        if sublime.platform() == "windows":
-            import winreg
-
-        browser = browser.lower().strip()
-        items = []
-
-        if browser == "chrome":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "/Applications/Google Chrome.app", url]
-            elif sublime.platform() == "windows":
-                aKey = winreg.OpenKey(
-                    winreg.HKEY_CURRENT_USER,
-                    r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
-                )
-                reg_value, reg_type = winreg.QueryValueEx(aKey, "Local AppData")
-
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "%HOMEPATH%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe",
-                        reg_value + "\\Chrome\\Application\\chrome.exe",
-                        reg_value + "\\Google\\Chrome\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe",
-                        "%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe",
-                        "%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe",
-                        "%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe",
-                        "%HOMEPATH%\\Chromium\\Application\\chrome.exe",
-                        "%PROGRAMFILES%\\Chromium\\Application\\chrome.exe",
-                        "%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe",
-                        "chrome.exe",
-                    ]
-                )
-
-                commands = ["-new-tab", url]
-            else:
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "/usr/bin/google-chrome",
-                        "/opt/google/chrome/chrome",
-                        "chrome",
-                        "google-chrome",
-                    ]
-                )
-                commands = ["-new-tab", url]
-
-        elif browser == "canary":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "/Applications/Google Chrome Canary.app", url]
-            elif sublime.platform() == "windows":
-                aKey = winreg.OpenKey(
-                    winreg.HKEY_CURRENT_USER,
-                    r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
-                )
-                reg_value, reg_type = winreg.QueryValueEx(aKey, "Local AppData")
-
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        reg_value + "\\Chrome SxS\\Application\\chrome.exe",
-                        reg_value + "\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        "%PROGRAMFILES%\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        "%PROGRAMFILES(X86)%\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        "%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome SxS\\chrome.exe",
-                        "%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome SxS\\Application\\chrome.exe",
-                    ]
-                )
-
-                commands = ["-new-tab", url]
-
-        elif browser == "chromium":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "/Applications/Chromium.app", url]
-            elif sublime.platform() == "windows":
-                aKey = winreg.OpenKey(
-                    winreg.HKEY_CURRENT_USER,
-                    r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
-                )
-                reg_value, reg_type = winreg.QueryValueEx(aKey, "Local AppData")
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "%HOMEPATH%\\AppData\\Local\\Google\\Chrome SxS\\Application\\chrome.exe",
-                        reg_value + "\\Chromium\\Application\\chromium.exe",
-                        "%USERPROFILE%\\Local Settings\\Application Data\\Google\\Chrome\\chromium.exe",
-                        "%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\chromium.exe",
-                        "%HOMEPATH%\\Chromium\\Application\\chromium.exe",
-                        "%PROGRAMFILES%\\Chromium\\Application\\chromium.exe",
-                        "%PROGRAMFILES(X86)%\\Chromium\\Application\\chromium.exe",
-                        "%HOMEPATH%\\Local Settings\\Application\ Data\\Google\\Chrome\\Application\\chromium.exe",
-                        "%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chromium.exe",
-                        "chromium.exe",
-                        reg_value + "\\Chromium\\Application\\chrome.exe",
-                        "%USERPROFILE%\\Local Settings\\Application Data\\Google\\Chrome\\chrome.exe",
-                        "%USERPROFILE%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\chrome.exe",
-                        "%HOMEPATH%\\Chromium\\Application\\chrome.exe",
-                        "%PROGRAMFILES%\\Chromium\\Application\\chrome.exe",
-                        "%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Local\ Settings\\Application\ Data\\Google\\Chrome\\Application\\chrome.exe",
-                        "%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe",
-                        "chrome.exe",
-                    ]
-                )
-                commands = ["-new-tab", url]
-            else:
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "/usr/bin/chromium",
-                        "chromium",
-                        "/usr/bin/chromium-browser",
-                        "chromium-browser",
-                    ]
-                )
-                commands = ["-new-tab", url]
-        elif browser == "firefox-developer-edition":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "/Applications/Firefox Developer Edition.app", url]
-            else:
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "/usr/bin/firefox-developer-edition",
-                        "/usr/bin/firefox",
-                        "%PROGRAMFILES%\\Firefox Developer Edition\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Firefox Developer Edition\\firefox.exe",
-                        "%PROGRAMFILES%\\Nightly\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Nightly\\firefox.exe",
-                        "%PROGRAMFILES%\\Mozilla Firefox\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Mozilla Firefox\\firefox.exe",
-                        "firefox",
-                        "firefox.exe",
-                    ]
-                )
-                commands = ["-new-tab", url]
-        elif browser == "firefox":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "/Applications/Firefox.app", url]
-            else:
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "/usr/bin/firefox",
-                        "%PROGRAMFILES%\\Mozilla Firefox\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Mozilla Firefox\\firefox.exe",
-                        "firefox",
-                        "firefox.exe",
-                        "%PROGRAMFILES%\\Firefox Developer Edition\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Firefox Developer Edition\\firefox.exe",
-                        "%PROGRAMFILES%\\Nightly\\firefox.exe",
-                        "%PROGRAMFILES(X86)%\\Nightly\\firefox.exe",
-                    ]
-                )
-                commands = ["-new-tab", url]
-        elif browser == "opera":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "/Applications/Opera.app", url]
-            else:
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "/usr/bin/opera",
-                        "/usr/bin/opera-next",
-                        "/usr/bin/operamobile",
-                        "%PROGRAMFILES%\\Opera\\opera.exe",
-                        "%PROGRAMFILES(X86)%\\Opera\\opera.exe",
-                        "%PROGRAMFILES%\\Opera\\launcher.exe",
-                        "%PROGRAMFILES(X86)%\\Opera\\launcher.exe",
-                        "%PROGRAMFILES%\\Opera Next\\opera.exe",
-                        "%PROGRAMFILES(X86)%\\Opera Next\\opera.exe",
-                        "%PROGRAMFILES%\\Opera Mobile Emulator\\OperaMobileEmu.exe",
-                        "%PROGRAMFILES(X86)%\\Opera Mobile Emulator\\OperaMobileEmu.exe",
-                        "opera",
-                        "opera.exe",
-                    ]
-                )
-                commands = ["-newtab", url]
-        elif browser == "ie":
-            if s.get("portable_browser", "") != "":
-                items.extend([s.get("portable_browser", "")])
-            items.extend(
-                [
-                    "%PROGRAMFILES%\\Internet Explorer\\iexplore.exe",
-                    "%PROGRAMFILES(X86)%\\Internet Explorer\\iexplore.exe",
-                    "iexplore",
-                    "iexplore.exe",
-                ]
-            )
-            commands = ["-newtab", url]
-        elif browser == "edge":
-            if s.get("portable_browser", "") != "":
-                items.extend([s.get("portable_browser", "")])
-            items.extend(["open"])
-            commands = ["-newtab", url]
-        elif browser == "safari":
-            if sublime.platform() == "osx":
-                items.extend(["open"])
-                commands = ["-a", "Safari", url]
-            else:
-                if s.get("portable_browser", "") != "":
-                    items.extend([s.get("portable_browser", "")])
-                items.extend(
-                    [
-                        "/usr/bin/safari",
-                        "%PROGRAMFILES%\\Safari\\Safari.exe",
-                        "%PROGRAMFILES(X86)%\\Safari\\Safari.exe",
-                        "Safari",
-                        "Safari.exe",
-                    ]
-                )
-                commands = ["-new-tab", "-url", url]
-        else:
-            if s.get("portable_browser", "") != "":
-                items.extend([s.get("portable_browser", "")])
-            commands = ["-new-tab", url]
-
-        for item in items:
-            try:
-                command2 = list(commands)
-                command2.insert(0, expandVars(item))
-                subprocess.Popen(command2)
-                return
-            except:
-                try:
-                    command2 = list(commands)
-                    command2.insert(0, item)
-                    subprocess.Popen(command2)
-                    return
-                except:
-                    pass
-        try:
-            if sublime.platform() == "windows":
-                if browser and browser == "edge":
-                    commands = ["cmd", "/c", "start", "microsoft-edge:" + url]
-                else:
-                    commands = ["cmd", "/c", "start", "", url]
-                subprocess.Popen(commands)
-            elif sublime.platform() == "linux":
-                commands = ["xdg-open", url]
-                subprocess.Popen(commands)
-            else:
-                commands = ["open", url]
-                subprocess.Popen(commands)
-            return
-        except:
-            pass
-
-        sublime.error_message(
-            'Browser "' + browser + '" not found!\nIs installed? Which location...?'
         )
 
 
@@ -2690,9 +1251,6 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
             items.append(item.path())
         subprocess.Popen(items, cwd=items[2])
 
-    def is_visible(self, paths=[]):
-        return not s.get("disabled_menuitem_open_in_new_window", False)
-
 
 class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
@@ -2707,21 +1265,18 @@ class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
 
 class SideBarStatusBarFileSize(sublime_plugin.EventListener):
     def on_activated(self, v):
-        if v.file_name() and s.get("statusbar_file_size", False):
+        if v.file_name():
             try:
                 self.show(v, hurry_size(os.path.getsize(v.file_name())))
             except:
                 pass
 
     def on_post_save(self, v):
-        if v.file_name() and s.get("statusbar_file_size", False):
+        if v.file_name():
             try:
                 self.show(v, hurry_size(os.path.getsize(v.file_name())))
             except:
                 pass
-
-    def show(self, v, size):
-        v.set_status("statusbar_file_size", size)
 
 
 class SideBarSaveAsAdminCommand(sublime_plugin.WindowCommand):
@@ -2747,33 +1302,6 @@ class SideBarSaveAsAdminCommand(sublime_plugin.WindowCommand):
 
     def is_visible(self):
         return platform.system() == "Windows" or os.name == "nt"
-
-
-class SideBarStatusBarModifiedTime(sublime_plugin.EventListener):
-    def on_activated(self, v):
-        if v.file_name() and s.get("statusbar_modified_time", False):
-            try:
-                self.show(v, os.path.getmtime(v.file_name()))
-            except:
-                pass
-
-    def on_post_save(self, v):
-        if v.file_name() and s.get("statusbar_modified_time", False):
-            try:
-                self.show(v, os.path.getmtime(v.file_name()))
-            except:
-                pass
-
-    def show(self, v, mtime):
-        modified_time = time.strftime(
-            s.get("statusbar_modified_time_format", "%A %b %d %H:%M:%S %Y"),
-            time.localtime(mtime),
-        )
-        if s.get("statusbar_modified_time_locale", "") != "":
-            modified_time = modified_time.decode(
-                s.get("statusbar_modified_time_locale", "")
-            )
-        v.set_status("statusbar_modified_time", modified_time)
 
 
 class DefaultDirectory:
@@ -2804,22 +1332,6 @@ class SideBarDefaultNewFolder(sublime_plugin.EventListener):
                 DefaultDirectory.path = path
 
 
-class SideBarDonateCommand(sublime_plugin.WindowCommand):
-    def run(self, paths=[]):
-        sublime.message_dialog("Sidebar Enhancements: Thanks for your support ^.^")
-        browser = s.get("default_browser", "")
-        SideBarOpenInBrowserThread("", "", "").try_open(
-            "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW",
-            browser,
-        )
-
-    def is_visible(self, paths=[]):
-        return not (
-            s.get("i_donated_to_sidebar_enhancements_developer", False)
-            == "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW"
-        )
-
-
 class zzzzzSideBarCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         pass
@@ -2827,6 +1339,15 @@ class zzzzzSideBarCommand(sublime_plugin.WindowCommand):
     def is_visible(self, paths=[]):  # <- WORKS AS AN ONPOPUPSHOWN
         Cache.cached = False
         return False
+
+
+class SideBarDonateCommand(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+        import webbrowser
+
+        webbrowser.open(
+            "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DD4SL2AHYJGBW",
+        )
 
 
 class zzzzzcacheSideBarCommand(sublime_plugin.EventListener):

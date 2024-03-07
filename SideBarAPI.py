@@ -563,6 +563,7 @@ class SideBarItem:
                 subprocess.Popen(
                     [
                         "start",
+                        "%AppData%/../Local/Microsoft/WindowsApps/wt.exe",
                         escapeCMDWindows(self.path()),
                     ],
                     cwd=self.dirname(),
@@ -572,7 +573,6 @@ class SideBarItem:
                 from . import desktop
 
                 desktop.open(self.path())
-                print("using desktop")
 
     def edit(self):
         if BINARY.search(self.path()):
