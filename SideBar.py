@@ -1231,6 +1231,19 @@ class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
         )
 
 
+class SideBarProjectItemAddCommand(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+        project = SideBarProject()
+        for item in SideBarSelection(paths).getSelectedDirectories():
+            project.add(item.path())
+
+    def is_visible(self, paths=[]):
+        return (
+            CACHED_SELECTION(paths).hasDirectories()
+            and CACHED_SELECTION(paths).hasProjectDirectories() is False
+        )
+
+
 class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         import subprocess
