@@ -8,6 +8,22 @@
 		"command": "side_bar_rename"
 	},
 	{
+		"caption": "File: Duplicate",
+		"command": "side_bar_duplicate"
+	},
+	{
+		"caption": "File: Reveal",
+		"command": "side_bar_reveal"
+	},
+	{
+		"caption": "File: Locate",
+		"command": "reveal_in_side_bar"
+	},
+	{
+		"caption": "File: Move",
+		"command": "side_bar_move"
+	},
+	{
 		"caption": "File: Delete",
 		"command": "side_bar_delete"
 	},
