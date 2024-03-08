@@ -1,0 +1,17 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/syntax.html
+name: SideBar File Search Results
+hidden: true
+scope: text.find-in-files
+contexts:
+  main:
+    - match: (Type to search\:).*
+      captures:
+        1: entity.name.function
+    - match: '([0-9]+) match.*'
+      captures:
+        1: entity.name.function
+    - match: ^(.*(\:|/).*)$
+      captures:
+        1: entity.name.filename.find-in-files

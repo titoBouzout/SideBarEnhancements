@@ -34,7 +34,7 @@ To get rid of the stock Sublime Text menuitems create two empty files on
 "None are so hopelessly enslaved as those who falsely believe they are free."
 Johann Wolfgang von Goethe
 
-Copyright (C) 2014-2024 Tito Bouzout
+Copyright (C) 2011-2024 Tito Bouzout
 
 This license apply to all the files inside this program unless noted different
 for some files or portions of code inside these files.
