@@ -1,4 +1,4 @@
-# Sidebar Enhancements
+# Side Bar Enhancements
 
 ## Description
 
@@ -13,6 +13,19 @@ To get rid of the stock Sublime Text menuitems create two empty files on
 
 - `Default/Side Bar Mount Point.sublime-menu`
 - `Default/Side Bar.sublime-menu`
+
+## Pre Simplification
+
+The package has been simplified. To revert:
+
+1. Uninstall/Remove SideBarEnhancements
+2. open
+   https://github.com/titoBouzout/SideBarEnhancements/tree/289fa49d005352c47cfb9ba36656794dade7ced3
+3. Code(green button) -> Download Zip
+4. Sublime Text -> Main menu bar -> Preferences -> Browse Packages
+5. Unzip to "Packages/SideBarEnhancements/" (make sure is NOT double as
+   "Packages/SideBarEnhancements/SideBarEnhancements")
+6. Restart
 
 ## External Libraries
 

@@ -328,7 +328,7 @@ class SideBarFindFilesPathContainingCommand(sublime_plugin.WindowCommand):
         view.settings().set("word_wrap", False)
         view.set_name("Instant File Search")
         view.set_syntax_file(
-            "Packages/SideBarEnhancements/SideBar Results.sublime-syntax"
+            "Packages/SideBarEnhancements/FindFilesResults.sublime-syntax"
         )
         view.set_scratch(True)
         view.run_command("insert", {"characters": "Type to search: "})
