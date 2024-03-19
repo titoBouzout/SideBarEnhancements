@@ -28,6 +28,62 @@
 		"command": "side_bar_delete"
 	},
 	{
+		"caption": "File: Copy Name",
+		"command": "side_bar_copy_name"
+	},
+	{
+		"caption": "File: Copy Name Encoded",
+		"command": "side_bar_copy_name_encoded"
+	},
+	{
+		"caption": "File: Copy Path",
+		"command": "side_bar_copy_path"
+	},
+	{
+		"caption": "File: Copy Path Quoted",
+		"command": "side_bar_copy_path_quoted"
+	},
+	{
+		"caption": "File: Copy Path (Windows)",
+		"command": "side_bar_copy_path_absolute_from_project_encoded_windows"
+	},
+	{
+		"caption": "File: Copy Path as URI",
+		"command": "side_bar_copy_path_encoded"
+	},
+	{
+		"caption": "File: Copy Path Absolute To Project",
+		"command": "side_bar_copy_path_absolute_from_project"
+	},
+	{
+		"caption": "File: Copy Relative Path To Project",
+		"command": "side_bar_copy_path_relative_from_project"
+	},
+	{
+		"caption": "File: Copy Path Absolute To Project Encoded",
+		"command": "side_bar_copy_path_absolute_from_project_encoded"
+	},
+	{
+		"caption": "File: Copy Path Relative To Last Selected View ",
+		"command": "side_bar_copy_path_relative_to_last_selected_view"
+	},
+	{
+		"caption": "File: Copy Project Directories ",
+		"command": "side_bar_copy_project_directories"
+	},
+	{
+		"caption": "File: Copy as Tag a",
+		"command": "side_bar_copy_tag_ahref"
+	},
+	{
+		"caption": "File: Copy as Tag script",
+		"command": "side_bar_copy_tag_script"
+	},
+	{
+		"caption": "File: Copy as Tag style",
+		"command": "side_bar_copy_tag_style"
+	},
+	{
 		"caption": "zzzzz_side_bar",
 		"command": "zzzzz_side_bar"
 	}
