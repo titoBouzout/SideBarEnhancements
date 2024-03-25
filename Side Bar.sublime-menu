@@ -140,19 +140,12 @@
 	},
 	{ "caption": "-", "id": "side-bar-delete-separator" },
 	{
-		"caption": "Refresh",
-		"id": "side-bar-refresh",
-		"command": "refresh_folder_list"
-	},
-	{ "caption": "-", "id": "side-bar-reveal-separator" },
-
-	{
 		"caption": "Reveal",
 		"id": "side-bar-reveal",
 		"command": "side_bar_reveal",
 		"args": { "paths": [] }
 	},
-	{ "caption": "-", "id": "side-bar-refresh-separator" },
+	{ "caption": "-", "id": "side-bar-reveal-separator" },
 	{
 		"caption": "Promote",
 		"id": "side-bar-project-item-add",
