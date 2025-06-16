@@ -465,14 +465,20 @@ class SideBarFindFilesPathContainingSearchThread(threading.Thread):
             if self.match_function(path):
                 self.files.append(path)
         elif os.path.isdir(path):
-            for content in os.listdir(path):
-                file = os.path.join(path, content)
-                if os.path.isfile(file) or os.path.islink(file):
-                    self.num_files = self.num_files + 1
-                    if self.match_function(file):
-                        self.files.append(file)
-                else:
-                    self.find(file)
+            try:
+                for content in os.listdir(path):
+                    try:
+                        file = os.path.join(path, content)
+                        if os.path.isfile(file) or os.path.islink(file):
+                            self.num_files = self.num_files + 1
+                            if self.match_function(file):
+                                self.files.append(file)
+                        else:
+                            self.find(file)
+                    except:
+                        pass
+            except:
+                pass
 
     def match_regexp(self, path):
         return self.searchTermRegExp.search(path) and not [
