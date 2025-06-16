@@ -551,7 +551,11 @@ class SideBarItem:
                         shell=True,
                     )
             elif sublime.platform() == "linux":
-                subprocess.Popen(["gnome-terminal", "."], cwd=self.forCwdSystemPath())
+                try:
+                    subprocess.Popen(["gnome-terminal", "."], cwd=self.forCwdSystemPath())
+                except:
+                    subprocess.Popen(["ptyxis", "--tab", "."], cwd=self.forCwdSystemPath())
+
         else:
             if sublime.platform() == "osx":
                 import subprocess
