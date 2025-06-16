@@ -557,13 +557,11 @@ class SideBarItem:
                     subprocess.Popen(["ptyxis", "--tab", "."], cwd=self.forCwdSystemPath())
 
         else:
-            if sublime.platform() == "osx":
-                import subprocess
+            import subprocess
 
+            if sublime.platform() == "osx":
                 subprocess.Popen(["open", self.name()], cwd=self.dirname())
             elif sublime.platform() == "windows":
-                import subprocess
-
                 subprocess.Popen(
                     [
                         "start",
