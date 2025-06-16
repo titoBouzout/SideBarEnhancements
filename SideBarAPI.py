@@ -572,9 +572,11 @@ class SideBarItem:
                     shell=True,
                 )
             else:
-                from . import desktop
-
-                desktop.open(self.path())
+                try:
+                    from . import desktop
+                    desktop.open(self.path())
+                except:
+                    subprocess.Popen(["xdg-open", self.name()], cwd=self.dirname())
 
     def edit(self):
         if BINARY.search(self.path()):
