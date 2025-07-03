@@ -288,7 +288,10 @@ class SideBarProject:
         self.setProjectJson(data)
 
     def refresh(self):
-        sublime.active_window().run_command("refresh_folder_list")
+        sublime.set_timeout(
+            lambda: sublime.active_window().run_command("refresh_folder_list"),
+            300,
+        )
 
 
 class SideBarItem:
@@ -552,9 +555,13 @@ class SideBarItem:
                     )
             elif sublime.platform() == "linux":
                 try:
-                    subprocess.Popen(["gnome-terminal", "."], cwd=self.forCwdSystemPath())
+                    subprocess.Popen(
+                        ["gnome-terminal", "."], cwd=self.forCwdSystemPath()
+                    )
                 except:
-                    subprocess.Popen(["ptyxis", "--tab", "."], cwd=self.forCwdSystemPath())
+                    subprocess.Popen(
+                        ["ptyxis", "--tab", "."], cwd=self.forCwdSystemPath()
+                    )
 
         else:
             import subprocess
@@ -574,6 +581,7 @@ class SideBarItem:
             else:
                 try:
                     from . import desktop
+
                     desktop.open(self.path())
                 except:
                     subprocess.Popen(["xdg-open", self.name()], cwd=self.dirname())
