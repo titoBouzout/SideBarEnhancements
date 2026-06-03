@@ -84,6 +84,11 @@
 		"args": { "paths": [] }
 	},
 	{
+		"caption": "Copy Name Without Extension",
+		"command": "side_bar_copy_name_without_extension",
+		"args": { "paths": [] }
+	},
+	{
 		"caption": "Copy Path",
 		"id": "side-bar-clip-copy-path",
 		"command": "side_bar_copy_path_relative_from_project_encoded",
@@ -110,14 +115,12 @@
 		"args": { "paths": [] }
 	},
 	{ "caption": "-", "id": "side-bar-duplicate-separator" },
-
 	{
 		"caption": "Rename…",
 		"id": "side-bar-rename",
 		"command": "side_bar_rename",
 		"args": { "paths": [] }
 	},
-
 	{
 		"caption": "Move…",
 		"id": "side-bar-move",
@@ -131,7 +134,6 @@
 		"args": { "paths": [] }
 	},
 	{ "caption": "-", "id": "side-bar-rename-move-separator" },
-
 	{
 		"caption": "Delete",
 		"id": "side-bar-delete",
