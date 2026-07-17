@@ -19,6 +19,145 @@ def escapeCMDWindows(string):
     return string.replace("^", "^^")
 
 
+# terminals with the flag used to set the starting directory; an empty
+# flag list means the terminal inherits the cwd passed to Popen
+LINUX_TERMINALS = [
+    ("konsole", ["--new-tab", "--workdir"]),
+    ("ptyxis", ["--tab", "-d"]),
+    ("kgx", ["--working-directory"]),
+    ("gnome-terminal", ["--tab", "--working-directory"]),
+    ("xfce4-terminal", ["--tab", "--working-directory"]),
+    ("mate-terminal", ["--tab", "--working-directory"]),
+    ("lxterminal", ["--working-directory"]),
+    ("tilix", ["-w"]),
+    ("alacritty", ["--working-directory"]),
+    ("kitty", ["--directory"]),
+    ("x-terminal-emulator", []),
+    ("xterm", []),
+]
+
+LINUX_DESKTOP_TERMINALS = {
+    "KDE": ["konsole"],
+    "GNOME": ["ptyxis", "kgx", "gnome-terminal"],
+    "XFCE": ["xfce4-terminal"],
+    "MATE": ["mate-terminal"],
+    "LXDE": ["lxterminal"],
+    "LXQT": ["lxterminal"],
+}
+
+
+def linuxTerminalCommand(directory):
+    # respect an explicit user choice first
+    terminal = os.environ.get("TERMINAL", "")
+    if terminal and shutil.which(terminal):
+        return [terminal]
+
+    flags = dict(LINUX_TERMINALS)
+    candidates = []
+    desktop = os.environ.get("XDG_CURRENT_DESKTOP", "").upper()
+    for name, terminals in LINUX_DESKTOP_TERMINALS.items():
+        if name in desktop:
+            candidates += terminals
+    candidates += [name for name, _ in LINUX_TERMINALS]
+
+    for name in candidates:
+        if shutil.which(name):
+            return [name] + flags[name] + ([directory] if flags[name] else [])
+    return None
+
+
+# On Wayland a process can't raise another app's window (e.g. the konsole
+# window that just received a --new-tab) without an activation token, which
+# Sublime can't provide. KWin's scripting DBus interface is exempt from
+# focus-stealing prevention, so on KDE we ask KWin to activate the terminal
+# window; windowAdded covers a terminal that is still starting up.
+KWIN_FOCUS_SCRIPT = """
+var done = false;
+function activate(w) {
+    if (!done && w && w.resourceClass.toLowerCase().indexOf(%s) !== -1) {
+        done = true;
+        workspace.activeWindow = w;
+    }
+}
+workspace.windowAdded.connect(activate);
+var stack = workspace.stackingOrder;
+for (var i = stack.length - 1; i >= 0; i--) {
+    activate(stack[i]);
+}
+"""
+
+
+def linuxFocusTerminal(binary):
+    if "KDE" not in os.environ.get("XDG_CURRENT_DESKTOP", "").upper():
+        return
+
+    import json
+    import subprocess
+    import tempfile
+    import threading
+    import time
+
+    name = os.path.basename(binary).lower()
+    script = KWIN_FOCUS_SCRIPT % json.dumps(name)
+    plugin = "sidebar_enhancements_focus_terminal"
+
+    def gdbus(path, method, *args):
+        return subprocess.check_output(
+            [
+                "gdbus",
+                "call",
+                "--session",
+                "--dest",
+                "org.kde.KWin",
+                "--object-path",
+                path,
+                "--method",
+                method,
+            ]
+            + list(args),
+            stderr=subprocess.STDOUT,
+            timeout=5,
+        ).decode("utf8", "replace")
+
+    def worker():
+        try:
+            handle = tempfile.NamedTemporaryFile(
+                mode="w", suffix=".js", delete=False
+            )
+            try:
+                handle.write(script)
+                handle.close()
+                try:
+                    gdbus("/Scripting", "org.kde.kwin.Scripting.unloadScript", plugin)
+                except:
+                    pass
+                out = gdbus(
+                    "/Scripting",
+                    "org.kde.kwin.Scripting.loadScript",
+                    handle.name,
+                    plugin,
+                )
+                script_id = int(re.search(r"-?\d+", out).group(0))
+                if script_id < 0:
+                    return
+                path = "/Scripting/Script%d" % script_id
+                gdbus(path, "org.kde.kwin.Script.run")
+                # keep the windowAdded connection alive long enough for a
+                # freshly launched terminal to map its window
+                time.sleep(2)
+                try:
+                    gdbus(path, "org.kde.kwin.Script.stop")
+                except:
+                    pass
+                gdbus("/Scripting", "org.kde.kwin.Scripting.unloadScript", plugin)
+            finally:
+                os.remove(handle.name)
+        except:
+            pass
+
+    threading.Thread(target=worker).start()
+
+
 BINARY = re.compile(
     "\.(psd|ai|cdr|ico|cache|sublime-package|eot|svgz|ttf|woff|zip|tar|gz|rar|bz2|jar|xpi|mov|mpeg|avi|mpg|flv|wmv|mp3|wav|aif|aiff|snd|wma|asf|asx|pcm|pdf|doc|docx|xls|xlsx|ppt|pptx|rtf|sqlite|sqlitedb|fla|swf|exe)$",
     re.I,
@@ -288,10 +427,11 @@ class SideBarProject:
         self.setProjectJson(data)
 
     def refresh(self):
-        sublime.set_timeout(
-            lambda: sublime.active_window().run_command("refresh_folder_list"),
-            300,
-        )
+        pass
+        # sublime.set_timeout(
+        #     lambda: sublime.active_window().run_command("refresh_folder_list"),
+        #     300,
+        # )
 
 
 class SideBarItem:
@@ -554,14 +694,17 @@ class SideBarItem:
                         shell=True,
                     )
             elif sublime.platform() == "linux":
-                try:
-                    subprocess.Popen(
-                        ["gnome-terminal", "."], cwd=self.forCwdSystemPath()
-                    )
-                except:
-                    subprocess.Popen(
-                        ["ptyxis", "--tab", "."], cwd=self.forCwdSystemPath()
-                    )
+                cwd = self.forCwdSystemPath()
+                if command:
+                    if isinstance(command, str):
+                        command = [command]
+                    subprocess.Popen(command, cwd=cwd)
+                    linuxFocusTerminal(command[0])
+                else:
+                    terminal = linuxTerminalCommand(cwd)
+                    if terminal:
+                        subprocess.Popen(terminal, cwd=cwd)
+                        linuxFocusTerminal(terminal[0])
 
         else:
             import subprocess
