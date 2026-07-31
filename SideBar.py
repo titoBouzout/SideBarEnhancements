@@ -701,6 +701,26 @@ class SideBarCopyNameCommand(sublime_plugin.WindowCommand):
         return CACHED_SELECTION(paths).len() > 0
 
 
+class SideBarCopyNameWithoutExtensionCommand(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+        import os
+        items = []
+        for item in SideBarSelection(paths).getSelectedItems():
+            # Dosyanın ismini ve uzantısını ayırıp sadece ismi alıyoruz (0. indeks)
+            name_without_ext = os.path.splitext(item.name())[0]
+            items.append(name_without_ext)
+        
+        if len(items) > 0:
+            sublime.set_clipboard('\n'.join(items))
+            if len(items) > 1:
+                sublime.status_message("Items copied")
+            else:
+                sublime.status_message("Item copied")
+
+    def is_enabled(self, paths=[]):
+        return CACHED_SELECTION(paths).len() > 0
+
+
 class SideBarCopyNameEncodedCommand(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         items = []
